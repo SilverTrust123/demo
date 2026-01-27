@@ -18,7 +18,7 @@ public class Controller {
         try {
             this.plc = new PLCController(plcIP, tcpPort);
         } catch (Exception e) {
-            System.err.println("PLC 連線失敗: " + e.getMessage());
+            System.err.println("PLC 連線失敗code: " + e.getMessage());
         }
     }
 
@@ -80,6 +80,7 @@ public class Controller {
     }
 
     // 詢問現在參數：讀取 D 點數值
+    // NoDevice=沒有設備，Error=讀取錯誤，回傳真的數值)(代驗證)
     @GetMapping("/plc/DPointData")
     public String DPointData(@RequestParam String param) {
         if (param == null || param.isEmpty() || plc.DdeviceIsEmpty(param)) {
@@ -95,15 +96,21 @@ public class Controller {
     }
 
     // 前端控制指令：寫入 M 點
-    @PostMapping("/m_control")
-    public String postMethodName(@RequestBody Map<String, Object> payload) {
+    // 收給我("device":"明子","value":0)
+    // Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
+    // 等一下要給董事長devicdid
+    @PostMapping("/plc/writeMPoint")
+    public String writeMPoint(@RequestBody Map<String, Object> payload) {
+        String param = (String) payload.get("device");
+        if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+            return "NoDevice";
+        }
+        int value = (int) payload.get("value");
+        if (param == null || param.isEmpty() || (value != 0 && value != 1)) {
+            return "value Error";
+        }
         try {
-            String name = (String) payload.get("name");
-            int value = (int) payload.get("value");
-
-            if ("GATE_01".equals(name)) {
-                plc.writeM(plc.GATE_01, value == 1);
-            }
+            plc.writeM(plc.GATE_01, value == 1);
             return "Success: " + name + " set to " + value;
         } catch (Exception e) {
             return "Error: " + e.getMessage();
