@@ -96,7 +96,7 @@ public class Controller {
     }
 
     // 前端控制指令：寫入 M 點
-    // 收給我("device":"明子","value":0)
+    // 收給我("device":"明子","value":true false)
     // Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
     // 等一下要給董事長devicdid
     @PostMapping("/plc/writeMPoint")
@@ -105,13 +105,13 @@ public class Controller {
         if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
             return "NoDevice";
         }
-        int value = (int) payload.get("value");
-        if (param == null || param.isEmpty() || (value != 0 && value != 1)) {
+        boolean value = (boolean) payload.get("value");
+        if (param == null || param.isEmpty() || (value != false && value != true)) {
             return "value Error";
         }
         try {
-            plc.writeM(plc.GATE_01, value == 1);
-            return "Success: " + name + " set to " + value;
+            plc.writeM(plc.getMPoint(param), value);
+            return "Success: " + param + " set to " + value;
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
