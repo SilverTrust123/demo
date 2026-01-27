@@ -4,9 +4,9 @@
 
 #define DHTPIN D4
 DHT11 dht11(DHTPIN);
-const char* ssid = "157-4F";
-const char* password = "00000000";
-const char* serverUrl = "http://192.168.1.104:9090/TemparatureAndHumidityData";
+const char* ssid = "Xa10yah28";
+const char* password = "yaya123123";
+const char* serverUrl = "http://10.246.169.167:9090/circultData";
 
 void setup() {
   Serial.begin(9600);
@@ -17,10 +17,8 @@ void setup() {
 }
 
 void loop() {
-  int temperature = 0;
-  int humidity = 0;
-  Serial.print(temperature);
-  Serial.print(humidity);
+  int circult = 0;
+  Serial.print(circult);
 
   int result = dht11.readTemperatureHumidity(temperature, humidity);
 
@@ -61,3 +59,20 @@ void loop() {
 
 
 
+
+
+
+
+
+
+
+
+
+// const char* ssid = "Xa10yah28";
+// const char* password = "yaya123123";
+// const char* serverUrl = "https://Ngrok網址/data";
+
+
+// const char* ssid = "157-4F";
+// const char* password = "00000000";
+// const char* serverUrl = "http://192.168.1.104:9090/circultData";
