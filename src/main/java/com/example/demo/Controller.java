@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import io.github.cdimascio.dotenv.Dotenv;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -67,75 +67,145 @@ public class Controller {
     }
 
     // 數位雙生：讀取 M 點狀態
-    // 回傳值說明：1=ON，0=OFF，3=參數錯誤或沒有設備
+    // 回傳值說明：1 = ON，0 = OFF，3 = 參數錯誤或沒有設備
     @GetMapping("/plc/MPointState")
-    public int MpointState(@RequestParam String param) {
-        if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+    public int MpointState(@RequestParam(required = false) String param) {
+        try {
+            System.out.println("MPointState param = " + param);
+
+            if (param == null || param.isEmpty()) {
+                System.out.println("MPointState: param is null or empty");
+                return 3;
+            }
+
+            if (plc.MdeviceIsEmpty(param)) {
+                System.out.println("MPointState: device not found -> " + param);
+                return 3;
+            }
+
+            boolean state = plc.readM(plc.getMPoint(param));
+            System.out.println("MPointState: " + param + " = " + state);
+
+            return state ? 1 : 0;
+
+        } catch (Exception e) {
+            System.err.println("MPointState error, param=" + param);
+            e.printStackTrace();
             return 3;
         }
-        try {
-            return plc.readM(plc.GATE_01) ? 1 : 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 
     // 詢問現在參數：讀取 D 點數值
-    // NoDevice=沒有設備，Error=讀取錯誤，回傳真的數值)(代驗證)
+    // 回傳：NoDevice / Error / 實際數值
     @GetMapping("/plc/DPointData")
-    public String DPointData(@RequestParam String param) {
-        if (param == null || param.isEmpty() || plc.DdeviceIsEmpty(param)) {
-            return "NoDevice";
-        }
+    public String DPointData(@RequestParam(required = false) String param) {
         try {
+            System.out.println("DPointData param = " + param);
+
+            if (param == null || param.isEmpty()) {
+                System.out.println("DPointData: param is null or empty");
+                return "NoDevice";
+            }
+
+            if (plc.DdeviceIsEmpty(param)) {
+                System.out.println("DPointData: device not found -> " + param);
+                return "NoDevice";
+            }
+
             int val = plc.readD(plc.getDPoint(param));
+            System.out.println("DPointData: " + param + " = " + val);
+
             return String.valueOf(val);
+
         } catch (Exception e) {
+            System.err.println("DPointData error, param=" + param);
             e.printStackTrace();
+            return "Error";
         }
-        return "Error";
+    }
+
+    @PostMapping("/plc/state")
+    public String plcState() {
+        try {
+            return String.valueOf(plc.readD(plc.getDPoint("STATE")));
+        } catch (Exception e) {
+            return "PLC Disconnected: " + e.getMessage();
+        }
     }
 
     // 前端控制指令：寫入 M 點
-    // 收給我("device":"明子","value":true false)
+    // 收給我("device":"名子","value":true false)
     // Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
     // 等一下要給董事長devicdid
+    // @PostMapping("/plc/writeMPoint")
+    // public String writeMPoint(@RequestBody Map<String, Object> payload) {
+    // String param = (String) payload.get("device");
+    // if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+    // return "NoDevice";
+    // }
+    // boolean value = (boolean) payload.get("value");
+    // if (param == null || param.isEmpty() || (value != false && value != true)) {
+    // return "value Error";
+    // }
+    // try {
+    // plc.writeM(plc.getMPoint(param), value);
+    // return "Success: " + param + " set to " + value;
+    // } catch (Exception e) {
+    // return "Error: " + e.getMessage();
+    // }
+    // }
+
     @PostMapping("/plc/writeMPoint")
     public String writeMPoint(@RequestBody Map<String, Object> payload) {
-        String param = (String) payload.get("device");
-        if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
-            return "NoDevice";
-        }
-        boolean value = (boolean) payload.get("value");
-        if (param == null || param.isEmpty() || (value != false && value != true)) {
-            return "value Error";
-        }
         try {
+            System.out.println("Received payload: " + payload);
+            Object deviceObj = payload.get("device");
+            if (!(deviceObj instanceof String)) {
+                return "device Error: must be a string";
+            }
+            String param = (String) deviceObj;
+            if (param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+                return "NoDevice";
+            }
+            Object valueObj = payload.get("value");
+            boolean value;
+            if (valueObj instanceof Boolean) {
+                value = (Boolean) valueObj;
+            } else if (valueObj instanceof String) {
+                value = Boolean.parseBoolean((String) valueObj);
+            } else if (valueObj instanceof Number) {
+                value = ((Number) valueObj).intValue() != 0;
+            } else {
+                return "value Error: must be boolean, string, or number";
+            }
+            System.out.println("Device: " + param + ", Value: " + value);
             plc.writeM(plc.getMPoint(param), value);
             return "Success: " + param + " set to " + value;
+
         } catch (Exception e) {
+            // 打印錯誤完整堆疊，方便 debug
+            e.printStackTrace();
             return "Error: " + e.getMessage();
         }
     }
 
-    @GetMapping("/emerStop")
-    public String emerStop(@RequestParam String param) {
-        try {
-            plc.writeM(plc.EMER_STOP, true);
-            return "EMERGENCY STOP ACTIVATED";
-        } catch (Exception e) {
-            return "Stop Failed";
-        }
-    }
+    // @GetMapping("/emerStop")
+    // public String emerStop(@RequestParam String param) {
+    // try {
+    // plc.writeM(plc.EMER_STOP, true);
+    // return "EMERGENCY STOP ACTIVATED";
+    // } catch (Exception e) {
+    // return "Stop Failed";
+    // }
+    // }
 
-    @GetMapping("/emerRestort")
-    public String emerRestart(@RequestParam String param) {
-        try {
-            plc.writeM(plc.EMER_STOP, false);
-            return "SYSTEM RESTORED";
-        } catch (Exception e) {
-            return "Restore Failed";
-        }
-    }
+    // @GetMapping("/emerRestort")
+    // public String emerRestart(@RequestParam String param) {
+    // try {
+    // plc.writeM(plc.EMER_STOP, false);
+    // return "SYSTEM RESTORED";
+    // } catch (Exception e) {
+    // return "Restore Failed";
+    // }
+    // }
 }

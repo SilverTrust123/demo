@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>溫溼度監控面板</title>
+  <style>
+    :root {
+      --primary: #2c3e50;
+      --bg: #ecf0f1;
+      --card: #ffffff;
+      --error: #e74c3c;
+      --success: #27ae60;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px;
+      margin: 0;
+    }
+    .sensor-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 25px;
+      width: 260px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+    .sensor-card:hover { transform: translateY(-5px); }
+    .status-dot {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--error);
+    }
+    .status-dot.online { background: var(--success); }
+    h3 { margin: 0 0 15px 0; color: var(--primary); border-bottom: 2px solid var(--bg); padding-bottom: 10px; }
+    .data-row { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; }
+    .label { color: #7f8c8d; font-size: 0.9em; }
+    .value { font-size: 1.8em; font-weight: bold; color: var(--primary); }
+    .unit { font-size: 0.5em; margin-left: 5px; color: #95a5a6; }
+    .error-msg { font-size: 0.8em; color: var(--error); display: none; margin-top: 10px; }
+    .error .error-msg { display: block; }
+  </style>
+</head>
+<body>
+
+  <div id="8266_1" class="sensor-card">
+    <div class="status-dot"></div>
+    <h3>裝置: 8266_1</h3>
+    <div class="data-row">
+      <span class="label">溫度</span>
+      <span class="value"><span class="temp">--</span><span class="unit">°C</span></span>
+    </div>
+    <div class="data-row">
+      <span class="label">濕度</span>
+      <span class="value"><span class="hum">--</span><span class="unit">%</span></span>
+    </div>
+    <div class="error-msg">無法連線至後端或無資料</div>
+  </div>
+
+  <div id="8266_2" class="sensor-card">
+    <div class="status-dot"></div>
+    <h3>裝置: 8266_2</h3>
+    <div class="data-row">
+      <span class="label">溫度</span>
+      <span class="value"><span class="temp">--</span><span class="unit">°C</span></span>
+    </div>
+    <div class="data-row">
+      <span class="label">濕度</span>
+      <span class="value"><span class="hum">--</span><span class="unit">%</span></span>
+    </div>
+    <div class="error-msg">無法連線至後端或無資料</div>
+  </div>
+  <div id="8266_3" class="sensor-card">
+    <div class="status-dot"></div>
+    <h3>裝置: 8266_3</h3>
+    <div class="data-row">
+      <span class="label">電流</span>
+      <span class="value"><span class="cir">--</span><span class="unit">A</span></span>
+    </div>
+    <div class="error-msg">無法連線至後端或無資料</div>
+  </div>
+  
+<script>
+  const BASE_URL = "http://192.168.1.104:9090"; 
+  const INTERVAL = 2000;
+  const DEVICES = ["8266_1", "8266_2"];
+
+  async function updateDashboard(deviceId) {
+    const card = document.getElementById(deviceId);
+    const dot = card.querySelector(".status-dot");
+    
+    try {
+      const response = await fetch(`${BASE_URL}/TempratueAndHumidityData/${deviceId}`);
+      
+      if (!response.ok) throw new Error("Offline");
+
+      const data = await response.json();
+
+      card.querySelector(".temp").innerText = data.temperature !== undefined ? data.temperature : "--";
+      card.querySelector(".hum").innerText = data.humidity !== undefined ? data.humidity : "--";
+
+      const responseCir = await fetch(`${BASE_URL}/circuitData`);
+      card.querySelector(".cir").innerText = data.circult !== undefined ? data.circult : "--";
+      
+      card.classList.remove("error");
+      dot.classList.add("online");
+    } catch (err) {
+      card.classList.add("error");
+      dot.classList.remove("online");
+    }
+  }
+
+  setInterval(() => {
+    DEVICES.forEach(updateDashboard);
+  }, INTERVAL);
+
+  DEVICES.forEach(updateDashboard);
+</script>
+</body>
+</html>

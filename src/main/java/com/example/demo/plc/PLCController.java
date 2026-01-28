@@ -12,8 +12,8 @@ import com.serotonin.modbus4j.msg.*;
 public class PLCController {
     private ModbusMaster master;
 
-    public final MPoint PUMP_STATUS = new MPoint(21, "狀態");
-    public final DPoint CURRENT_TEMP = new DPoint(100, "當前溫度");
+    public final MPoint TEST = new MPoint(1, "測試");
+    public final DPoint STATE = new DPoint(200, "狀態");
     private final Map<String, MPoint> MPointMap = new HashMap<>();
     private final Map<String, DPoint> DPointMap = new HashMap<>();
 
@@ -24,9 +24,9 @@ public class PLCController {
         this.master = new ModbusFactory().createTcpMaster(params, true);
         this.master.init();
         // 間加M點
-        MPointMap.put("PUMP_STATUS", PUMP_STATUS);
+        MPointMap.put("TEST", TEST);
         // 添加D點
-        DPointMap.put("CURRENT_TEMP", CURRENT_TEMP);
+        DPointMap.put("STATE", STATE);
     }
 
     public boolean MdeviceIsEmpty(String param) {
@@ -42,9 +42,18 @@ public class PLCController {
         return MPointMap.get(name);
     }
 
+    // 查詢D設備物件(備用)
+    public DPoint getDPoint(String name) {
+        return DPointMap.get(name);
+    }
+
     // 查詢是否存在
     public boolean hasMPoint(String name) {
         return MPointMap.containsKey(name);
+    }
+
+    public boolean hasDPoint(String name) {
+        return DPointMap.containsKey(name);
     }
 
     // M點
