@@ -22,10 +22,6 @@ for img_file in image_files:
     img_path = os.path.join(image_folder, img_file)
     frame = cv2.imread(img_path)
 
-    if frame is None:
-        print(f"璀謀: {img_file}")
-        continue
-
     danger_now = False
 
     results = model(frame, conf=0.5)

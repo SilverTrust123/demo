@@ -19,7 +19,7 @@ public class Controller {
         try {
             this.plc = new PLCController(plcIP, tcpPort);
         } catch (Exception e) {
-            System.err.println("PLC 連線失敗code: " + e.getMessage());
+            System.err.println("PLC 連線失敗 code: " + e.getMessage());
         }
     }
 
@@ -63,6 +63,19 @@ public class Controller {
     @GetMapping("/CircuitData")
     public Collection<SensorDataCircuit> getCircuitData() {
         return circuitDataMap.values();
+    }
+
+    @GetMapping("/CircuitData/{deviceId}")
+    public SensorDataCircuit getCircuitDataById(@PathVariable String deviceId) {
+        return circuitDataMap.get(deviceId);
+    }
+
+    private Map<String, SensorDataAirQuality> airQualityDataMap = new ConcurrentHashMap<>();
+
+    @PostMapping("/AirQualityData")
+    public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
+
+        return "OK";
     }
 
     // 數位雙生：讀取 M 點狀態
