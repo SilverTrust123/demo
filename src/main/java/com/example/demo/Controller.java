@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-
 import io.github.cdimascio.dotenv.Dotenv;
 
 @CrossOrigin(origins = "*")
@@ -124,7 +123,7 @@ public class Controller {
         }
     }
 
-    @PostMapping("/plc/state")
+    @GetMapping("/plc/state")
     public String plcState() {
         try {
             return String.valueOf(plc.readD(plc.getDPoint("STATE")));
