@@ -74,36 +74,44 @@ public class Controller {
 
     @PostMapping("/AirQualityData")
     public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
-
+        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
+            return "air quality deviceId is required";
+        }
+        airQualityDataMap.put(data.getDeviceId(), data);
         return "OK";
     }
 
+    @GetMapping("/AirQualityData")
+    public Collection<SensorDataAirQuality> getAirQualityData() {
+        return airQualityDataMap.values();
+    }
+
     // 數位雙生：讀取 M 點狀態
-    // 回傳值說明：1 = ON，0 = OFF，3 = 參數錯誤或沒有設備
+    // 回傳：NoDevice / Error / 真偽值
     @GetMapping("/plc/MPointState")
-    public int MpointState(@RequestParam(required = false) String param) {
+    public String MpointState(@RequestParam(required = false) String param) {
         try {
             System.out.println("MPointState param = " + param);
 
             if (param == null || param.isEmpty()) {
                 System.out.println("MPointState: param is null or empty");
-                return 3;
+                return "MPointState: param is null or empty";
             }
 
             if (plc.MdeviceIsEmpty(param)) {
                 System.out.println("MPointState: device not found -> " + param);
-                return 3;
+                return "MPointState: device not found -> " + param;
             }
 
             boolean state = plc.readM(plc.getMPoint(param));
             System.out.println("MPointState: " + param + " = " + state);
 
-            return state ? 1 : 0;
+            return "MPointState: " + param + " = " + state;
 
         } catch (Exception e) {
             System.err.println("MPointState error, param=" + param);
             e.printStackTrace();
-            return 3;
+            return "MPointState error, param=" + param;
         }
     }
 
@@ -195,7 +203,6 @@ public class Controller {
             return "Success: " + param + " set to " + value;
 
         } catch (Exception e) {
-            // 打印錯誤完整堆疊，方便 debug
             e.printStackTrace();
             return "Error: " + e.getMessage();
         }
