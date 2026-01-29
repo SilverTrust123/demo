@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -84,6 +88,32 @@ public class Controller {
     @GetMapping("/AirQualityData")
     public Collection<SensorDataAirQuality> getAirQualityData() {
         return airQualityDataMap.values();
+    }
+
+    @GetMapping("/AirQualityData/{deviceId}")
+    public SensorDataAirQuality getAirQualityDataById(@PathVariable String deviceId) {
+        return airQualityDataMap.get(deviceId);
+    }
+
+    private Map<String, SensorDataAirParticulates> airParticulatesDataMap = new ConcurrentHashMap<>();
+
+    @PostMapping("/AirParticalData")
+    public String recriveAirPartical(@RequestBody SensorDataAirParticulates data) {
+        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
+            return "air particulates deviceId is required";
+        }
+        airParticulatesDataMap.put(data.getDeviceId(), data);
+        return "OK";
+    }
+
+    @GetMapping("/AirParticalData")
+    public Collection<SensorDataAirParticulates> getAirParticalData() {
+        return airParticulatesDataMap.values();
+    }
+
+    @GetMapping("/AirParticalData/{deviceId}")
+    public SensorDataAirParticulates getAirParticalDataById(@PathVariable String deviceId) {
+        return airParticulatesDataMap.get(deviceId);
     }
 
     // 數位雙生：讀取 M 點狀態
