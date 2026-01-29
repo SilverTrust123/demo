@@ -6,10 +6,10 @@ from ultralytics import YOLO
 model = YOLO("yolov8n.pt")
 
 DANGER_POLY = np.array([
-    [200, 100],
-    [450, 100],
-    [450, 350],
-    [200, 350]
+    [100, 100],
+    [1200, 100],
+    [1200, 1200],
+    [100, 1200]
 ])
 
 def point_in_polygon(point, poly):
