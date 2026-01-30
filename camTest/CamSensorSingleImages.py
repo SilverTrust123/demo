@@ -1,14 +1,16 @@
 import cv2
 import numpy as np
+import os
 import time
 import requests
 from datetime import datetime
 from ultralytics import YOLO
 
 DEVICE_ID = "CAM"
+IMAGE_FOLDER = "images"
 BACKEND_URL = "http://192.168.3.253:9090/CamData"
-POLL_INTERVAL = 3
 
+POLL_INTERVAL = 3  
 DANGER_POLY = np.array([
     [100, 100],
     [1200, 100],
@@ -17,12 +19,7 @@ DANGER_POLY = np.array([
 ])
 
 model = YOLO("yolov8n.pt")
-cap = cv2.VideoCapture(0)
 last_send_time = 0
-
-if not cap.isOpened():
-    print("攝影機開啟失敗")
-    exit()
 
 def point_in_polygon(point, poly):
     return cv2.pointPolygonTest(poly, point, False) >= 0
@@ -31,20 +28,28 @@ def point_in_polygon(point, poly):
 def send_to_backend(payload):
     try:
         r = requests.post(BACKEND_URL, json=payload, timeout=1)
-        print(f"[SEND] {payload['deviceId']} danger={payload['danger']}")
+        print(f"[SEND] device={payload['deviceId']} status={r.status_code}")
     except Exception as e:
         print("[ERROR] 後端連線失敗:", e)
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
+image_files = [
+    f for f in os.listdir(IMAGE_FOLDER)
+    if f.lower().endswith((".jpg", ".png"))
+]
+
+if not image_files:
+    print("images 資料夾內沒有圖片")
+    exit()
+
+for filename in image_files:
+    frame = cv2.imread(os.path.join(IMAGE_FOLDER, filename))
+    if frame is None:
+        continue
 
     detected_objects = []
     person_count = 0
     danger_now = False
-
-    results = model(frame, conf=0.4, verbose=False)
+    results = model(frame, conf=0.4)
 
     for r in results:
         for box in r.boxes:
@@ -71,7 +76,6 @@ while True:
                     "footX": footX,
                     "footY": footY
                 })
-
                 cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
                 cv2.circle(frame, (footX, footY), 5, (255, 0, 0), -1)
 
@@ -79,7 +83,7 @@ while True:
 
     cv2.putText(
         frame,
-        f"CAM={DEVICE_ID}  COUNT={person_count}  DANGER={danger_now}",
+        f"DEVICE={DEVICE_ID}  COUNT={person_count}  DANGER={danger_now}",
         (20, 40),
         cv2.FONT_HERSHEY_SIMPLEX,
         1,
@@ -99,8 +103,7 @@ while True:
         send_to_backend(payload)
         last_send_time = now
 
-    cv2.imshow("Cam Sensor (Live)", frame)
-    if cv2.waitKey(1) & 0xFF == 27:
-        break
-cap.release()
+    cv2.imshow("Cam Sensor Test", frame)
+    cv2.waitKey(0)
+
 cv2.destroyAllWindows()
