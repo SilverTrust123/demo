@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.cam.SensorDataCam;
 import com.example.demo.plc.PLCController;
 import com.example.demo.sensor.SensorDataAirParticulates;
 import com.example.demo.sensor.SensorDataAirQuality;
@@ -11,10 +12,6 @@ import java.util.Map;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import io.github.cdimascio.dotenv.Dotenv;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -119,6 +116,29 @@ public class Controller {
     @GetMapping("/AirParticalData/{deviceId}")
     public SensorDataAirParticulates getAirParticalDataById(@PathVariable String deviceId) {
         return airParticulatesDataMap.get(deviceId);
+    }
+
+    private Map<String, SensorDataCam> camDataMap = new ConcurrentHashMap<>();
+
+    @PostMapping("/CamData")
+    public String receiveCamData(@RequestBody SensorDataCam data) {
+
+        if (data.getDeviceId() == null) {
+            return "Cam deviceId is required";
+        }
+
+        camDataMap.put(data.getDeviceId(), data);
+        return "OK";
+    }
+
+    @GetMapping("/CamData/{deviceId}")
+    public SensorDataCam getCamData(@PathVariable String deviceId) {
+        return camDataMap.get(deviceId);
+    }
+
+    @GetMapping("/CamData")
+    public Collection<SensorDataCam> getAllCamData() {
+        return camDataMap.values();
     }
 
     // 數位雙生：讀取 M 點狀態

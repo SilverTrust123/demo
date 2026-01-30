@@ -2,15 +2,20 @@
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
 #include <ArduinoJson.h>
+#include <math.h>
 
-// --- 設定區 ---
+// --- WiFi & Server 設定 ---
 const char* ssid = "yang";
 const char* password = "20050116";
-const char* serverUrl = "http://192.168.3.253/data";
+const char* serverUrl = "http://192.168.3.253/AirQualityData";
 
-const int mq135Pin = A0; // ESP8266 的類比輸入腳位只有A0
+// --- MQ-135 設定 ---
+const int airQualityPin = A0;    // MQ-135 接在 A0
+const float RL = 20.0;            // Load resistor kΩ
+float R0 = 10.0;                  // 預設基準阻值（需先校正乾淨空氣得到）
+
 unsigned long lastTime = 0;
-unsigned long timerDelay = 2000; // 發送頻率(2)
+unsigned long timerDelay = 1000;  // 2 秒發送一次
 
 void setup() {
   Serial.begin(115200);
@@ -26,37 +31,50 @@ void setup() {
   Serial.print("IP 地址: ");
   Serial.println(WiFi.localIP());
 
-  Serial.println("MQ135 預熱中...");
+  Serial.println("MQ135 預熱中... 請保持乾淨空氣進行校正");
+
+  // 這裡簡單校正 R0（可手動測一次乾淨空氣平均值再填入 R0）
+  // R0 = Rs in clean air
+  // 建議校正 1 分鐘取平均
 }
 
 void loop() {
-  // 每隔一段時間執行一次發送
   if ((millis() - lastTime) > timerDelay) {
     if (WiFi.status() == WL_CONNECTED) {
-      
-      // 1. 讀取 MQ135 數值
-      int sensorValue = analogRead(mq135Pin);
-      float voltage = sensorValue * (3.3 / 1023.0); // ESP8266 ADC 電壓上限通常為 3.3V
-      
-      Serial.print("目前數值: ");
-      Serial.print(sensorValue);
-      Serial.print(" | 電壓: ");
-      Serial.println(voltage);
 
-      // 2. 建立 JSON 文件
+      // 1. 讀取 MQ-135 電壓
+      int sensorValue = analogRead(airQualityPin);
+      float voltage = sensorValue * (3.3 / 1023.0);  // ADC → 電壓
+
+      // 2. 計算感測器阻值 Rs
+      float rs = ((3.3 - voltage) / voltage) * RL; // kΩ
+
+      // 3. 計算濃度 ppm (以 CO2 曲線為例)
+      // ppm = 116.6020682 * (Rs/R0)^(-2.769034857)
+      float rs_r0 = rs / R0;
+      float ppm = 116.6020682 * pow(rs_r0, -2.769034857);
+
+      Serial.print("SensorValue: ");
+      Serial.print(sensorValue);
+      Serial.print(" | Voltage: ");
+      Serial.print(voltage);
+      Serial.print("V | Rs: ");
+      Serial.print(rs);
+      Serial.print("kΩ | PPM: ");
+      Serial.println(ppm);
+
+      // 4. 建立 JSON 文件對應 SensorDataAirQuality
       StaticJsonDocument<200> doc;
-      doc["device_id"] = "ESP8266_01";
-      doc["sensor"] = "MQ135";
-      doc["value"] = sensorValue;
-      doc["voltage"] = voltage;
+      doc["deviceId"] = "ESP8266_3";    // 裝置 ID
+      doc["airPollution"] = (int)ppm;    // 整數 ppm
 
       String jsonOutput;
       serializeJson(doc, jsonOutput);
 
-      // 3. 發送 HTTP POST
+      // 5. 發送 HTTP POST
       WiFiClient client;
       HTTPClient http;
-      
+
       http.begin(client, serverUrl);
       http.addHeader("Content-Type", "application/json");
 
@@ -76,7 +94,7 @@ void loop() {
     } else {
       Serial.println("WiFi 連線中斷");
     }
-    
+
     lastTime = millis();
   }
 }

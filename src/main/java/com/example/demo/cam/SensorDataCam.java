@@ -1,0 +1,64 @@
+package com.example.demo.cam;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class SensorDataCam {
+
+    private String deviceId; // 攝影機 ID
+    private LocalDateTime timestamp; // 時間戳記
+    private boolean danger; // 是否危險
+    private int personCount; // 人數
+    private List<List<Integer>> dangerZone; // 危險區座標
+    private List<DetectedObjectDTO> objects; // 偵測到的物件
+
+    // ===== getter / setter =====
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isDanger() {
+        return danger;
+    }
+
+    public void setDanger(boolean danger) {
+        this.danger = danger;
+    }
+
+    public int getPersonCount() {
+        return personCount;
+    }
+
+    public void setPersonCount(int personCount) {
+        this.personCount = personCount;
+    }
+
+    public List<List<Integer>> getDangerZone() {
+        return dangerZone;
+    }
+
+    public void setDangerZone(List<List<Integer>> dangerZone) {
+        this.dangerZone = dangerZone;
+    }
+
+    public List<DetectedObjectDTO> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(List<DetectedObjectDTO> objects) {
+        this.objects = objects;
+    }
+}
