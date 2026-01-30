@@ -1,6 +1,6 @@
 package com.example.demo.plc;
 
-import java.util.HashSet;
+// import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,8 +12,10 @@ import com.serotonin.modbus4j.msg.*;
 public class PLCController {
     private ModbusMaster master;
 
-    public final MPoint TEST = new MPoint(1, "測試");
+    public final MPoint RTESTART = new MPoint(90, "重來");
     public final DPoint STATE = new DPoint(200, "狀態");
+    public final DPoint COUNT_METAL = new DPoint(0, "金屬件數");
+    public final DPoint COUNT_NON_METAL = new DPoint(1, "非金屬件數");
     private final Map<String, MPoint> MPointMap = new HashMap<>();
     private final Map<String, DPoint> DPointMap = new HashMap<>();
 
@@ -24,9 +26,11 @@ public class PLCController {
         this.master = new ModbusFactory().createTcpMaster(params, true);
         this.master.init();
         // 間加M點
-        MPointMap.put("TEST", TEST);
+        MPointMap.put("RTESTART", RTESTART);
         // 添加D點
         DPointMap.put("STATE", STATE);
+        DPointMap.put("COUNT_METAL", COUNT_METAL);
+        DPointMap.put("COUNT_NON_METAL", COUNT_NON_METAL);
     }
 
     public boolean MdeviceIsEmpty(String param) {

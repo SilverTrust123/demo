@@ -1,6 +1,11 @@
 package com.example.demo;
 
 import com.example.demo.plc.PLCController;
+import com.example.demo.sensor.SensorDataAirParticulates;
+import com.example.demo.sensor.SensorDataAirQuality;
+import com.example.demo.sensor.SensorDataCircuit;
+import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
+
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Collection;
