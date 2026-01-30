@@ -39,7 +39,7 @@ while True:
 
     cv2.imshow("Local Danger Test", frame)
 
-    if cv2.waitKey(3) & 0xFF == 27:
+    if cv2.waitKey(1) & 0xFF == 27:
         break
 
 cap.release()

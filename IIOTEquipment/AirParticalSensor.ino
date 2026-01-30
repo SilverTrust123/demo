@@ -53,5 +53,5 @@ void loop() {
   serializeJson(doc, Serial);
   Serial.println();
 
-  delay(1000); // 每兩秒測量一次
+  delay(1000); // 每1秒測量一次
 }

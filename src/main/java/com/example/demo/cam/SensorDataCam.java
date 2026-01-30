@@ -10,9 +10,7 @@ public class SensorDataCam {
     private boolean danger; // 是否危險
     private int personCount; // 人數
     private List<List<Integer>> dangerZone; // 危險區座標
-    private List<DetectedObjectDTO> objects; // 偵測到的物件
-
-    // ===== getter / setter =====
+    private List<DetectedObjectDTO> objects; // 偵測到的物件列表
 
     public String getDeviceId() {
         return deviceId;

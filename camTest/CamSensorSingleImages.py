@@ -10,7 +10,7 @@ DEVICE_ID = "CAM"
 IMAGE_FOLDER = "images"
 BACKEND_URL = "http://192.168.3.253:9090/CamData"
 
-POLL_INTERVAL = 3  
+POLL_INTERVAL = 1  
 DANGER_POLY = np.array([
     [100, 100],
     [1200, 100],

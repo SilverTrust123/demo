@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.3.253:9090/ComData';
+const API_URL = 'http://192.168.3.253:9090/CamData';
 const canvas = document.getElementById('visionCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -39,7 +39,7 @@ async function updateVision() {
     }
     
     // 使用 setTimeout 控製更新頻率 (每 100ms 一次，約 10 FPS)
-    setTimeout(updateVision, 100);
+    setTimeout(updateVision, 1000);
 }
 
 function drawScene(data) {

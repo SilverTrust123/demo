@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.sensor;
 
 public class SensorDataAirParticulates {
     private String deviceId;

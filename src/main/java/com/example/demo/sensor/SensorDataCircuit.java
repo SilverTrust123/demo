@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.sensor;
 
 public class SensorDataCircuit {
     private String deviceId;
@@ -54,6 +54,7 @@ public class SensorDataCircuit {
 
     @Override
     public String toString() {
-        return "DeviceId: " + deviceId + ", Voltage: " + voltage + ", Current: " + current + ", Power: " + power + ", Energy: " + energy;
+        return "DeviceId: " + deviceId + ", Voltage: " + voltage + ", Current: " + current + ", Power: " + power
+                + ", Energy: " + energy;
     }
 }
