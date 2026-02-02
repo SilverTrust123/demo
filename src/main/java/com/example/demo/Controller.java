@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -20,10 +22,13 @@ public class Controller {
     Dotenv dotenv = Dotenv.load();
     private String plcIP = dotenv.get("PLC_IP");
     private int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
+    private boolean plcConnected = false;
 
     public Controller() {
         try {
             this.plc = new PLCController(plcIP, tcpPort);
+            plcConnected = true;
+            System.out.println("PLC 連線成功");
         } catch (Exception e) {
             System.err.println("PLC 連線失敗 code: " + e.getMessage());
         }
@@ -32,6 +37,11 @@ public class Controller {
     @GetMapping("/")
     public String home() {
         return "backend running";
+    }
+
+    @GetMapping("/PLCConnect")
+    public String PLCConnect() {
+        return "PLC Connected: " + plcConnected;
     }
 
     private Map<String, SensorDataTemperatureAndHumidity> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
