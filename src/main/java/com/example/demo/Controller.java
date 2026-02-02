@@ -306,45 +306,45 @@ public class Controller {
         }
     }
 
-    // 前端控制指令：寫入 M 點
-    // 收給我("device":"名子","value":true false)
-    // Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
-    // 等一下要給董事長devicdid
-    // @PostMapping("/plc/writeMPoint")
-    // public String writeMPoint(@RequestBody Map<String, Object> payload) {
-    // String param = (String) payload.get("device");
-    // if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
-    // return "NoDevice";
-    // }
-    // boolean value = (boolean) payload.get("value");
-    // if (param == null || param.isEmpty() || (value != false && value != true)) {
-    // return "value Error";
-    // }
-    // try {
-    // plc.writeM(plc.getMPoint(param), value);
-    // return "Success: " + param + " set to " + value;
-    // } catch (Exception e) {
-    // return "Error: " + e.getMessage();
-    // }
-    // }
-
-    // @GetMapping("/emerStop")
-    // public String emerStop(@RequestParam String param) {
-    // try {
-    // plc.writeM(plc.EMER_STOP, true);
-    // return "EMERGENCY STOP ACTIVATED";
-    // } catch (Exception e) {
-    // return "Stop Failed";
-    // }
-    // }
-
-    // @GetMapping("/emerRestort")
-    // public String emerRestart(@RequestParam String param) {
-    // try {
-    // plc.writeM(plc.EMER_STOP, false);
-    // return "SYSTEM RESTORED";
-    // } catch (Exception e) {
-    // return "Restore Failed";
-    // }
-    // }
 }
+// 前端控制指令：寫入 M 點
+// 收給我("device":"名子","value":true false)
+// Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
+// 等一下要給董事長devicdid
+// @PostMapping("/plc/writeMPoint")
+// public String writeMPoint(@RequestBody Map<String, Object> payload) {
+// String param = (String) payload.get("device");
+// if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+// return "NoDevice";
+// }
+// boolean value = (boolean) payload.get("value");
+// if (param == null || param.isEmpty() || (value != false && value != true)) {
+// return "value Error";
+// }
+// try {
+// plc.writeM(plc.getMPoint(param), value);
+// return "Success: " + param + " set to " + value;
+// } catch (Exception e) {
+// return "Error: " + e.getMessage();
+// }
+// }
+
+// @GetMapping("/emerStop")
+// public String emerStop(@RequestParam String param) {
+// try {
+// plc.writeM(plc.EMER_STOP, true);
+// return "EMERGENCY STOP ACTIVATED";
+// } catch (Exception e) {
+// return "Stop Failed";
+// }
+// }
+
+// @GetMapping("/emerRestort")
+// public String emerRestart(@RequestParam String param) {
+// try {
+// plc.writeM(plc.EMER_STOP, false);
+// return "SYSTEM RESTORED";
+// } catch (Exception e) {
+// return "Restore Failed";
+// }
+// }
