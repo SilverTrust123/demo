@@ -2,7 +2,7 @@ package com.example.demo.sensor;
 
 public class SensorDataAirQuality {
     private String deviceId;
-    private int airPollution;
+    private float airPollution;
 
     public String getDeviceId() {
         return deviceId;
@@ -12,11 +12,11 @@ public class SensorDataAirQuality {
         this.deviceId = deviceId;
     }
 
-    public int getAirPollution() {
+    public float getAirPollution() {
         return airPollution;
     }
 
-    public void setAirPollution(int airPollution) {
+    public void setAirPollution(float airPollution) {
         this.airPollution = airPollution;
     }
 

@@ -44,7 +44,7 @@ public class Controller {
     public String PLCConnect() {
         return "PLC Connected: " + plcConnected;
     }
-
+    // 原來的沒有sliding window平滑的
     // @PostMapping("/TemparatureAndHumidityData")
     // public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data)
     // {
@@ -96,11 +96,9 @@ public class Controller {
             return "circuit deviceId is required";
         }
         // historyMap, String deviceId,double newValue
-
         String deviceId = data.getDeviceId();
         float rawVol = data.getVoltage();
         float smoothVol = calculateAverage(circuitHistoryMap, deviceId, (double) rawVol);
-
         data.setVoltage(smoothVol);
 
         circuitDataMap.put(deviceId, data);
@@ -119,13 +117,18 @@ public class Controller {
     }
 
     private Map<String, SensorDataAirQuality> airQualityDataMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Deque<Double>> airQualityHistoryMap = new ConcurrentHashMap<>();
 
     @PostMapping("/AirQualityData")
     public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
             return "air quality deviceId is required";
         }
-        airQualityDataMap.put(data.getDeviceId(), data);
+        String deviceId = data.getDeviceId();
+        float rawAQ = data.getAirPollution();
+        float smoothAQ = calculateAverage(airQualityHistoryMap, deviceId, rawAQ);
+        data.setAirPollution(smoothAQ);
+        airQualityDataMap.put(deviceId, data);
         return "OK";
     }
 
@@ -140,13 +143,18 @@ public class Controller {
     }
 
     private Map<String, SensorDataAirParticulates> airParticulatesDataMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Deque<Double>> airParticulatesHistoryMap = new ConcurrentHashMap<>();
 
     @PostMapping("/AirParticalData")
     public String recriveAirPartical(@RequestBody SensorDataAirParticulates data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
             return "air particulates deviceId is required";
         }
-        airParticulatesDataMap.put(data.getDeviceId(), data);
+        String deviceId = data.getDeviceId();
+        float rawAP = data.getPm2_5();
+        float smoothAP = calculateAverage(airParticulatesHistoryMap, deviceId, rawAP);
+        data.setPm2_5(smoothAP);
+        airParticulatesDataMap.put(deviceId, data);
         return "OK";
     }
 

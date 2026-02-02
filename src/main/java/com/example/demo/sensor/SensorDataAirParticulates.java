@@ -2,7 +2,7 @@ package com.example.demo.sensor;
 
 public class SensorDataAirParticulates {
     private String deviceId;
-    private int pm2_5;
+    private float pm2_5;
 
     public String getDeviceId() {
         return deviceId;
@@ -12,11 +12,11 @@ public class SensorDataAirParticulates {
         this.deviceId = deviceId;
     }
 
-    public int getPm2_5() {
+    public float getPm2_5() {
         return pm2_5;
     }
 
-    public void setPm2_5(int pm2_5) {
+    public void setPm2_5(float pm2_5) {
         this.pm2_5 = pm2_5;
     }
 
