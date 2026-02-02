@@ -9,11 +9,11 @@ import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
+import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.concurrent.ConcurrentHashMap;
 import io.github.cdimascio.dotenv.Dotenv;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -46,12 +46,38 @@ public class Controller {
 
     private Map<String, SensorDataTemperatureAndHumidity> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
 
+    // @PostMapping("/TemparatureAndHumidityData")
+    // public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data)
+    // {
+    // if (data.getDeviceId() == null) {
+    // return "Temparature and humidity deviceId is required";
+    // }
+    // temperatureAndHumidityDataMap.put(data.getDeviceId(), data);
+    // return "OK";
+    // }
+    // 1. 新增存放溫濕度歷史紀錄的 Map (每個 DeviceId 對應一個長度為 10 的 Deque)
+    private final ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Deque<Double>> humidHistoryMap = new ConcurrentHashMap<>();
+    private final int WINDOW_SIZE = 10;
+
     @PostMapping("/TemparatureAndHumidityData")
     public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data) {
         if (data.getDeviceId() == null) {
             return "Temparature and humidity deviceId is required";
         }
-        temperatureAndHumidityDataMap.put(data.getDeviceId(), data);
+
+        String deviceId = data.getDeviceId();
+
+        double rawTemp = data.getTemperature();
+        float smoothTemp = calculateAverage(tempHistoryMap, deviceId, rawTemp);
+        data.setTemperature(smoothTemp);
+
+        double rawHumid = data.getHumidity();
+        float smoothHumid = calculateAverage(humidHistoryMap, deviceId, rawHumid);
+        data.setHumidity(smoothHumid);
+
+        temperatureAndHumidityDataMap.put(deviceId, data);
+
         return "OK";
     }
 
@@ -218,28 +244,6 @@ public class Controller {
         }
     }
 
-    // 前端控制指令：寫入 M 點
-    // 收給我("device":"名子","value":true false)
-    // Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
-    // 等一下要給董事長devicdid
-    // @PostMapping("/plc/writeMPoint")
-    // public String writeMPoint(@RequestBody Map<String, Object> payload) {
-    // String param = (String) payload.get("device");
-    // if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
-    // return "NoDevice";
-    // }
-    // boolean value = (boolean) payload.get("value");
-    // if (param == null || param.isEmpty() || (value != false && value != true)) {
-    // return "value Error";
-    // }
-    // try {
-    // plc.writeM(plc.getMPoint(param), value);
-    // return "Success: " + param + " set to " + value;
-    // } catch (Exception e) {
-    // return "Error: " + e.getMessage();
-    // }
-    // }
-
     @PostMapping("/plc/writeMPoint")
     public String writeMPoint(@RequestBody Map<String, Object> payload) {
         try {
@@ -272,6 +276,42 @@ public class Controller {
             return "Error: " + e.getMessage();
         }
     }
+
+    private float calculateAverage(ConcurrentHashMap<String, Deque<Double>> historyMap, String deviceId,
+            double newValue) {
+        Deque<Double> window = historyMap.computeIfAbsent(deviceId, k -> new ArrayDeque<>());
+
+        synchronized (window) {
+            if (window.size() >= WINDOW_SIZE) {
+                window.pollFirst();
+            }
+            window.addLast(newValue);
+
+            return (float) window.stream().mapToDouble(Double::doubleValue).average().orElse(newValue);
+        }
+    }
+
+    // 前端控制指令：寫入 M 點
+    // 收給我("device":"名子","value":true false)
+    // Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
+    // 等一下要給董事長devicdid
+    // @PostMapping("/plc/writeMPoint")
+    // public String writeMPoint(@RequestBody Map<String, Object> payload) {
+    // String param = (String) payload.get("device");
+    // if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+    // return "NoDevice";
+    // }
+    // boolean value = (boolean) payload.get("value");
+    // if (param == null || param.isEmpty() || (value != false && value != true)) {
+    // return "value Error";
+    // }
+    // try {
+    // plc.writeM(plc.getMPoint(param), value);
+    // return "Success: " + param + " set to " + value;
+    // } catch (Exception e) {
+    // return "Error: " + e.getMessage();
+    // }
+    // }
 
     // @GetMapping("/emerStop")
     // public String emerStop(@RequestParam String param) {
