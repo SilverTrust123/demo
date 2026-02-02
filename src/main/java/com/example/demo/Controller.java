@@ -291,6 +291,7 @@ public class Controller {
         }
     }
 
+    // silaing window 平滑數據 就可以消除一些突發的雜訊阿之類的
     private float calculateAverage(ConcurrentHashMap<String, Deque<Double>> historyMap, String deviceId,
             double newValue) {
         Deque<Double> window = historyMap.computeIfAbsent(deviceId, k -> new ArrayDeque<>());
