@@ -23,6 +23,7 @@ public class Controller {
     private String plcIP = dotenv.get("PLC_IP");
     private int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
     private boolean plcConnected = false;
+    private final int WINDOW_SIZE = 10;
 
     public Controller() {
         try {
@@ -44,8 +45,6 @@ public class Controller {
         return "PLC Connected: " + plcConnected;
     }
 
-    private Map<String, SensorDataTemperatureAndHumidity> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
-
     // @PostMapping("/TemparatureAndHumidityData")
     // public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data)
     // {
@@ -55,27 +54,23 @@ public class Controller {
     // temperatureAndHumidityDataMap.put(data.getDeviceId(), data);
     // return "OK";
     // }
-    // 1. 新增存放溫濕度歷史紀錄的 Map (每個 DeviceId 對應一個長度為 10 的 Deque)
-    private final ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Deque<Double>> humidHistoryMap = new ConcurrentHashMap<>();
-    private final int WINDOW_SIZE = 10;
+
+    private Map<String, SensorDataTemperatureAndHumidity> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Deque<Double>> humidHistoryMap = new ConcurrentHashMap<>();
 
     @PostMapping("/TemparatureAndHumidityData")
     public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data) {
         if (data.getDeviceId() == null) {
             return "Temparature and humidity deviceId is required";
         }
-
         String deviceId = data.getDeviceId();
-
         double rawTemp = data.getTemperature();
         float smoothTemp = calculateAverage(tempHistoryMap, deviceId, rawTemp);
         data.setTemperature(smoothTemp);
-
         double rawHumid = data.getHumidity();
         float smoothHumid = calculateAverage(humidHistoryMap, deviceId, rawHumid);
         data.setHumidity(smoothHumid);
-
         temperatureAndHumidityDataMap.put(deviceId, data);
 
         return "OK";
@@ -93,12 +88,23 @@ public class Controller {
 
     private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
 
+    private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
+
     @PostMapping("/CircuitData")
     public String receiveCircuitData(@RequestBody SensorDataCircuit data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
             return "circuit deviceId is required";
         }
-        circuitDataMap.put(data.getDeviceId(), data);
+        // historyMap, String deviceId,double newValue
+
+        String deviceId = data.getDeviceId();
+        float rawVol = data.getVoltage();
+        float smoothVol = calculateAverage(circuitHistoryMap, deviceId, (double) rawVol);
+
+        data.setVoltage(smoothVol);
+
+        circuitDataMap.put(deviceId, data);
+
         return "OK";
     }
 
