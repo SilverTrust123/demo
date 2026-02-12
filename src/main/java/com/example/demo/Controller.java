@@ -338,6 +338,20 @@ public class Controller {
         }
     }
 
+    ConcurrentHashMap<String, Object> magicData = new ConcurrentHashMap<>();
+
+    @GetMapping("/AllData")
+    public ConcurrentHashMap<String, Object> AllData(@RequestParam String param) throws Exception {
+        magicData.put("temperatureAndHumidityDataMap", temperatureAndHumidityDataMap);
+        magicData.put("circuitDataMap", circuitDataMap);
+        magicData.put("airQualityDataMap", airQualityDataMap);
+        magicData.put("airParticulatesDataMap", airParticulatesDataMap);
+        magicData.put("camDataMap", camDataMap);
+        magicData.put("DPoint", plc.getAllDPoints());
+        magicData.put("MPoint", plc.getAllMPoints());
+        return magicData;
+    }
+
 }
 // 前端控制指令：寫入 M 點
 // 收給我("device":"名子","value":true false)
@@ -380,3 +394,8 @@ public class Controller {
 // return "Restore Failed";
 // }
 // }
+
+// ----------------------
+// 代辦事項
+// 做threads
+// 把相機換成直播
