@@ -1,12 +1,13 @@
 package com.example.demo.plc;
 
-// import java.util.HashSet;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.serotonin.modbus4j.ModbusFactory;
 import com.serotonin.modbus4j.ModbusMaster;
 import com.serotonin.modbus4j.ip.IpParameters;
+// import com.serotonin.modbus4j.serial.*;
+// import com.serotonin.modbus4j.serial.rtu.*;
 import com.serotonin.modbus4j.msg.*;
 
 public class PLCController {
@@ -89,12 +90,10 @@ public class PLCController {
         return !hasDPoint(param);
     }
 
-    // 查詢設備物件(備用)
     public MPoint getMPoint(String name) {
         return MPointMap.get(name);
     }
 
-    // 查詢D設備物件(備用)
     public DPoint getDPoint(String name) {
         return DPointMap.get(name);
     }
@@ -134,6 +133,23 @@ public class PLCController {
         if (master != null)
             master.destroy();
     }
+
+    public HashMap<String, Integer> getAllDPoints() throws Exception {
+        HashMap<String, Integer> ans = new HashMap<>();
+        for (String curr : DPointMap.keySet()) {
+            ans.put(curr, Integer.valueOf(readD(getDPoint(curr))));
+        }
+        return ans;
+    }
+
+    public HashMap<String, Boolean> getAllMPoints() throws Exception {
+        HashMap<String, Boolean> ans = new HashMap<>();
+        for (String curr : MPointMap.keySet()) {
+            ans.put(curr, readM(getMPoint(curr)));
+        }
+        return ans;
+    }
+
 }
 
 // // package com.example.demo.plc;

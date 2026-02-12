@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentHashMap;
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -238,6 +240,16 @@ public class Controller {
             e.printStackTrace();
             return "MPointState error, param=" + param;
         }
+    }
+
+    @GetMapping("/plc/AllDPointData")
+    public Map<String, Integer> AllDPointData() throws Exception {
+        return plc.getAllDPoints();
+    }
+
+    @GetMapping("/plc/AllMPointData")
+    public Map<String, Boolean> AllMPointData() throws Exception {
+        return plc.getAllMPoints();
     }
 
     // 詢問現在參數：讀取 D 點數值
