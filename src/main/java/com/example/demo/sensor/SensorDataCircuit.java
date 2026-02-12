@@ -1,7 +1,6 @@
 package com.example.demo.sensor;
 
 public class SensorDataCircuit {
-
     private String deviceId;
     private float voltage;
     private float current;

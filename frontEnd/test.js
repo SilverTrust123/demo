@@ -3,7 +3,7 @@
  * @param {boolean} isOn - 傳入 true 或 false
  */
 async function sendTestSignal(isOn) {
-    const API_URL = 'http://192.168.3.253:9090/plc/writeMPoint'; 
+    const API_URL = 'http://192.168.0.110:9090/plc/writeMPoint'; 
 
     const payload = {
         device:"TEST",

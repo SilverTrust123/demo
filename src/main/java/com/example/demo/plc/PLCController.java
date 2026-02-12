@@ -19,6 +19,14 @@ public class PLCController {
     private final Map<String, MPoint> MPointMap = new HashMap<>();
     private final Map<String, DPoint> DPointMap = new HashMap<>();
 
+    // // 先預留RTU街口 直接搬到PC上面實驗
+    // SerialParameters params = new SerialParameters();
+    // params.setCommPortId("COM3"); // Windows 用 COMx, Linux 用 /dev/ttyUSBx
+    // params.setBaudRate(9600);
+    // params.setDataBits(8);
+    // params.setStopBits(1);
+    // params.setParity(0); // 0=None, 1=Odd, 2=Even
+
     public PLCController(String ip, int port) throws Exception {
         IpParameters params = new IpParameters();
         params.setHost(ip);

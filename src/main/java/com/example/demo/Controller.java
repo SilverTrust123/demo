@@ -154,18 +154,38 @@ public class Controller {
         float rawAP = data.getPm2_5();
         float smoothAP = calculateAverage(airParticulatesHistoryMap, deviceId, rawAP);
         data.setPm2_5(smoothAP);
+        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         airParticulatesDataMap.put(deviceId, data);
         return "OK";
     }
 
     @GetMapping("/AirParticalData")
     public Collection<SensorDataAirParticulates> getAirParticalData() {
+        String curr_id = "null";
+        for (String id : airParticulatesDataMap.keySet()) {
+            curr_id = id;
+            SensorDataAirParticulates data = airParticulatesDataMap.get(curr_id);
+            int now = (int) (System.currentTimeMillis() / 1000L);
+            int gap = now - data.getTimestamp();
+            if (gap > 60) {
+                return null;
+            }
+        }
         return airParticulatesDataMap.values();
     }
 
     @GetMapping("/AirParticalData/{deviceId}")
     public SensorDataAirParticulates getAirParticalDataById(@PathVariable String deviceId) {
-        return airParticulatesDataMap.get(deviceId);
+        SensorDataAirParticulates data = airParticulatesDataMap.get(deviceId);
+        if (data == null) {
+            return null;
+        }
+        int now = (int) (System.currentTimeMillis() / 1000L);
+        int gap = now - data.getTimestamp();
+        if (gap > 60) {
+            return null;
+        }
+        return data;
     }
 
     private Map<String, SensorDataCam> camDataMap = new ConcurrentHashMap<>();
