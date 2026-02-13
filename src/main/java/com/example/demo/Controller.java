@@ -7,7 +7,6 @@ import com.example.demo.sensor.SensorDataAirQuality;
 import com.example.demo.sensor.SensorDataCircuit;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.ArrayDeque;
@@ -68,8 +67,8 @@ public class Controller {
     private ConcurrentHashMap<String, Deque<Double>> humidHistoryMap = new ConcurrentHashMap<>();
 
     @PostMapping("/TemparatureAndHumidityData")
-    public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data) {
-        if (data.getDeviceId() == null) {
+    public String receiveTemparatureAndHumidityData(@RequestBody SensorDataTemperatureAndHumidity data) {
+        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
             log.info("Temparature and humidity deviceId is required follow by detail", data);
             return "Temparature and humidity deviceId is required";
         }
@@ -88,7 +87,7 @@ public class Controller {
 
     // 船空的回去就是找不到東西
     @GetMapping("/TemparatureAndHumidityData/{deviceId}")
-    public SensorDataTemperatureAndHumidity getData(@PathVariable String deviceId) {
+    public SensorDataTemperatureAndHumidity getTemparatureAndHumidityData(@PathVariable String deviceId) {
         if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
             SensorDataTemperatureAndHumidity ans = temperatureAndHumidityDataMap.get(deviceId);
             log.info("received request single device{} and return detail {}", deviceId, ans);
@@ -100,17 +99,19 @@ public class Controller {
     }
 
     @GetMapping("/TemparatureAndHumidityData")
-    public Collection<SensorDataTemperatureAndHumidity> getAllData() {
-        return temperatureAndHumidityDataMap.values();
+    public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {
+        Collection<SensorDataTemperatureAndHumidity> ans = temperatureAndHumidityDataMap.values();
+        log.info("received getAllTemparatureAndHumidityData request and reply as follow {} ", ans);
+        return ans;
     }
 
     private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
-
     private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
 
     @PostMapping("/CircuitData")
     public String receiveCircuitData(@RequestBody SensorDataCircuit data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
+            log.info("circuit data is required follow by detail", data);
             return "circuit deviceId is required";
         }
         // historyMap, String deviceId,double newValue
@@ -118,8 +119,8 @@ public class Controller {
         float rawVol = data.getVoltage();
         float smoothVol = calculateAverage(circuitHistoryMap, deviceId, (double) rawVol);
         data.setVoltage(smoothVol);
-
         circuitDataMap.put(deviceId, data);
+        log.info("{}put in ok", deviceId);
 
         return "OK";
     }
