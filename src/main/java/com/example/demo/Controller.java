@@ -7,6 +7,7 @@ import com.example.demo.sensor.SensorDataAirQuality;
 import com.example.demo.sensor.SensorDataCircuit;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.ArrayDeque;
@@ -14,8 +15,8 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentHashMap;
 import io.github.cdimascio.dotenv.Dotenv;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -26,24 +27,29 @@ public class Controller {
     private int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
     private boolean plcConnected = false;
     private final int WINDOW_SIZE = 10;
+    private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
     public Controller() {
         try {
             this.plc = new PLCController(plcIP, tcpPort);
             plcConnected = true;
+            log.info("PLC connect secces");
             System.out.println("PLC 連線成功");
         } catch (Exception e) {
+            log.error("cant connect to plc, error code", e.getMessage());
             System.err.println("PLC 連線失敗 code: " + e.getMessage());
         }
     }
 
     @GetMapping("/")
     public String home() {
+        log.info("receive frontend check the backend");
         return "backend running";
     }
 
     @GetMapping("/PLCConnect")
     public String PLCConnect() {
+        log.info("PLC Connected: {}", plcConnected);
         return "PLC Connected: " + plcConnected;
     }
     // 原來的沒有sliding window平滑的
@@ -64,6 +70,7 @@ public class Controller {
     @PostMapping("/TemparatureAndHumidityData")
     public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data) {
         if (data.getDeviceId() == null) {
+            log.info("Temparature and humidity deviceId is required follow by detail", data);
             return "Temparature and humidity deviceId is required";
         }
         String deviceId = data.getDeviceId();
@@ -74,13 +81,22 @@ public class Controller {
         float smoothHumid = calculateAverage(humidHistoryMap, deviceId, rawHumid);
         data.setHumidity(smoothHumid);
         temperatureAndHumidityDataMap.put(deviceId, data);
+        log.info("{}put in ok", deviceId);
 
         return "OK";
     }
 
+    // 船空的回去就是找不到東西
     @GetMapping("/TemparatureAndHumidityData/{deviceId}")
     public SensorDataTemperatureAndHumidity getData(@PathVariable String deviceId) {
-        return temperatureAndHumidityDataMap.get(deviceId);
+        if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
+            SensorDataTemperatureAndHumidity ans = temperatureAndHumidityDataMap.get(deviceId);
+            log.info("received request single device{} and return detail {}", deviceId, ans);
+            return ans;
+        }
+        SensorDataTemperatureAndHumidity ans = new SensorDataTemperatureAndHumidity();
+        log.warn("cannot find any device name {} ", deviceId);
+        return ans;
     }
 
     @GetMapping("/TemparatureAndHumidityData")
@@ -397,5 +413,6 @@ public class Controller {
 
 // ----------------------
 // 代辦事項
-// 做threads
 // 把相機換成直播
+// log
+//
