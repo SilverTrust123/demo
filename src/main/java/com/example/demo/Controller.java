@@ -12,7 +12,10 @@ import java.util.Map;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
 import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,6 +75,7 @@ public class Controller {
             log.info("Temparature and humidity deviceId is required follow by detail", data);
             return "Temparature and humidity deviceId is required";
         }
+        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         String deviceId = data.getDeviceId();
         double rawTemp = data.getTemperature();
         float smoothTemp = calculateAverage(tempHistoryMap, deviceId, rawTemp);
@@ -85,25 +89,82 @@ public class Controller {
         return "OK";
     }
 
+    // if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
+    // SensorDataTemperatureAndHumidity ans =
+    // temperatureAndHumidityDataMap.get(deviceId);
+    // log.info("received request single device{} and return detail {}", deviceId,
+    // ans);
+    // return ans;
+    // }
+    // if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
+    // SensorDataTemperatureAndHumidity ans =
+    // temperatureAndHumidityDataMap.get(deviceId);
+    // if (ans == null) {
+    // log.warn("data of device {} is null", deviceId);
+    // return null;
+    // }
+    // int now = (int) (System.currentTimeMillis() / 1000L);
+    // int gap = now - ans.getTimestamp();
+    // if (gap > 60) {
+    // log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId,
+    // ans.getTimestamp(), now);
+    // return null;
+    // }
+    // log.info("received request single device{} and return detail {}", deviceId,
+    // ans);
+    // return ans;
+    // }
+
     // 船空的回去就是找不到東西
     @GetMapping("/TemparatureAndHumidityData/{deviceId}")
     public SensorDataTemperatureAndHumidity getTemparatureAndHumidityData(@PathVariable String deviceId) {
-        if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
-            SensorDataTemperatureAndHumidity ans = temperatureAndHumidityDataMap.get(deviceId);
-            log.info("received request single device{} and return detail {}", deviceId, ans);
+        SensorDataTemperatureAndHumidity ans = temperatureAndHumidityDataMap.get(deviceId);
+        if (ans != null && isTimeValid(ans)) {
+            log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
-        SensorDataTemperatureAndHumidity ans = new SensorDataTemperatureAndHumidity();
-        log.warn("cannot find any device name {} ", deviceId);
-        return ans;
+        log.warn("Cannot find valid data for device name {}", deviceId);
+        return new SensorDataTemperatureAndHumidity();
+
     }
 
     @GetMapping("/TemparatureAndHumidityData")
     public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {
-        Collection<SensorDataTemperatureAndHumidity> ans = temperatureAndHumidityDataMap.values();
-        log.info("received getAllTemparatureAndHumidityData request and reply as follow {} ", ans);
-        return ans;
+        int now = (int) (System.currentTimeMillis() / 1000L);
+
+        // 使用 Stream 進行過濾
+        List<SensorDataTemperatureAndHumidity> filteredData = temperatureAndHumidityDataMap.values().stream()
+                .filter(data -> {
+                    if (data == null)
+                        return false;
+
+                    int gap = now - data.getTimestamp();
+                    boolean isFresh = gap <= 60;
+
+                    if (!isFresh) {
+                        log.warn("Device {} data is too old: timestamp {}, now {}",
+                                data.getDeviceId(), data.getTimestamp(), now);
+                    }
+                    return isFresh;
+                })
+                .collect(Collectors.toList());
+
+        log.info("received getAllTemparatureAndHumidityData request, original size: {}, returning size: {}",
+                temperatureAndHumidityDataMap.size(), filteredData.size());
+
+        return filteredData;
     }
+
+    // @GetMapping("/TemparatureAndHumidityData")
+    // public Collection<SensorDataTemperatureAndHumidity>
+    // getAllTemparatureAndHumidityData() {
+
+    // Collection<SensorDataTemperatureAndHumidity> ans =
+    // temperatureAndHumidityDataMap.values();
+    // log.info("received getAllTemparatureAndHumidityData request and reply as
+    // follow {} ", ans);
+    // return ans;
+    // }
 
     private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
@@ -149,6 +210,7 @@ public class Controller {
     @PostMapping("/AirQualityData")
     public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
+            log.info("air quality deviceId is required detaild by follow {} ", data);
             return "air quality deviceId is required";
         }
         String deviceId = data.getDeviceId();
@@ -156,17 +218,44 @@ public class Controller {
         float smoothAQ = calculateAverage(airQualityHistoryMap, deviceId, rawAQ);
         data.setAirPollution(smoothAQ);
         airQualityDataMap.put(deviceId, data);
+        log.info("{} put in ok", deviceId);
         return "OK";
     }
 
-    @GetMapping("/AirQualityData")
-    public Collection<SensorDataAirQuality> getAirQualityData() {
-        return airQualityDataMap.values();
+    @GetMapping("/AirQualityData/{deviceId}")
+    public SensorDataAirQuality getAirQualityData(@PathVariable String deviceId) {
+        // if (airParticulatesDataMap.containsKey(deviceId)) {
+        // SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
+        // if (ans == null) {
+        // log.warn("data of device {} is null", deviceId);
+        // return null;
+        // }
+        // int now = (int) (System.currentTimeMillis() / 1000L);
+        // int gap = now - ans.getTimestamp();
+        // if (gap > 60) {
+        // log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId,
+        // ans.getTimestamp(), now);
+        // return null;
+        // }
+        // log.info("received request single device{} and return detail {}", deviceId,
+        // ans);
+        // return ans;
+        // }
+        if (airQualityDataMap.containsKey(deviceId)) {
+            SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
+            log.info("received request single device{} and return detail {}", deviceId, ans);
+            return ans;
+        }
+        SensorDataAirQuality ans = new SensorDataAirQuality();
+        log.warn("cannot find any device name {} ", deviceId);
+        return ans;
     }
 
-    @GetMapping("/AirQualityData/{deviceId}")
-    public SensorDataAirQuality getAirQualityDataById(@PathVariable String deviceId) {
-        return airQualityDataMap.get(deviceId);
+    @GetMapping("/AirQualityData")
+    public Collection<SensorDataAirQuality> getAllAirQualityData() {
+        Collection<SensorDataAirQuality> ans = airQualityDataMap.values();
+        log.info("received all air quality data request detail {} ", ans);
+        return ans;
     }
 
     private Map<String, SensorDataAirParticulates> airParticulatesDataMap = new ConcurrentHashMap<>();
@@ -175,6 +264,7 @@ public class Controller {
     @PostMapping("/AirParticalData")
     public String recriveAirPartical(@RequestBody SensorDataAirParticulates data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
+            log.info("air particulates deviceId is required detaild by follow {} ", data);
             return "air particulates deviceId is required";
         }
         String deviceId = data.getDeviceId();
@@ -183,11 +273,35 @@ public class Controller {
         data.setPm2_5(smoothAP);
         data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         airParticulatesDataMap.put(deviceId, data);
+        log.info("{} put in ok", deviceId);
         return "OK";
+    }
+
+    @GetMapping("/AirParticalData/{deviceId}")
+    public SensorDataAirParticulates getAirParticalDataById(@PathVariable String deviceId) {
+        if (airParticulatesDataMap.containsKey(deviceId)) {
+            SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
+            if (ans == null) {
+                log.warn("data of device {} is null", deviceId);
+                return null;
+            }
+            int now = (int) (System.currentTimeMillis() / 1000L);
+            int gap = now - ans.getTimestamp();
+            if (gap > 60) {
+                log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId, ans.getTimestamp(), now);
+                return null;
+            }
+            log.info("received request single device{} and return detail {}", deviceId, ans);
+            return ans;
+        }
+        SensorDataAirParticulates ans = new SensorDataAirParticulates();
+        log.warn("cannot find any device name {} ", deviceId);
+        return ans;
     }
 
     @GetMapping("/AirParticalData")
     public Collection<SensorDataAirParticulates> getAirParticalData() {
+
         String curr_id = "null";
         for (String id : airParticulatesDataMap.keySet()) {
             curr_id = id;
@@ -199,20 +313,6 @@ public class Controller {
             }
         }
         return airParticulatesDataMap.values();
-    }
-
-    @GetMapping("/AirParticalData/{deviceId}")
-    public SensorDataAirParticulates getAirParticalDataById(@PathVariable String deviceId) {
-        SensorDataAirParticulates data = airParticulatesDataMap.get(deviceId);
-        if (data == null) {
-            return null;
-        }
-        int now = (int) (System.currentTimeMillis() / 1000L);
-        int gap = now - data.getTimestamp();
-        if (gap > 60) {
-            return null;
-        }
-        return data;
     }
 
     private Map<String, SensorDataCam> camDataMap = new ConcurrentHashMap<>();
@@ -377,6 +477,66 @@ public class Controller {
         return magicData;
     }
 
+    private boolean isTimeValid(SensorDataTemperatureAndHumidity data) {
+        if (data == null) {
+            return false;
+        }
+        int now = (int) (System.currentTimeMillis() / 1000L);
+        int gap = now - data.getTimestamp();
+
+        if (gap > 60) {
+            log.warn("Data of device {} is too old, timestamp {}, now {}",
+                    data.getDeviceId(), data.getTimestamp(), now);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isTimeValid(SensorDataCircuit data) {
+        if (data == null) {
+            return false;
+        }
+        int now = (int) (System.currentTimeMillis() / 1000L);
+        int gap = now - data.getTimestamp();
+
+        if (gap > 60) {
+            log.warn("Data of device {} is too old, timestamp {}, now {}",
+                    data.getDeviceId(), data.getTimestamp(), now);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isTimeValid(SensorDataAirQuality data) {
+        if (data == null) {
+            return false;
+        }
+        int now = (int) (System.currentTimeMillis() / 1000L);
+        int gap = now - data.getTimestamp();
+
+        if (gap > 60) {
+            log.warn("Data of device {} is too old, timestamp {}, now {}",
+                    data.getDeviceId(), data.getTimestamp(), now);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isTimeValid(SensorDataAirParticulates data) {
+        if (data == null) {
+            return false;
+        }
+        int now = (int) (System.currentTimeMillis() / 1000L);
+        int gap = now - data.getTimestamp();
+
+        if (gap > 60) {
+            log.warn("Data of device {} is too old, timestamp {}, now {}",
+                    data.getDeviceId(), data.getTimestamp(), now);
+            return false;
+        }
+        return true;
+    }
+
 }
 // 前端控制指令：寫入 M 點
 // 收給我("device":"名子","value":true false)
@@ -425,3 +585,6 @@ public class Controller {
 // 把相機換成直播
 // log
 //
+
+// 筆記
+// 有加了資料過時卻任

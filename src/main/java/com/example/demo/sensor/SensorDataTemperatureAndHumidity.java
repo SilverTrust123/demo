@@ -4,6 +4,15 @@ public class SensorDataTemperatureAndHumidity {
     private String deviceId;
     private float temperature;
     private float humidity;
+    private int timestamp;
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getDeviceId() {
         return deviceId;

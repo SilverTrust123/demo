@@ -6,6 +6,15 @@ public class SensorDataCircuit {
     private float current;
     private float power;
     private float energy;
+    private int timestamp;
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
+    }
 
     // deviceId
     public String getDeviceId() {

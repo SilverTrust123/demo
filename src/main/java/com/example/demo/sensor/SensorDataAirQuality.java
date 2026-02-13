@@ -3,6 +3,15 @@ package com.example.demo.sensor;
 public class SensorDataAirQuality {
     private String deviceId;
     private float airPollution;
+    private int timestamp;
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getDeviceId() {
         return deviceId;
