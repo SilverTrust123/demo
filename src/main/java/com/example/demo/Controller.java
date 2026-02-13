@@ -121,18 +121,26 @@ public class Controller {
         data.setVoltage(smoothVol);
         circuitDataMap.put(deviceId, data);
         log.info("{}put in ok", deviceId);
-
         return "OK";
     }
 
-    @GetMapping("/CircuitData")
-    public Collection<SensorDataCircuit> getCircuitData() {
-        return circuitDataMap.values();
+    @GetMapping("/CircuitData/{deviceId}")
+    public SensorDataCircuit getCircuitData(@PathVariable String deviceId) {
+        if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
+            SensorDataCircuit ans = circuitDataMap.get(deviceId);
+            log.info("received request single device{} and return detail {}", deviceId, ans);
+            return ans;
+        }
+        SensorDataCircuit ans = new SensorDataCircuit();
+        log.warn("cannot find any device name {} ", deviceId);
+        return ans;
     }
 
-    @GetMapping("/CircuitData/{deviceId}")
-    public SensorDataCircuit getCircuitDataById(@PathVariable String deviceId) {
-        return circuitDataMap.get(deviceId);
+    @GetMapping("/CircuitData")
+    public Collection<SensorDataCircuit> getAllCircuitData() {
+        Collection<SensorDataCircuit> ans = circuitDataMap.values();
+        log.info("received all circuit data request detail {} ", ans);
+        return ans;
     }
 
     private Map<String, SensorDataAirQuality> airQualityDataMap = new ConcurrentHashMap<>();
