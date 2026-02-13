@@ -128,31 +128,15 @@ public class Controller {
 
     }
 
+    // 打掉太舊的資料 然後回傳剩下的 可能會只剩一個 等一下要跟董事長說一下
     @GetMapping("/TemparatureAndHumidityData")
     public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {
-        int now = (int) (System.currentTimeMillis() / 1000L);
-
-        // 使用 Stream 進行過濾
-        List<SensorDataTemperatureAndHumidity> filteredData = temperatureAndHumidityDataMap.values().stream()
-                .filter(data -> {
-                    if (data == null)
-                        return false;
-
-                    int gap = now - data.getTimestamp();
-                    boolean isFresh = gap <= 60;
-
-                    if (!isFresh) {
-                        log.warn("Device {} data is too old: timestamp {}, now {}",
-                                data.getDeviceId(), data.getTimestamp(), now);
-                    }
-                    return isFresh;
-                })
-                .collect(Collectors.toList());
-
-        log.info("received getAllTemparatureAndHumidityData request, original size: {}, returning size: {}",
-                temperatureAndHumidityDataMap.size(), filteredData.size());
-
-        return filteredData;
+        Collection<SensorDataTemperatureAndHumidity> ans = temperatureAndHumidityDataMap.values()
+                .stream()
+                .filter(this::isTimeValid)
+                .toList();
+        log.info("received all temperature and humidity data request detail {} ", ans);
+        return ans;
     }
 
     // @GetMapping("/TemparatureAndHumidityData")
@@ -176,6 +160,7 @@ public class Controller {
             return "circuit deviceId is required";
         }
         // historyMap, String deviceId,double newValue
+        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         String deviceId = data.getDeviceId();
         float rawVol = data.getVoltage();
         float smoothVol = calculateAverage(circuitHistoryMap, deviceId, (double) rawVol);
@@ -185,25 +170,43 @@ public class Controller {
         return "OK";
     }
 
+    // if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
+    // SensorDataCircuit ans = circuitDataMap.get(deviceId);
+    // log.info("received request single device{} and return detail {}", deviceId,
+    // ans);
+    // return ans;
+    // }
+    // SensorDataCircuit ans = new SensorDataCircuit();
+    // log.warn("cannot find any device name {} ", deviceId);
+    // return ans;
+
+    // 船空的回去就是找不到東西 或是太舊了
     @GetMapping("/CircuitData/{deviceId}")
     public SensorDataCircuit getCircuitData(@PathVariable String deviceId) {
-        if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
-            SensorDataCircuit ans = circuitDataMap.get(deviceId);
-            log.info("received request single device{} and return detail {}", deviceId, ans);
+        SensorDataCircuit ans = circuitDataMap.get(deviceId);
+        if (ans != null && isTimeValid(ans)) {
+            log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
-        SensorDataCircuit ans = new SensorDataCircuit();
-        log.warn("cannot find any device name {} ", deviceId);
-        return ans;
+        log.warn("Cannot find valid data for device name {}", deviceId);
+        return new SensorDataCircuit();
     }
 
+    // 這個本來最多就一個 如果船空的回去就是太舊了
     @GetMapping("/CircuitData")
     public Collection<SensorDataCircuit> getAllCircuitData() {
-        Collection<SensorDataCircuit> ans = circuitDataMap.values();
+        // Collection<SensorDataCircuit> ans = circuitDataMap.values();
+        // log.info("received all circuit data request detail {} ", ans);
+        // return ans;
+        Collection<SensorDataCircuit> ans = circuitDataMap.values()
+                .stream()
+                .filter(this::isTimeValid)
+                .toList();
         log.info("received all circuit data request detail {} ", ans);
         return ans;
     }
 
+    // 等一下要確認一下每一個都有timesteamp
     private Map<String, SensorDataAirQuality> airQualityDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> airQualityHistoryMap = new ConcurrentHashMap<>();
 
@@ -213,6 +216,7 @@ public class Controller {
             log.info("air quality deviceId is required detaild by follow {} ", data);
             return "air quality deviceId is required";
         }
+        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         String deviceId = data.getDeviceId();
         float rawAQ = data.getAirPollution();
         float smoothAQ = calculateAverage(airQualityHistoryMap, deviceId, rawAQ);
@@ -241,19 +245,35 @@ public class Controller {
         // ans);
         // return ans;
         // }
-        if (airQualityDataMap.containsKey(deviceId)) {
-            SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
-            log.info("received request single device{} and return detail {}", deviceId, ans);
+
+        // if (airQualityDataMap.containsKey(deviceId)) {
+        // SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
+        // log.info("received request single device{} and return detail {}", deviceId,
+        // ans);
+        // return ans;
+        // }
+        // SensorDataAirQuality ans = new SensorDataAirQuality();
+        // log.warn("cannot find any device name {} ", deviceId);
+        // return ans;
+
+        SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
+        if (ans != null && isTimeValid(ans)) {
+            log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
-        SensorDataAirQuality ans = new SensorDataAirQuality();
-        log.warn("cannot find any device name {} ", deviceId);
-        return ans;
+        log.warn("Cannot find valid data for device name {}", deviceId);
+        return new SensorDataAirQuality();
     }
 
     @GetMapping("/AirQualityData")
     public Collection<SensorDataAirQuality> getAllAirQualityData() {
-        Collection<SensorDataAirQuality> ans = airQualityDataMap.values();
+        // Collection<SensorDataAirQuality> ans = airQualityDataMap.values();
+        // log.info("received all air quality data request detail {} ", ans);
+        // return ans;
+        Collection<SensorDataAirQuality> ans = airQualityDataMap.values()
+                .stream()
+                .filter(this::isTimeValid)
+                .toList();
         log.info("received all air quality data request detail {} ", ans);
         return ans;
     }
@@ -279,40 +299,54 @@ public class Controller {
 
     @GetMapping("/AirParticalData/{deviceId}")
     public SensorDataAirParticulates getAirParticalDataById(@PathVariable String deviceId) {
-        if (airParticulatesDataMap.containsKey(deviceId)) {
-            SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
-            if (ans == null) {
-                log.warn("data of device {} is null", deviceId);
-                return null;
-            }
-            int now = (int) (System.currentTimeMillis() / 1000L);
-            int gap = now - ans.getTimestamp();
-            if (gap > 60) {
-                log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId, ans.getTimestamp(), now);
-                return null;
-            }
-            log.info("received request single device{} and return detail {}", deviceId, ans);
+        // if (airParticulatesDataMap.containsKey(deviceId)) {
+        // SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
+        // if (ans == null) {
+        // log.warn("data of device {} is null", deviceId);
+        // return null;
+        // }
+        // int now = (int) (System.currentTimeMillis() / 1000L);
+        // int gap = now - ans.getTimestamp();
+        // if (gap > 60) {
+        // log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId,
+        // ans.getTimestamp(), now);
+        // return null;
+        // }
+        // log.info("received request single device{} and return detail {}", deviceId,
+        // ans);
+        // return ans;
+        // }
+        // SensorDataAirParticulates ans = new SensorDataAirParticulates();
+        // log.warn("cannot find any device name {} ", deviceId);
+        // return ans;
+        SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
+        if (ans != null && isTimeValid(ans)) {
+            log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
-        SensorDataAirParticulates ans = new SensorDataAirParticulates();
-        log.warn("cannot find any device name {} ", deviceId);
-        return ans;
+        log.warn("Cannot find valid data for device name {}", deviceId);
+        return new SensorDataAirParticulates();
     }
 
     @GetMapping("/AirParticalData")
     public Collection<SensorDataAirParticulates> getAirParticalData() {
-
-        String curr_id = "null";
-        for (String id : airParticulatesDataMap.keySet()) {
-            curr_id = id;
-            SensorDataAirParticulates data = airParticulatesDataMap.get(curr_id);
-            int now = (int) (System.currentTimeMillis() / 1000L);
-            int gap = now - data.getTimestamp();
-            if (gap > 60) {
-                return null;
-            }
-        }
-        return airParticulatesDataMap.values();
+        // String curr_id = "null";
+        // for (String id : airParticulatesDataMap.keySet()) {
+        // curr_id = id;
+        // SensorDataAirParticulates data = airParticulatesDataMap.get(curr_id);
+        // int now = (int) (System.currentTimeMillis() / 1000L);
+        // int gap = now - data.getTimestamp();
+        // if (gap > 60) {
+        // return null;
+        // }
+        // }
+        // return airParticulatesDataMap.values();
+        Collection<SensorDataAirParticulates> ans = airParticulatesDataMap.values()
+                .stream()
+                .filter(this::isTimeValid)
+                .toList();
+        log.info("received all air particulates data request detail {} ", ans);
+        return ans;
     }
 
     private Map<String, SensorDataCam> camDataMap = new ConcurrentHashMap<>();
