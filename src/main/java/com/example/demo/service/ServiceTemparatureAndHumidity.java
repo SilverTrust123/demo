@@ -53,6 +53,10 @@ public class ServiceTemparatureAndHumidity {
 
     }
 
+    public Map<String, SensorDataTemperatureAndHumidity> getTemparatureAndHumidityDataMap() {
+        return temperatureAndHumidityDataMap;
+    }
+
     public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {
         Collection<SensorDataTemperatureAndHumidity> ans = temperatureAndHumidityDataMap.values()
                 .stream()
@@ -77,7 +81,6 @@ public class ServiceTemparatureAndHumidity {
         return true;
     }
 
-    // silaing window 平滑數據 就可以消除一些突發的雜訊阿之類的
     private float calculateAverage(ConcurrentHashMap<String, Deque<Double>> historyMap, String deviceId,
             double newValue) {
         Deque<Double> window = historyMap.computeIfAbsent(deviceId, k -> new ArrayDeque<>());
@@ -91,6 +94,4 @@ public class ServiceTemparatureAndHumidity {
             return (float) window.stream().mapToDouble(Double::doubleValue).average().orElse(newValue);
         }
     }
-
-    ConcurrentHashMap<String, Object> magicData = new ConcurrentHashMap<>();
 }

@@ -34,10 +34,10 @@ public class Controller {
 
     @Autowired
     private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity;
+    @Autowired
+    private ServiceCircuit serviceCircuit;
 
     public Controller() {
-        log.info("ServiceTemparatureAndHumidity injected: {}", serviceTemparatureAndHumidity);
-
         try {
             this.plc = new PLCController(plcIP, tcpPort);
             plcConnected = true;
@@ -81,47 +81,24 @@ public class Controller {
         return serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData();
     }
 
-    private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
-
     @PostMapping("/CircuitData")
     public String receiveCircuitData(@RequestBody SensorDataCircuit data) {
-        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
-            log.info("circuit data is required follow by detail", data);
-            return "circuit deviceId is required";
-        }
-        // historyMap, String deviceId,double newValue
-        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
-        String deviceId = data.getDeviceId();
-        float rawVol = data.getVoltage();
-        float smoothVol = calculateAverage(circuitHistoryMap, deviceId, (double) rawVol);
-        data.setVoltage(smoothVol);
-        circuitDataMap.put(deviceId, data);
-        log.info("{}put in ok", deviceId);
-        return "OK";
+        log.info("Received and transfer circuit data");
+        return serviceCircuit.receiveCircuitData(data);
     }
 
     // 船空的回去就是找不到東西 或是太舊了
     @GetMapping("/CircuitData/{deviceId}")
     public SensorDataCircuit getCircuitData(@PathVariable String deviceId) {
-        SensorDataCircuit ans = circuitDataMap.get(deviceId);
-        if (ans != null && isTimeValid(ans)) {
-            log.info("Received request single device {} and return detail {}", deviceId, ans);
-            return ans;
-        }
-        log.warn("Cannot find valid data for device name {}", deviceId);
-        return new SensorDataCircuit();
+        log.info("Received and transfer request for circuit data of device");
+        return serviceCircuit.getCircuitData(deviceId);
     }
 
     // 這個本來最多就一個 如果船空的回去就是太舊了
     @GetMapping("/CircuitData")
     public Collection<SensorDataCircuit> getAllCircuitData() {
-        Collection<SensorDataCircuit> ans = circuitDataMap.values()
-                .stream()
-                .filter(this::isTimeValid)
-                .toList();
-        log.info("received all circuit data request detail {} ", ans);
-        return ans;
+        log.info("Received and transfer request for all circuit data");
+        return serviceCircuit.getAllCircuitData();
     }
 
     // 等一下要確認一下每一個都有timesteamp
@@ -394,8 +371,8 @@ public class Controller {
 
     @GetMapping("/AllData")
     public ConcurrentHashMap<String, Object> AllData(@RequestParam String param) throws Exception {
-        // magicData.put("temperatureAndHumidityDataMap",
-        // temperatureAndHumidityDataMap);
+        magicData.put("temperatureAndHumidityDataMap",
+                temperatureAndHumidityDataMap);
         magicData.put("circuitDataMap", circuitDataMap);
         magicData.put("airQualityDataMap", airQualityDataMap);
         magicData.put("airParticulatesDataMap", airParticulatesDataMap);
@@ -404,21 +381,6 @@ public class Controller {
         magicData.put("MPoint", plc.getAllMPoints());
         log.info("received all data request with param {} and return {}", param, magicData);
         return magicData;
-    }
-
-    private boolean isTimeValid(SensorDataCircuit data) {
-        if (data == null) {
-            return false;
-        }
-        int now = (int) (System.currentTimeMillis() / 1000L);
-        int gap = now - data.getTimestamp();
-
-        if (gap > 60) {
-            log.warn("Data of device {} is too old, timestamp {}, now {}",
-                    data.getDeviceId(), data.getTimestamp(), now);
-            return false;
-        }
-        return true;
     }
 
     private boolean isTimeValid(SensorDataAirQuality data) {
