@@ -13,6 +13,7 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
@@ -265,26 +266,24 @@ public class Controller {
     // 回傳：NoDevice / Error / 真偽值
     @GetMapping("/plc/MPointState")
     public String MpointState(@RequestParam(required = false) String param) {
+        log.info("receieved read m point request {} ", param);
         try {
-            System.out.println("MPointState param = " + param);
-
             if (param == null || param.isEmpty()) {
-                System.out.println("MPointState: param is null or empty");
+                log.warn("MPointState: param is null or empty");
                 return "MPointState: param is null or empty";
             }
 
             if (plc.MdeviceIsEmpty(param)) {
-                System.out.println("MPointState: device not found -> " + param);
-                return "MPointState: device not found -> " + param;
+                log.warn("MPointState: device not found {} ", param);
+                return "MPointState: device not found " + param;
             }
 
             boolean state = plc.readM(plc.getMPoint(param));
-            System.out.println("MPointState: " + param + " = " + state);
-
+            log.info("MPoint state {} been {}", param, state);
             return "MPointState: " + param + " = " + state;
 
         } catch (Exception e) {
-            System.err.println("MPointState error, param=" + param);
+            log.error("MPointState error param {} with error {}", param, e.getMessage());
             e.printStackTrace();
             return "MPointState error, param=" + param;
         }
@@ -292,11 +291,29 @@ public class Controller {
 
     @GetMapping("/plc/AllDPointData")
     public Map<String, Integer> AllDPointData() throws Exception {
+        log.info("received get all DPoint request");
+        if (plc.getAllDPoints().isEmpty()) {
+            log.warn("no DPoint data its empty");
+            return new HashMap<>();
+        } else if (plc.getAllDPoints() == null) {
+            log.warn("its null");
+            return new HashMap<>();
+        }
+        log.info("request accept return {} ", plc.getAllDPoints());
         return plc.getAllDPoints();
     }
 
     @GetMapping("/plc/AllMPointData")
     public Map<String, Boolean> AllMPointData() throws Exception {
+        log.info("received get all MPoint request");
+        if (plc.getAllMPoints().isEmpty()) {
+            log.warn("no M point data its empty");
+            return new HashMap<>();
+        } else if (plc.getAllMPoints() == null) {
+            log.warn("its null");
+            return new HashMap<>();
+        }
+        log.info("request accept return {} ", plc.getAllMPoints());
         return plc.getAllMPoints();
     }
 
@@ -305,25 +322,25 @@ public class Controller {
     @GetMapping("/plc/DPointData")
     public String DPointData(@RequestParam(required = false) String param) {
         try {
-            System.out.println("DPointData param = " + param);
+            log.info("received read d point request {} ", param);
 
             if (param == null || param.isEmpty()) {
-                System.out.println("DPointData: param is null or empty");
+                log.warn("DPointData: param is null or empty");
                 return "NoDevice";
             }
 
             if (plc.DdeviceIsEmpty(param)) {
-                System.out.println("DPointData: device not found -> " + param);
+                log.warn("DPointData: device not found -> {}", param);
                 return "NoDevice";
             }
 
             int val = plc.readD(plc.getDPoint(param));
-            System.out.println("DPointData: " + param + " = " + val);
+            log.info("DPointData: {} = {}", param, val);
 
             return String.valueOf(val);
 
         } catch (Exception e) {
-            System.err.println("DPointData error, param=" + param);
+            log.error("DPointData error param {} with error {}", param, e.getMessage());
             e.printStackTrace();
             return "Error";
         }
@@ -332,8 +349,10 @@ public class Controller {
     @GetMapping("/plc/state")
     public String plcState() {
         try {
+            log.info("received plc state request");
             return String.valueOf(plc.readD(plc.getDPoint("STATE")));
         } catch (Exception e) {
+            log.error("Error reading PLC state: {}", e.getMessage());
             return "PLC Disconnected: " + e.getMessage();
         }
     }
@@ -341,15 +360,19 @@ public class Controller {
     @PostMapping("/plc/writeMPoint")
     public String writeMPoint(@RequestBody Map<String, Object> payload) {
         try {
-            System.out.println("Received payload: " + payload);
+
+            log.info("Received payload: {}", payload);
             Object deviceObj = payload.get("device");
             if (!(deviceObj instanceof String)) {
+                log.warn("Device parameter is not a string: {}", deviceObj);
                 return "device Error: must be a string";
             }
             String param = (String) deviceObj;
             if (param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+                log.warn("MPoint write: device not found -> {}", param);
                 return "NoDevice";
             }
+
             Object valueObj = payload.get("value");
             boolean value;
             if (valueObj instanceof Boolean) {
@@ -359,13 +382,15 @@ public class Controller {
             } else if (valueObj instanceof Number) {
                 value = ((Number) valueObj).intValue() != 0;
             } else {
+                log.warn("Value parameter is not a valid type: {}", valueObj);
                 return "value Error: must be boolean, string, or number";
             }
-            System.out.println("Device: " + param + ", Value: " + value);
             plc.writeM(plc.getMPoint(param), value);
+            log.info("Success MPoint {} set to {}", param, value);
             return "Success: " + param + " set to " + value;
 
         } catch (Exception e) {
+            log.error("Error writing MPoint: {}", e.getMessage());
             e.printStackTrace();
             return "Error: " + e.getMessage();
         }
@@ -381,7 +406,7 @@ public class Controller {
                 window.pollFirst();
             }
             window.addLast(newValue);
-
+            log.info("Device {} new value: {}, history: {}", deviceId, newValue, window);
             return (float) window.stream().mapToDouble(Double::doubleValue).average().orElse(newValue);
         }
     }
@@ -397,6 +422,7 @@ public class Controller {
         magicData.put("camDataMap", camDataMap);
         magicData.put("DPoint", plc.getAllDPoints());
         magicData.put("MPoint", plc.getAllMPoints());
+        log.info("received all data request with param {} and return {}", param, magicData);
         return magicData;
     }
 
@@ -480,7 +506,7 @@ public class Controller {
 // 代辦事項
 // 把相機換成直播
 // log
-// log寫到cam而已
+// log寫到plc而已
 // 還要對cam寫超時
 
 // 每一個sensor都要做內網

@@ -171,3 +171,82 @@
 // }
 // }
 ---------------------------------------------------------------------------------------------
+// // package com.example.demo.plc;
+
+// import com.serotonin.modbus4j.ModbusFactory;
+// import com.serotonin.modbus4j.ModbusMaster;
+// import com.serotonin.modbus4j.ip.IpParameters;
+// import com.serotonin.modbus4j.msg.WriteCoilRequest;
+// import com.serotonin.modbus4j.msg.WriteCoilResponse;
+
+// public class PLCControler {
+
+// private Dotenv dotenv = Dotenv.load();
+// private String dbUser = dotenv.get("DB_USER");
+// private String dbPassword = dotenv.get("DB_PASSWORD");
+
+// public static void writeM21(boolean on) throws Exception {
+// // PLC IP 與 Port
+// // String plcIp = "192.168.3.250";
+// // int port = 502;
+
+// // 設定 PLC IP 參數
+// IpParameters ipParameters = new IpParameters();
+// ipParameters.setHost(plcIp);
+// ipParameters.setPort(port);
+
+// // 建立 ModbusMaster
+// ModbusFactory factory = new ModbusFactory();
+// ModbusMaster master = factory.createTcpMaster(ipParameters, true);
+// master.init(); // 初始化連線
+
+// int unitId = 1; // Modbus Unit ID
+// int coilAddress = 1; // M21 的位址
+
+// // 寫入線圈
+// WriteCoilRequest request = new WriteCoilRequest(unitId, coilAddress, on);
+// WriteCoilResponse response = (WriteCoilResponse) master.send(request);
+
+// if (response.isException()) {
+// System.out.println("寫入失敗，錯誤碼: " + response.getExceptionCode());
+// } else {
+// System.out.println("M21 已經 " + (on ? "ON" : "OFF"));
+// }
+
+// master.destroy(); // 關閉連線
+// }
+
+// // public static void main(String[] args) throws Exception {
+// // writeM21(true); // 打開 M21
+// // Thread.sleep(2000); // 等 2 秒
+// // writeM21(false); // 關閉 M21
+// // }
+// }
+
+// package com.example.demo.plc;
+
+// public class OtherController {
+// public void monitorSystem() {
+// try {
+// PLCController plc = new PLCController("192.168.3.250", 502);
+
+// // 1. 讀取狀態
+// boolean isRunning = plc.readM(plc.PUMP_STATUS);
+// int temperature = plc.readD(plc.CURRENT_TEMP);
+
+// System.out.println("當前水泵: " + (isRunning ? "運轉中" : "停止"));
+// System.out.println("當前溫度: " + temperature + "度");
+
+// // 2. 根據讀取到的數值做邏輯判斷
+// if (temperature > 80 && isRunning) {
+// System.out.println("警告：溫度過高，關閉水泵！");
+// plc.writeM(plc.PUMP_STATUS, false);
+// }
+
+// plc.close();
+// } catch (Exception e) {
+// e.printStackTrace();
+// }
+// }
+// }
+-------------------------------------------------------------------------------------------------
