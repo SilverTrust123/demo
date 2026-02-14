@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @Service
 public class ServiceTemparatureAndHumidity {
 
@@ -21,7 +23,8 @@ public class ServiceTemparatureAndHumidity {
     private ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> humidHistoryMap = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(ServiceTemparatureAndHumidity.class);
-    private final int WINDOW_SIZE = 10;
+    Dotenv dotenv = Dotenv.load();
+    private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
 
     public String receiveTemparatureAndHumidityData(@RequestBody SensorDataTemperatureAndHumidity data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
@@ -51,10 +54,6 @@ public class ServiceTemparatureAndHumidity {
         log.warn("Cannot find valid data for device name {}", deviceId);
         return new SensorDataTemperatureAndHumidity();
 
-    }
-
-    public Map<String, SensorDataTemperatureAndHumidity> getTemparatureAndHumidityDataMap() {
-        return temperatureAndHumidityDataMap;
     }
 
     public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {

@@ -11,13 +11,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.sensor.SensorDataCircuit;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ServiceCircuit {
     private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
-    private final int WINDOW_SIZE = 10;
+    Dotenv dotenv = Dotenv.load();
+    private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(ServiceCircuit.class);
 
     public String receiveCircuitData(@RequestBody SensorDataCircuit data) {

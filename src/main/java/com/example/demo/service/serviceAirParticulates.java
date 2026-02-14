@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.sensor.SensorDataAirParticulates;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class serviceAirParticulates {
 
     private Map<String, SensorDataAirParticulates> airParticulatesDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> airParticulatesHistoryMap = new ConcurrentHashMap<>();
-
-    private final int WINDOW_SIZE = 10;
+    Dotenv dotenv = Dotenv.load();
+    private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(serviceAirParticulates.class);
 
     public String recriveAirPartical(@RequestBody SensorDataAirParticulates data) {
