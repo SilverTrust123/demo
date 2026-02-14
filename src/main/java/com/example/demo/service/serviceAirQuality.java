@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -15,12 +16,13 @@ import com.example.demo.sensor.SensorDataAirQuality;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class serviceAirQuality {
+@Service
+public class ServiceAirQuality {
     private Map<String, SensorDataAirQuality> airQualityDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> airQualityHistoryMap = new ConcurrentHashMap<>();
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
-    private static final Logger log = LoggerFactory.getLogger(serviceAirQuality.class);
+    private static final Logger log = LoggerFactory.getLogger(ServiceAirQuality.class);
 
     public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
         if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {

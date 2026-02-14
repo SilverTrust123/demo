@@ -27,7 +27,6 @@ public class Controller {
     private String plcIP = dotenv.get("PLC_IP");
     private int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
     private boolean plcConnected = false;
-    // private final int WINDOW_SIZE = 10;
     private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
     @Autowired
@@ -35,9 +34,9 @@ public class Controller {
     @Autowired
     private ServiceCircuit serviceCircuit;
     @Autowired
-    private serviceAirQuality serviceAirQuality;
+    private ServiceAirQuality serviceAirQuality;
     @Autowired
-    private serviceAirParticulates serviceAirParticulates;
+    private ServiceAirParticulates serviceAirParticulates;
 
     public Controller() {
         try {
@@ -102,8 +101,6 @@ public class Controller {
         log.info("Received and transfer request for all circuit data");
         return serviceCircuit.getAllCircuitData();
     }
-
-    // 等一下要確認一下每一個都有timesteamp
 
     @PostMapping("/AirQualityData")
     public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
