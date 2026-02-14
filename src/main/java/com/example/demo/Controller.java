@@ -54,16 +54,6 @@ public class Controller {
         log.info("PLC Connected: {}", plcConnected);
         return "PLC Connected: " + plcConnected;
     }
-    // 原來的沒有sliding window平滑的
-    // @PostMapping("/TemparatureAndHumidityData")
-    // public String receiveData(@RequestBody SensorDataTemperatureAndHumidity data)
-    // {
-    // if (data.getDeviceId() == null) {
-    // return "Temparature and humidity deviceId is required";
-    // }
-    // temperatureAndHumidityDataMap.put(data.getDeviceId(), data);
-    // return "OK";
-    // }
 
     private Map<String, SensorDataTemperatureAndHumidity> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
@@ -89,32 +79,6 @@ public class Controller {
         return "OK";
     }
 
-    // if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
-    // SensorDataTemperatureAndHumidity ans =
-    // temperatureAndHumidityDataMap.get(deviceId);
-    // log.info("received request single device{} and return detail {}", deviceId,
-    // ans);
-    // return ans;
-    // }
-    // if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
-    // SensorDataTemperatureAndHumidity ans =
-    // temperatureAndHumidityDataMap.get(deviceId);
-    // if (ans == null) {
-    // log.warn("data of device {} is null", deviceId);
-    // return null;
-    // }
-    // int now = (int) (System.currentTimeMillis() / 1000L);
-    // int gap = now - ans.getTimestamp();
-    // if (gap > 60) {
-    // log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId,
-    // ans.getTimestamp(), now);
-    // return null;
-    // }
-    // log.info("received request single device{} and return detail {}", deviceId,
-    // ans);
-    // return ans;
-    // }
-
     // 船空的回去就是找不到東西
     @GetMapping("/TemparatureAndHumidityData/{deviceId}")
     public SensorDataTemperatureAndHumidity getTemparatureAndHumidityData(@PathVariable String deviceId) {
@@ -139,17 +103,6 @@ public class Controller {
         return ans;
     }
 
-    // @GetMapping("/TemparatureAndHumidityData")
-    // public Collection<SensorDataTemperatureAndHumidity>
-    // getAllTemparatureAndHumidityData() {
-
-    // Collection<SensorDataTemperatureAndHumidity> ans =
-    // temperatureAndHumidityDataMap.values();
-    // log.info("received getAllTemparatureAndHumidityData request and reply as
-    // follow {} ", ans);
-    // return ans;
-    // }
-
     private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
 
@@ -170,16 +123,6 @@ public class Controller {
         return "OK";
     }
 
-    // if (temperatureAndHumidityDataMap.containsKey(deviceId)) {
-    // SensorDataCircuit ans = circuitDataMap.get(deviceId);
-    // log.info("received request single device{} and return detail {}", deviceId,
-    // ans);
-    // return ans;
-    // }
-    // SensorDataCircuit ans = new SensorDataCircuit();
-    // log.warn("cannot find any device name {} ", deviceId);
-    // return ans;
-
     // 船空的回去就是找不到東西 或是太舊了
     @GetMapping("/CircuitData/{deviceId}")
     public SensorDataCircuit getCircuitData(@PathVariable String deviceId) {
@@ -195,9 +138,6 @@ public class Controller {
     // 這個本來最多就一個 如果船空的回去就是太舊了
     @GetMapping("/CircuitData")
     public Collection<SensorDataCircuit> getAllCircuitData() {
-        // Collection<SensorDataCircuit> ans = circuitDataMap.values();
-        // log.info("received all circuit data request detail {} ", ans);
-        // return ans;
         Collection<SensorDataCircuit> ans = circuitDataMap.values()
                 .stream()
                 .filter(this::isTimeValid)
@@ -228,34 +168,6 @@ public class Controller {
 
     @GetMapping("/AirQualityData/{deviceId}")
     public SensorDataAirQuality getAirQualityData(@PathVariable String deviceId) {
-        // if (airParticulatesDataMap.containsKey(deviceId)) {
-        // SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
-        // if (ans == null) {
-        // log.warn("data of device {} is null", deviceId);
-        // return null;
-        // }
-        // int now = (int) (System.currentTimeMillis() / 1000L);
-        // int gap = now - ans.getTimestamp();
-        // if (gap > 60) {
-        // log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId,
-        // ans.getTimestamp(), now);
-        // return null;
-        // }
-        // log.info("received request single device{} and return detail {}", deviceId,
-        // ans);
-        // return ans;
-        // }
-
-        // if (airQualityDataMap.containsKey(deviceId)) {
-        // SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
-        // log.info("received request single device{} and return detail {}", deviceId,
-        // ans);
-        // return ans;
-        // }
-        // SensorDataAirQuality ans = new SensorDataAirQuality();
-        // log.warn("cannot find any device name {} ", deviceId);
-        // return ans;
-
         SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
         if (ans != null && isTimeValid(ans)) {
             log.info("Received request single device {} and return detail {}", deviceId, ans);
@@ -267,9 +179,6 @@ public class Controller {
 
     @GetMapping("/AirQualityData")
     public Collection<SensorDataAirQuality> getAllAirQualityData() {
-        // Collection<SensorDataAirQuality> ans = airQualityDataMap.values();
-        // log.info("received all air quality data request detail {} ", ans);
-        // return ans;
         Collection<SensorDataAirQuality> ans = airQualityDataMap.values()
                 .stream()
                 .filter(this::isTimeValid)
@@ -299,26 +208,6 @@ public class Controller {
 
     @GetMapping("/AirParticalData/{deviceId}")
     public SensorDataAirParticulates getAirParticalDataById(@PathVariable String deviceId) {
-        // if (airParticulatesDataMap.containsKey(deviceId)) {
-        // SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
-        // if (ans == null) {
-        // log.warn("data of device {} is null", deviceId);
-        // return null;
-        // }
-        // int now = (int) (System.currentTimeMillis() / 1000L);
-        // int gap = now - ans.getTimestamp();
-        // if (gap > 60) {
-        // log.warn("data of device {} is too old, timestamp {} , now {} ", deviceId,
-        // ans.getTimestamp(), now);
-        // return null;
-        // }
-        // log.info("received request single device{} and return detail {}", deviceId,
-        // ans);
-        // return ans;
-        // }
-        // SensorDataAirParticulates ans = new SensorDataAirParticulates();
-        // log.warn("cannot find any device name {} ", deviceId);
-        // return ans;
         SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
         if (ans != null && isTimeValid(ans)) {
             log.info("Received request single device {} and return detail {}", deviceId, ans);
@@ -330,17 +219,6 @@ public class Controller {
 
     @GetMapping("/AirParticalData")
     public Collection<SensorDataAirParticulates> getAirParticalData() {
-        // String curr_id = "null";
-        // for (String id : airParticulatesDataMap.keySet()) {
-        // curr_id = id;
-        // SensorDataAirParticulates data = airParticulatesDataMap.get(curr_id);
-        // int now = (int) (System.currentTimeMillis() / 1000L);
-        // int gap = now - data.getTimestamp();
-        // if (gap > 60) {
-        // return null;
-        // }
-        // }
-        // return airParticulatesDataMap.values();
         Collection<SensorDataAirParticulates> ans = airParticulatesDataMap.values()
                 .stream()
                 .filter(this::isTimeValid)
@@ -572,53 +450,14 @@ public class Controller {
     }
 
 }
-// 前端控制指令：寫入 M 點
-// 收給我("device":"名子","value":true false)
-// Success=成功，NoDevice=沒有設備，Error=寫入錯誤我會給你error馬 value Error=值錯誤
-// 等一下要給董事長devicdid
-// @PostMapping("/plc/writeMPoint")
-// public String writeMPoint(@RequestBody Map<String, Object> payload) {
-// String param = (String) payload.get("device");
-// if (param == null || param.isEmpty() || plc.MdeviceIsEmpty(param)) {
-// return "NoDevice";
-// }
-// boolean value = (boolean) payload.get("value");
-// if (param == null || param.isEmpty() || (value != false && value != true)) {
-// return "value Error";
-// }
-// try {
-// plc.writeM(plc.getMPoint(param), value);
-// return "Success: " + param + " set to " + value;
-// } catch (Exception e) {
-// return "Error: " + e.getMessage();
-// }
-// }
-
-// @GetMapping("/emerStop")
-// public String emerStop(@RequestParam String param) {
-// try {
-// plc.writeM(plc.EMER_STOP, true);
-// return "EMERGENCY STOP ACTIVATED";
-// } catch (Exception e) {
-// return "Stop Failed";
-// }
-// }
-
-// @GetMapping("/emerRestort")
-// public String emerRestart(@RequestParam String param) {
-// try {
-// plc.writeM(plc.EMER_STOP, false);
-// return "SYSTEM RESTORED";
-// } catch (Exception e) {
-// return "Restore Failed";
-// }
-// }
-
 // ----------------------
 // 代辦事項
 // 把相機換成直播
 // log
-//
+// log寫到cam而已
+// 還要對cam寫超時
+
+// 每一個sensor都要做內網
 
 // 筆記
 // 有加了資料過時卻任
