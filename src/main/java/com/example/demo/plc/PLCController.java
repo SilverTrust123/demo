@@ -10,6 +10,9 @@ import com.serotonin.modbus4j.ip.IpParameters;
 // import com.serotonin.modbus4j.serial.rtu.*;
 import com.serotonin.modbus4j.msg.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PLCController {
     private ModbusMaster master;
 
@@ -40,6 +43,8 @@ public class PLCController {
 
     private final Map<String, MPoint> MPointMap = new HashMap<>();
     private final Map<String, DPoint> DPointMap = new HashMap<>();
+
+    private static final Logger log = LoggerFactory.getLogger(PLCController.class);
 
     // 先預留RTU街口 直接搬到PC上面實驗 當備案吧
     // SerialParameters params = new SerialParameters();
@@ -80,6 +85,8 @@ public class PLCController {
         DPointMap.put("T40", T40);
         DPointMap.put("T12", T12);
         DPointMap.put("T13", T13);
+        log.info("check list for M point {} ", MPointMap);
+        log.info("check list for D point {} ", DPointMap);
     }
 
     public boolean MdeviceIsEmpty(String param) {
@@ -151,82 +158,3 @@ public class PLCController {
     }
 
 }
-
-// // package com.example.demo.plc;
-
-// import com.serotonin.modbus4j.ModbusFactory;
-// import com.serotonin.modbus4j.ModbusMaster;
-// import com.serotonin.modbus4j.ip.IpParameters;
-// import com.serotonin.modbus4j.msg.WriteCoilRequest;
-// import com.serotonin.modbus4j.msg.WriteCoilResponse;
-
-// public class PLCControler {
-
-// private Dotenv dotenv = Dotenv.load();
-// private String dbUser = dotenv.get("DB_USER");
-// private String dbPassword = dotenv.get("DB_PASSWORD");
-
-// public static void writeM21(boolean on) throws Exception {
-// // PLC IP 與 Port
-// // String plcIp = "192.168.3.250";
-// // int port = 502;
-
-// // 設定 PLC IP 參數
-// IpParameters ipParameters = new IpParameters();
-// ipParameters.setHost(plcIp);
-// ipParameters.setPort(port);
-
-// // 建立 ModbusMaster
-// ModbusFactory factory = new ModbusFactory();
-// ModbusMaster master = factory.createTcpMaster(ipParameters, true);
-// master.init(); // 初始化連線
-
-// int unitId = 1; // Modbus Unit ID
-// int coilAddress = 1; // M21 的位址
-
-// // 寫入線圈
-// WriteCoilRequest request = new WriteCoilRequest(unitId, coilAddress, on);
-// WriteCoilResponse response = (WriteCoilResponse) master.send(request);
-
-// if (response.isException()) {
-// System.out.println("寫入失敗，錯誤碼: " + response.getExceptionCode());
-// } else {
-// System.out.println("M21 已經 " + (on ? "ON" : "OFF"));
-// }
-
-// master.destroy(); // 關閉連線
-// }
-
-// // public static void main(String[] args) throws Exception {
-// // writeM21(true); // 打開 M21
-// // Thread.sleep(2000); // 等 2 秒
-// // writeM21(false); // 關閉 M21
-// // }
-// }
-
-// package com.example.demo.plc;
-
-// public class OtherController {
-// public void monitorSystem() {
-// try {
-// PLCController plc = new PLCController("192.168.3.250", 502);
-
-// // 1. 讀取狀態
-// boolean isRunning = plc.readM(plc.PUMP_STATUS);
-// int temperature = plc.readD(plc.CURRENT_TEMP);
-
-// System.out.println("當前水泵: " + (isRunning ? "運轉中" : "停止"));
-// System.out.println("當前溫度: " + temperature + "度");
-
-// // 2. 根據讀取到的數值做邏輯判斷
-// if (temperature > 80 && isRunning) {
-// System.out.println("警告：溫度過高，關閉水泵！");
-// plc.writeM(plc.PUMP_STATUS, false);
-// }
-
-// plc.close();
-// } catch (Exception e) {
-// e.printStackTrace();
-// }
-// }
-// }

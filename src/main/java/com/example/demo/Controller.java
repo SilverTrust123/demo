@@ -506,7 +506,6 @@ public class Controller {
 // 代辦事項
 // 把相機換成直播
 // log
-// log寫到plc而已
 // 還要對cam寫超時
 
 // 每一個sensor都要做內網
