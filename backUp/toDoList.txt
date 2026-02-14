@@ -5,6 +5,9 @@ log
 
 每一個sensor都要做內網
 
+等一下把window size拉到.env
+
 筆記
 有加了資料過時卻任
 silaing window 平滑數據 就可以消除一些突發的雜訊阿之類的
+拆分邏輯

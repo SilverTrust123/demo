@@ -36,6 +36,8 @@ public class Controller {
     private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity;
     @Autowired
     private ServiceCircuit serviceCircuit;
+    @Autowired
+    private serviceAirQuality serviceAirQuality;
 
     public Controller() {
         try {
@@ -102,44 +104,23 @@ public class Controller {
     }
 
     // 等一下要確認一下每一個都有timesteamp
-    private Map<String, SensorDataAirQuality> airQualityDataMap = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Deque<Double>> airQualityHistoryMap = new ConcurrentHashMap<>();
 
     @PostMapping("/AirQualityData")
     public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
-        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
-            log.info("air quality deviceId is required detaild by follow {} ", data);
-            return "air quality deviceId is required";
-        }
-        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
-        String deviceId = data.getDeviceId();
-        float rawAQ = data.getAirPollution();
-        float smoothAQ = calculateAverage(airQualityHistoryMap, deviceId, rawAQ);
-        data.setAirPollution(smoothAQ);
-        airQualityDataMap.put(deviceId, data);
-        log.info("{} put in ok", deviceId);
-        return "OK";
+        log.info("Received and transfer air quality data");
+        return serviceAirQuality.recriveAirQuality(data);
     }
 
     @GetMapping("/AirQualityData/{deviceId}")
     public SensorDataAirQuality getAirQualityData(@PathVariable String deviceId) {
-        SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
-        if (ans != null && isTimeValid(ans)) {
-            log.info("Received request single device {} and return detail {}", deviceId, ans);
-            return ans;
-        }
-        log.warn("Cannot find valid data for device name {}", deviceId);
-        return new SensorDataAirQuality();
+        log.info("Received and transfer request for air quality data of device");
+        return serviceAirQuality.getAirQualityData(deviceId);
     }
 
     @GetMapping("/AirQualityData")
     public Collection<SensorDataAirQuality> getAllAirQualityData() {
-        Collection<SensorDataAirQuality> ans = airQualityDataMap.values()
-                .stream()
-                .filter(this::isTimeValid)
-                .toList();
-        log.info("received all air quality data request detail {} ", ans);
-        return ans;
+        log.info("Received and transfer request for all air quality data");
+        return serviceAirQuality.getAllAirQualityData();
     }
 
     private Map<String, SensorDataAirParticulates> airParticulatesDataMap = new ConcurrentHashMap<>();
@@ -372,30 +353,15 @@ public class Controller {
     @GetMapping("/AllData")
     public ConcurrentHashMap<String, Object> AllData(@RequestParam String param) throws Exception {
         magicData.put("temperatureAndHumidityDataMap",
-                temperatureAndHumidityDataMap);
-        magicData.put("circuitDataMap", circuitDataMap);
-        magicData.put("airQualityDataMap", airQualityDataMap);
-        magicData.put("airParticulatesDataMap", airParticulatesDataMap);
-        magicData.put("camDataMap", camDataMap);
+                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData());
+        magicData.put("circuitDataMap", serviceCircuit.getAllCircuitData());
+        magicData.put("airQualityDataMap", serviceAirQuality.getAllAirQualityData());
+        magicData.put("airParticulatesDataMap", serviceAirParticulates.getAllAirParticulatesData());
+        magicData.put("camDataMap", serviceCam.getAllCamData());
         magicData.put("DPoint", plc.getAllDPoints());
         magicData.put("MPoint", plc.getAllMPoints());
         log.info("received all data request with param {} and return {}", param, magicData);
         return magicData;
-    }
-
-    private boolean isTimeValid(SensorDataAirQuality data) {
-        if (data == null) {
-            return false;
-        }
-        int now = (int) (System.currentTimeMillis() / 1000L);
-        int gap = now - data.getTimestamp();
-
-        if (gap > 60) {
-            log.warn("Data of device {} is too old, timestamp {}, now {}",
-                    data.getDeviceId(), data.getTimestamp(), now);
-            return false;
-        }
-        return true;
     }
 
     private boolean isTimeValid(SensorDataAirParticulates data) {
