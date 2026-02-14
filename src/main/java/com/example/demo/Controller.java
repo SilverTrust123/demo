@@ -6,7 +6,9 @@ import com.example.demo.sensor.SensorDataAirParticulates;
 import com.example.demo.sensor.SensorDataAirQuality;
 import com.example.demo.sensor.SensorDataCircuit;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
+import com.example.demo.service.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.ArrayDeque;
@@ -30,7 +32,12 @@ public class Controller {
     private final int WINDOW_SIZE = 10;
     private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
+    @Autowired
+    private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity;
+
     public Controller() {
+        log.info("ServiceTemparatureAndHumidity injected: {}", serviceTemparatureAndHumidity);
+
         try {
             this.plc = new PLCController(plcIP, tcpPort);
             plcConnected = true;
@@ -54,52 +61,24 @@ public class Controller {
         return "PLC Connected: " + plcConnected;
     }
 
-    private Map<String, SensorDataTemperatureAndHumidity> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Deque<Double>> humidHistoryMap = new ConcurrentHashMap<>();
-
     @PostMapping("/TemparatureAndHumidityData")
     public String receiveTemparatureAndHumidityData(@RequestBody SensorDataTemperatureAndHumidity data) {
-        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
-            log.info("Temparature and humidity deviceId is required follow by detail", data);
-            return "Temparature and humidity deviceId is required";
-        }
-        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
-        String deviceId = data.getDeviceId();
-        double rawTemp = data.getTemperature();
-        float smoothTemp = calculateAverage(tempHistoryMap, deviceId, rawTemp);
-        data.setTemperature(smoothTemp);
-        double rawHumid = data.getHumidity();
-        float smoothHumid = calculateAverage(humidHistoryMap, deviceId, rawHumid);
-        data.setHumidity(smoothHumid);
-        temperatureAndHumidityDataMap.put(deviceId, data);
-        log.info("{}put in ok", deviceId);
-
-        return "OK";
+        log.info("Received and transfertemperature and humidity data");
+        return serviceTemparatureAndHumidity.receiveTemparatureAndHumidityData(data);
     }
 
     // 船空的回去就是找不到東西
     @GetMapping("/TemparatureAndHumidityData/{deviceId}")
     public SensorDataTemperatureAndHumidity getTemparatureAndHumidityData(@PathVariable String deviceId) {
-        SensorDataTemperatureAndHumidity ans = temperatureAndHumidityDataMap.get(deviceId);
-        if (ans != null && isTimeValid(ans)) {
-            log.info("Received request single device {} and return detail {}", deviceId, ans);
-            return ans;
-        }
-        log.warn("Cannot find valid data for device name {}", deviceId);
-        return new SensorDataTemperatureAndHumidity();
-
+        log.info("Received and transfer request for temperature and humidity data of device");
+        return serviceTemparatureAndHumidity.getTemparatureAndHumidityData(deviceId);
     }
 
     // 打掉太舊的資料 然後回傳剩下的 可能會只剩一個 等一下要跟董事長說一下
     @GetMapping("/TemparatureAndHumidityData")
     public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {
-        Collection<SensorDataTemperatureAndHumidity> ans = temperatureAndHumidityDataMap.values()
-                .stream()
-                .filter(this::isTimeValid)
-                .toList();
-        log.info("received all temperature and humidity data request detail {} ", ans);
-        return ans;
+        log.info("Received and transfer request for all temperature and humidity data");
+        return serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData();
     }
 
     private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
@@ -415,7 +394,8 @@ public class Controller {
 
     @GetMapping("/AllData")
     public ConcurrentHashMap<String, Object> AllData(@RequestParam String param) throws Exception {
-        magicData.put("temperatureAndHumidityDataMap", temperatureAndHumidityDataMap);
+        // magicData.put("temperatureAndHumidityDataMap",
+        // temperatureAndHumidityDataMap);
         magicData.put("circuitDataMap", circuitDataMap);
         magicData.put("airQualityDataMap", airQualityDataMap);
         magicData.put("airParticulatesDataMap", airParticulatesDataMap);
@@ -424,21 +404,6 @@ public class Controller {
         magicData.put("MPoint", plc.getAllMPoints());
         log.info("received all data request with param {} and return {}", param, magicData);
         return magicData;
-    }
-
-    private boolean isTimeValid(SensorDataTemperatureAndHumidity data) {
-        if (data == null) {
-            return false;
-        }
-        int now = (int) (System.currentTimeMillis() / 1000L);
-        int gap = now - data.getTimestamp();
-
-        if (gap > 60) {
-            log.warn("Data of device {} is too old, timestamp {}, now {}",
-                    data.getDeviceId(), data.getTimestamp(), now);
-            return false;
-        }
-        return true;
     }
 
     private boolean isTimeValid(SensorDataCircuit data) {
@@ -502,13 +467,3 @@ public class Controller {
     }
 
 }
-// ----------------------
-// 代辦事項
-// 把相機換成直播
-// log
-// 還要對cam寫超時
-
-// 每一個sensor都要做內網
-
-// 筆記
-// 有加了資料過時卻任
