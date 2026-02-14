@@ -12,9 +12,7 @@ import java.util.Map;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
@@ -231,23 +229,36 @@ public class Controller {
 
     @PostMapping("/CamData")
     public String receiveCamData(@RequestBody SensorDataCam data) {
-
-        if (data.getDeviceId() == null) {
+        String deviceId = data.getDeviceId();
+        if (deviceId == null) {
+            log.info("received cam data from {} ", deviceId);
             return "Cam deviceId is required";
         }
-
-        camDataMap.put(data.getDeviceId(), data);
+        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
+        camDataMap.put(deviceId, data);
+        log.info("{} put in ok", deviceId);
         return "OK";
     }
 
     @GetMapping("/CamData/{deviceId}")
     public SensorDataCam getCamData(@PathVariable String deviceId) {
-        return camDataMap.get(deviceId);
+        SensorDataCam ans = camDataMap.get(deviceId);
+        if (ans != null && isTimeValid(ans)) {
+            log.info("Received request single device {} and return detail {}", deviceId, ans);
+            return ans;
+        }
+        log.warn("Cannot find valid data for device name {}", deviceId);
+        return new SensorDataCam();
     }
 
     @GetMapping("/CamData")
     public Collection<SensorDataCam> getAllCamData() {
-        return camDataMap.values();
+        Collection<SensorDataCam> ans = camDataMap.values()
+                .stream()
+                .filter(this::isTimeValid)
+                .toList();
+        log.info("received all cam data request detail {} ", ans);
+        return ans;
     }
 
     // 數位雙生：讀取 M 點狀態
@@ -435,6 +446,21 @@ public class Controller {
     }
 
     private boolean isTimeValid(SensorDataAirParticulates data) {
+        if (data == null) {
+            return false;
+        }
+        int now = (int) (System.currentTimeMillis() / 1000L);
+        int gap = now - data.getTimestamp();
+
+        if (gap > 60) {
+            log.warn("Data of device {} is too old, timestamp {}, now {}",
+                    data.getDeviceId(), data.getTimestamp(), now);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isTimeValid(SensorDataCam data) {
         if (data == null) {
             return false;
         }

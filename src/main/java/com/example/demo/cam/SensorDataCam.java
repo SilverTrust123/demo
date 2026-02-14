@@ -6,11 +6,20 @@ import java.util.List;
 public class SensorDataCam {
 
     private String deviceId; // 攝影機 ID
-    private LocalDateTime timestamp; // 時間戳記
+    // private LocalDateTime timestamp; // 時間戳記
     private boolean danger; // 是否危險
     private int personCount; // 人數
     private List<List<Integer>> dangerZone; // 危險區座標
     private List<DetectedObjectDTO> objects; // 偵測到的物件列表
+    private int timestamp;
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public String getDeviceId() {
         return deviceId;
@@ -18,14 +27,6 @@ public class SensorDataCam {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
     }
 
     public boolean isDanger() {

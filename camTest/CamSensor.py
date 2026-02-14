@@ -90,7 +90,7 @@ while True:
     if now - last_send_time >= POLL_INTERVAL:
         payload = {
             "deviceId": DEVICE_ID,
-            "timestamp": datetime.now().isoformat(timespec="seconds"),
+            # "timestamp": datetime.now().isoformat(timespec="seconds"),
             "danger": danger_now,
             "personCount": person_count,
             "dangerZone": DANGER_POLY.tolist(),
