@@ -33,6 +33,8 @@ public class Controller {
     private ServiceCam serviceCam;
     @Autowired
     private ServicePLC servicePLC;
+    @Autowired
+    private ServiceData serviceData;
 
     @GetMapping("/")
     public String home() {
@@ -190,19 +192,9 @@ public class Controller {
         return servicePLC.writeDPoint(payload);
     }
 
-    ConcurrentHashMap<String, Object> magicData = new ConcurrentHashMap<>();
-
     @GetMapping("/AllData")
     public ConcurrentHashMap<String, Object> AllData(@RequestParam String param) throws Exception {
-        magicData.put("temperatureAndHumidityDataMap",
-                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData());
-        magicData.put("circuitDataMap", serviceCircuit.getAllCircuitData());
-        magicData.put("airQualityDataMap", serviceAirQuality.getAllAirQualityData());
-        magicData.put("airParticulatesDataMap", serviceAirParticulates.getAllAirParticalData());
-        magicData.put("camDataMap", serviceCam.getAllCamData());
-        magicData.put("DPoint", servicePLC.AllDPointData());
-        magicData.put("MPoint", servicePLC.AllMPointData());
-        log.info("received all data request with param {} and return {}", param, magicData);
-        return magicData;
+        log.info("Received and transfer request for all data with param {}", param);
+        return serviceData.AllData(param);
     }
 }
