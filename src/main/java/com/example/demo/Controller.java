@@ -44,6 +44,7 @@ public class Controller {
 
     @GetMapping("/PLCConnect")
     public String PLCConnect() {
+        plcConnected = servicePLC.isPlcConnected();
         log.info("PLC Connected: {}", plcConnected);
         return "PLC Connected: " + plcConnected;
     }
