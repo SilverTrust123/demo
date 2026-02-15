@@ -182,6 +182,14 @@ public class Controller {
         return servicePLC.writeMPoint(payload);
     }
 
+    @PostMapping("/plc/writeDPoint")
+    public String writeDPoint(@RequestBody Map<String, Object> payload) {
+        String param = (String) payload.get("param");
+        Object valueObj = payload.get("value");
+        log.info("transfer received write DPoint request with param {} and value {}", param, valueObj);
+        return servicePLC.writeDPoint(payload);
+    }
+
     ConcurrentHashMap<String, Object> magicData = new ConcurrentHashMap<>();
 
     @GetMapping("/AllData")
