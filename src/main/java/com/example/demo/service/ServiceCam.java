@@ -5,12 +5,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.slf4j.Logger;
 
 import com.example.demo.cam.SensorDataCam;
 
+@Service
 public class ServiceCam {
     private static final Logger log = LoggerFactory.getLogger(ServiceCam.class);
     private Map<String, SensorDataCam> camDataMap = new ConcurrentHashMap<>();
