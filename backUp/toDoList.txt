@@ -1,13 +1,26 @@
 代辦事項
 把相機換成直播
 log
-拆分邏輯
+拆分邏輯->要做
 
+不能馬上做
 每一個sensor都要做內網
-
-等一下把window size拉到.env
 
 筆記
 有加了資料過時卻任
 silaing window 平滑數據 就可以消除一些突發的雜訊阿之類的
 拆分邏輯
+連線測試
+邏輯分層
+可以做溫溼度等等的預測
+
+圖
+系統環境架構圖 (看硬體怎麼連)
+
+軟體分層圖 (看 Spring Boot 結構)
+
+Sequence Diagram (看數據怎麼跑)
+
+ERD (看資料怎麼存)
+
+UI 介面設計圖 (Dashboard 的 Mockup 或截圖)
