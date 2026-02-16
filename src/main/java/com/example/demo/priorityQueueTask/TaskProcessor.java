@@ -19,26 +19,7 @@ public class TaskProcessor {
     public void startWorking() {
         // 啟動一個新線程，不然會把主程式卡死
         new Thread(() -> {
-            // while (true) { // 無限迴圈，大廚永遠在廚房待命
-            // try {
-            // // 1. 從櫃檯拿單子 (會依照優先權，重要的先拿)
-            // JobTask<?> task = queueService.takeTask();
 
-            // // 2. 執行妳原本的邏輯 (這就是妳原本拆分好的 @Service)
-            // // 假設 task.getData() 拿出來的是 SensorData...
-            // Object result = yourService
-            // .receiveTemparatureAndHumidityData((SensorDataTemperatureAndHumidity)
-            // task.getData());
-
-            // // 3. 關鍵一步：把結果填進「回條」裡！
-            // // 這時候前端轉圈圈的 Postman 就會拿到結果了
-            // task.getFuture().complete(result);
-
-            // } catch (Exception e) {
-            // e.printStackTrace(); // 如果處理出錯，印出來看看
-            // }
-            // }
-            // ... 前面省略 ...
             while (true) {
                 try {
                     JobTask<?> task = queueService.takeTask();
@@ -47,10 +28,17 @@ public class TaskProcessor {
 
                     // --- 分流開始 ---
                     switch (type) {
-                        case "TEMP_HUMIDITY":
-                            // 處理溫濕度 (記得要轉型 Cast)
+                        case "receiveTemparatureAndHumidityData":
                             SensorDataTemperatureAndHumidity data1 = (SensorDataTemperatureAndHumidity) task.getData();
                             result = serviceTemparatureAndHumidity.receiveTemparatureAndHumidityData(data1);
+                            break;
+
+                        case "getTemparatureAndHumidityData":
+                            String deviceId = (String) task.getData();
+                            result = serviceTemparatureAndHumidity.getTemparatureAndHumidityData(deviceId);
+                            break;
+                        case "getAllTemparatureAndHumidityData":
+                            result = serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData();
                             break;
 
                         default:
