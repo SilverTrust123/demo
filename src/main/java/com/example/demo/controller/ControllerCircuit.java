@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.sensor.SensorDataCircuit;
-import com.example.demo.service.ServiceCircuit;
 
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -22,8 +20,6 @@ import org.slf4j.Logger;
 @RestController
 @RequestMapping("/circuit")
 public class ControllerCircuit {
-    @Autowired
-    private ServiceCircuit serviceCircuit;
     private static final Logger log = LoggerFactory.getLogger(ControllerCircuit.class);
     @Value("${important}")
     private int IMPORTANT;
