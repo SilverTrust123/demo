@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.cam.SensorDataCam;
+import com.example.demo.sensor.SensorDataAirParticulates;
 import com.example.demo.sensor.SensorDataAirQuality;
 import com.example.demo.sensor.SensorDataCircuit;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
@@ -115,6 +116,14 @@ public class TaskProcessor {
                             result = serviceAirQuality.getAirQualityData(deviceId_air_qua);
                         case "getAllAirQualityData":
                             result = serviceAirQuality.getAllAirQualityData();
+                        case "recriveAirPartical":
+                            SensorDataAirParticulates data_air_par = (SensorDataAirParticulates) task.getData();
+                            result = serviceAirParticulates.recriveAirPartical(data_air_par);
+                        case "getAirParticalData":
+                            String deviceId_air_par = (String) task.getData();
+                            result = serviceAirParticulates.getAirParticalData(deviceId_air_par);
+                        case "getAllAirParticalData":
+                            result = serviceAirParticulates.getAllAirParticalData();
                         default:
                             System.out.println("收到未知的任務類型：" + type);
                             break;
