@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.cam.SensorDataCam;
 import com.example.demo.priorityQueueTask.QueueService;
-import com.example.demo.service.ServiceCam;
 import org.slf4j.Logger;
 
 @RestController
@@ -30,9 +28,6 @@ public class ControllerCam {
     private int URGENT;
     @Autowired
     private QueueService queueService;
-
-    @Autowired
-    private ServiceCam serviceCam;
 
     @PostMapping("/CamData")
     public CompletableFuture<Object> receiveCamData(@RequestBody SensorDataCam data) {
