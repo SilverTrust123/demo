@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.example.demo.sensor.SensorDataCircuit;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 import com.example.demo.service.*;
 
@@ -21,6 +23,8 @@ public class TaskProcessor {
     private ServicePLC servicePLC;
     @Autowired
     private ServiceData serviceData;
+    @Autowired
+    private ServiceCircuit serviceCircuit;
 
     @PostConstruct // 這代表 Spring 一啟動，這個方法就會自動執行
     public void startWorking() {
@@ -36,12 +40,13 @@ public class TaskProcessor {
                     // --- 分流開始 ---
                     switch (type) {
                         case "receiveTemparatureAndHumidityData":
-                            SensorDataTemperatureAndHumidity data1 = (SensorDataTemperatureAndHumidity) task.getData();
-                            result = serviceTemparatureAndHumidity.receiveTemparatureAndHumidityData(data1);
+                            SensorDataTemperatureAndHumidity data_temp = (SensorDataTemperatureAndHumidity) task
+                                    .getData();
+                            result = serviceTemparatureAndHumidity.receiveTemparatureAndHumidityData(data_temp);
                             break;
                         case "getTemparatureAndHumidityData":
-                            String deviceId = (String) task.getData();
-                            result = serviceTemparatureAndHumidity.getTemparatureAndHumidityData(deviceId);
+                            String deviceId_temp = (String) task.getData();
+                            result = serviceTemparatureAndHumidity.getTemparatureAndHumidityData(deviceId_temp);
                             break;
                         case "getAllTemparatureAndHumidityData":
                             result = serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData();
@@ -77,6 +82,15 @@ public class TaskProcessor {
                             break;
                         case "ALLData":
                             result = serviceData.AllData();
+                        case "receiveCircuitData":
+                            SensorDataCircuit data_cir = (SensorDataCircuit) task.getData();
+                            result = serviceCircuit.receiveCircuitData(data_cir);
+                        case "getCircuitData":
+                            String deviceId_cir = (String) task.getData();
+                            result = serviceCircuit.getCircuitData(deviceId_cir);
+                            break;
+                        case "getAllCircuitData":
+                            result = serviceCircuit.getAllCircuitData();
                         default:
                             System.out.println("收到未知的任務類型：" + type);
                             break;
