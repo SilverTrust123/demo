@@ -9,10 +9,12 @@ public class JobTask<T> implements Comparable<JobTask<T>> {
 
     // 這是用來讓 Controller 等結果的「回條」
     private final CompletableFuture<Object> future;
+    private final String taskType;
 
-    public JobTask(int priority, T data) {
+    public JobTask(int priority, T data, String taskType) {
         this.priority = priority;
         this.data = data;
+        this.taskType = taskType;
         this.future = new CompletableFuture<>();
     }
 
@@ -21,6 +23,10 @@ public class JobTask<T> implements Comparable<JobTask<T>> {
     @Override
     public int compareTo(JobTask<T> other) {
         return Integer.compare(other.priority, this.priority);
+    }
+
+    public String getTaskType() {
+        return taskType;
     }
 
     // 取出資料的方法

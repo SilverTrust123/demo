@@ -32,7 +32,7 @@ public class ControllerTemparatureAndHumidity {
             @RequestBody SensorDataTemperatureAndHumidity data) {
         int priority = 10;
         log.info("Received and put in priority queue and transfer to service");
-        return queueService.addRequestToQueue(priority, data);
+        return queueService.addRequestToQueue(priority, data, "receiveTemparatureAndHumidityData");
     }
 
     // 船空的回去就是找不到東西

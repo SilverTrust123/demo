@@ -14,9 +14,9 @@ public class QueueService {
     /**
      * Controller 呼叫這個方法來「抽號碼牌」
      */
-    public <T> CompletableFuture<Object> addRequestToQueue(int priority, T data) {
+    public <T> CompletableFuture<Object> addRequestToQueue(int priority, T data, String taskType) {
         // 1. 打包成 JobTask
-        JobTask<T> task = new JobTask<>(priority, data);
+        JobTask<T> task = new JobTask<>(priority, data, taskType);
 
         // 2. 丟進籃子裡
         queue.put(task);
