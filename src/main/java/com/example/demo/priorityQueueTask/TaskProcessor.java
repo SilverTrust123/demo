@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.cam.SensorDataCam;
 import com.example.demo.sensor.SensorDataCircuit;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 import com.example.demo.service.*;
@@ -25,6 +26,12 @@ public class TaskProcessor {
     private ServiceData serviceData;
     @Autowired
     private ServiceCircuit serviceCircuit;
+    @Autowired
+    private ServiceCam serviceCam;
+    @Autowired
+    private ServiceAirQuality serviceAirQuality;
+    @Autowired
+    private ServiceAirParticulates serviceAirParticulates;
 
     @PostConstruct // 這代表 Spring 一啟動，這個方法就會自動執行
     public void startWorking() {
@@ -91,6 +98,14 @@ public class TaskProcessor {
                             break;
                         case "getAllCircuitData":
                             result = serviceCircuit.getAllCircuitData();
+                        case "receiveCamData":
+                            SensorDataCam data_cam = (SensorDataCam) task.getData();
+                            result = serviceCam.receiveCamData(data_cam);
+                        case "getCamData":
+                            String deviceId_cam = (String) task.getData();
+                            result = serviceCam.getCamData(deviceId_cam);
+                        case "getAllCamData":
+                            result = serviceCam.getAllCamData();
                         default:
                             System.out.println("收到未知的任務類型：" + type);
                             break;
