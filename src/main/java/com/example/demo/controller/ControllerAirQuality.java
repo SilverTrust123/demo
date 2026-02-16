@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.sensor.SensorDataAirQuality;
-import com.example.demo.service.ServiceAirQuality;
 
 @RestController
 @RequestMapping("/airQuality")
@@ -30,8 +28,6 @@ public class ControllerAirQuality {
     private int URGENT;
     @Autowired
     private QueueService queueService;
-    @Autowired
-    private ServiceAirQuality serviceAirQuality;
 
     @PostMapping("/AirQualityData")
     public CompletableFuture<Object> recriveAirQuality(@RequestBody SensorDataAirQuality data) {
