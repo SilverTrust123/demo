@@ -21,11 +21,11 @@ import org.slf4j.Logger;
 @RequestMapping("/temperatureAndHumidity")
 public class ControllerTemparatureAndHumidity {
     private static final Logger log = LoggerFactory.getLogger(ControllerTemparatureAndHumidity.class);
-    @Value("${IMPORTANT:50}")
+    @Value("${important}")
     private int IMPORTANT;
-    @Value("${NORMAL:100}")
+    @Value("${normal}")
     private int NORMAL;
-    @Value("${URGENT:10}")
+    @Value("${urgent}")
     private int URGENT;
 
     @Autowired
