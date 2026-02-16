@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.priorityQueueTask.JobTask;
+import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 import com.example.demo.service.ServiceTemparatureAndHumidity;
 import org.slf4j.Logger;
+import com.example.demo.priorityQueueTask.JobTask;
 
 @RestController
 @RequestMapping("/temperatureAndHumidity")
@@ -22,11 +26,16 @@ public class ControllerTemparatureAndHumidity {
 
     @Autowired
     private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity;
+    @Autowired
+    private QueueService queueService;
 
     @PostMapping("/TemparatureAndHumidityData")
-    public String receiveTemparatureAndHumidityData(@RequestBody SensorDataTemperatureAndHumidity data) {
-        log.info("Received and transfertemperature and humidity data");
-        return serviceTemparatureAndHumidity.receiveTemparatureAndHumidityData(data);
+    public CompletableFuture<Object> receiveTemparatureAndHumidityData(
+            @RequestBody SensorDataTemperatureAndHumidity data) {
+        int priority = 10;
+        JobTask<SensorDataTemperatureAndHumidity> task = new JobTask<>(priority, data);
+        log.info("Received and put in priority queue and transfer to service");
+        return queueService.addRequestToQueue(priority, data);
     }
 
     // 船空的回去就是找不到東西
