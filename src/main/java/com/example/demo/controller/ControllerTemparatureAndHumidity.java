@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.priorityQueueTask.JobTask;
 import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 import com.example.demo.service.ServiceTemparatureAndHumidity;
 import org.slf4j.Logger;
-import com.example.demo.priorityQueueTask.JobTask;
 
 @RestController
 @RequestMapping("/temperatureAndHumidity")
@@ -33,7 +31,6 @@ public class ControllerTemparatureAndHumidity {
     public CompletableFuture<Object> receiveTemparatureAndHumidityData(
             @RequestBody SensorDataTemperatureAndHumidity data) {
         int priority = 10;
-        JobTask<SensorDataTemperatureAndHumidity> task = new JobTask<>(priority, data);
         log.info("Received and put in priority queue and transfer to service");
         return queueService.addRequestToQueue(priority, data);
     }

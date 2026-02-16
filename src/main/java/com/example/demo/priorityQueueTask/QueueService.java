@@ -1,6 +1,5 @@
 package com.example.demo.priorityQueueTask; // 記得改成妳的路徑
 
-import com.example.demo.priorityQueueTask.JobTask;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.CompletableFuture;
