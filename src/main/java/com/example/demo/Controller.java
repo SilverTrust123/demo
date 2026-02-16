@@ -2,9 +2,6 @@ package com.example.demo;
 
 import com.example.demo.cam.SensorDataCam;
 import com.example.demo.sensor.SensorDataAirParticulates;
-import com.example.demo.sensor.SensorDataAirQuality;
-import com.example.demo.sensor.SensorDataCircuit;
-import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 import com.example.demo.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +18,6 @@ public class Controller {
     private boolean plcConnected = false;
     private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
-    @Autowired
-    private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity;
-    @Autowired
-    private ServiceCircuit serviceCircuit;
-    @Autowired
-    private ServiceAirQuality serviceAirQuality;
     @Autowired
     private ServiceAirParticulates serviceAirParticulates;
     @Autowired
@@ -47,64 +38,6 @@ public class Controller {
         plcConnected = servicePLC.isPlcConnected();
         log.info("PLC Connected: {}", plcConnected);
         return "PLC Connected: " + plcConnected;
-    }
-
-    @PostMapping("/TemparatureAndHumidityData")
-    public String receiveTemparatureAndHumidityData(@RequestBody SensorDataTemperatureAndHumidity data) {
-        log.info("Received and transfertemperature and humidity data");
-        return serviceTemparatureAndHumidity.receiveTemparatureAndHumidityData(data);
-    }
-
-    // 船空的回去就是找不到東西
-    @GetMapping("/TemparatureAndHumidityData/{deviceId}")
-    public SensorDataTemperatureAndHumidity getTemparatureAndHumidityData(@PathVariable String deviceId) {
-        log.info("Received and transfer request for temperature and humidity data of device");
-        return serviceTemparatureAndHumidity.getTemparatureAndHumidityData(deviceId);
-    }
-
-    // 打掉太舊的資料 然後回傳剩下的 可能會只剩一個 等一下要跟董事長說一下
-    @GetMapping("/TemparatureAndHumidityData")
-    public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {
-        log.info("Received and transfer request for all temperature and humidity data");
-        return serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData();
-    }
-
-    @PostMapping("/CircuitData")
-    public String receiveCircuitData(@RequestBody SensorDataCircuit data) {
-        log.info("Received and transfer circuit data");
-        return serviceCircuit.receiveCircuitData(data);
-    }
-
-    // 船空的回去就是找不到東西 或是太舊了
-    @GetMapping("/CircuitData/{deviceId}")
-    public SensorDataCircuit getCircuitData(@PathVariable String deviceId) {
-        log.info("Received and transfer request for circuit data of device");
-        return serviceCircuit.getCircuitData(deviceId);
-    }
-
-    // 這個本來最多就一個 如果船空的回去就是太舊了
-    @GetMapping("/CircuitData")
-    public Collection<SensorDataCircuit> getAllCircuitData() {
-        log.info("Received and transfer request for all circuit data");
-        return serviceCircuit.getAllCircuitData();
-    }
-
-    @PostMapping("/AirQualityData")
-    public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
-        log.info("Received and transfer air quality data");
-        return serviceAirQuality.recriveAirQuality(data);
-    }
-
-    @GetMapping("/AirQualityData/{deviceId}")
-    public SensorDataAirQuality getAirQualityData(@PathVariable String deviceId) {
-        log.info("Received and transfer request for air quality data of device");
-        return serviceAirQuality.getAirQualityData(deviceId);
-    }
-
-    @GetMapping("/AirQualityData")
-    public Collection<SensorDataAirQuality> getAllAirQualityData() {
-        log.info("Received and transfer request for all air quality data");
-        return serviceAirQuality.getAllAirQualityData();
     }
 
     @PostMapping("/AirParticalData")
