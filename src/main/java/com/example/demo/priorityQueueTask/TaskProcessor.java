@@ -16,9 +16,11 @@ public class TaskProcessor {
     private QueueService queueService;
 
     @Autowired
-    private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity; // 這裡要換成妳原本那個 @Autowired 的主邏輯 Service 名稱
+    private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity;
     @Autowired
-    private ServicePLC servicePLC; // 這裡要換成妳原本那個 @Autowired 的主邏輯 Service 名稱
+    private ServicePLC servicePLC;
+    @Autowired
+    private ServiceData serviceData;
 
     @PostConstruct // 這代表 Spring 一啟動，這個方法就會自動執行
     public void startWorking() {
@@ -44,6 +46,8 @@ public class TaskProcessor {
                         case "getAllTemparatureAndHumidityData":
                             result = serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData();
                             break;
+                        case "PLCConnect":
+                            result = servicePLC.isPlcConnected();
                         case "MpointState":
                             String mPointParam = (String) task.getData();
                             result = servicePLC.MpointState(mPointParam);
@@ -63,9 +67,16 @@ public class TaskProcessor {
                             break;
                         case "writeMPoint":
                             @SuppressWarnings("unchecked")
-                            Map<String, Object> dataMap = (Map<String, Object>) task.getData();
-                            result = servicePLC.writeMPoint(dataMap);
+                            Map<String, Object> dataMapM = (Map<String, Object>) task.getData();
+                            result = servicePLC.writeMPoint(dataMapM);
                             break;
+                        case "writeDPoint":
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> dataMapD = (Map<String, Object>) task.getData();
+                            result = servicePLC.writeDPoint(dataMapD);
+                            break;
+                        case "ALLData":
+                            result = serviceData.AllData();
                         default:
                             System.out.println("收到未知的任務類型：" + type);
                             break;

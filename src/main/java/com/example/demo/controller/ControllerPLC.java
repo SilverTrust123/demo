@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
-import com.example.demo.service.ServicePLC;
 import org.slf4j.Logger;
 
 @RestController
@@ -32,14 +31,10 @@ public class ControllerPLC {
     @Autowired
     private QueueService queueService;
 
-    @Autowired
-    private ServicePLC servicePLC;
-
     @GetMapping("/PLCConnect")
-    public String PLCConnect() {
-        plcConnected = servicePLC.isPlcConnected();
+    public CompletableFuture<Object> PLCConnect() {
         log.info("PLC Connected: {}", plcConnected);
-        return "PLC Connected: " + plcConnected;
+        return queueService.addRequestToQueue(NORMAL, null, "PLCConnect");
     }
 
     // 數位雙生：讀取 M 點狀態
@@ -73,7 +68,7 @@ public class ControllerPLC {
     @GetMapping("/plc/state")
     public CompletableFuture<Object> plcState() {
         log.info("transfer received plc state request");
-        return queueService.addRequestToQueue(NORMAL, null, "plcState");
+        return queueService.addRequestToQueue(IMPORTANT, null, "plcState");
     }
 
     @PostMapping("/plc/writeMPoint")

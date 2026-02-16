@@ -31,7 +31,7 @@ public class ServiceData {
     private static final Logger log = LoggerFactory.getLogger(ServiceData.class);
 
     @GetMapping("/AllData")
-    public ConcurrentHashMap<String, Object> AllData(@RequestParam String param) throws Exception {
+    public ConcurrentHashMap<String, Object> AllData() throws Exception {
         magicData.put("temperatureAndHumidityDataMap",
                 serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData());
         magicData.put("circuitDataMap", serviceCircuit.getAllCircuitData());
@@ -40,7 +40,7 @@ public class ServiceData {
         magicData.put("camDataMap", serviceCam.getAllCamData());
         magicData.put("DPoint", servicePLC.AllDPointData());
         magicData.put("MPoint", servicePLC.AllMPointData());
-        log.info("received all data request with param {} and return {}", param, magicData);
+        log.info("received all data request return {}", magicData);
         return magicData;
     }
 }
