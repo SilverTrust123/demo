@@ -27,7 +27,7 @@ public class Controller {
     public ResponseEntity<List<String>> getLatestLogs(
             @RequestParam(defaultValue = "100") int lines) throws IOException {
 
-        Path path = Paths.get("logs/app.log");
+        Path path = Paths.get("magicSystem.log");
 
         List<String> allLines = Files.readAllLines(path);
 
@@ -39,9 +39,9 @@ public class Controller {
     }
 
     @GetMapping("/fullLog")
-    public ResponseEntity<String> getLogs() throws IOException {
+    public ResponseEntity<String> getfullLogs() throws IOException {
 
-        Path path = Paths.get("logs/app.log");
+        Path path = Paths.get("magicSystem.log");
 
         if (!Files.exists(path)) {
             return ResponseEntity.notFound().build();
