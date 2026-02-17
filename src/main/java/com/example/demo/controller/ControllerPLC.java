@@ -42,7 +42,7 @@ public class ControllerPLC {
     @GetMapping("/MPointState")
     public CompletableFuture<Object> MpointState(@RequestParam(required = false) String param) {
         log.info("transfer received read m point request {} ", param);
-        return queueService.addRequestToQueue(NORMAL, param, "MpointState");
+        return queueService.addRequestToQueue(IMPORTANT, param, "MpointState");
     }
 
     // 詢問現在參數：讀取 D 點數值
@@ -50,7 +50,7 @@ public class ControllerPLC {
     @GetMapping("/DPointData")
     public CompletableFuture<Object> DPointData(@RequestParam(required = false) String param) {
         log.info("transfer received read d point request {} ", param);
-        return queueService.addRequestToQueue(NORMAL, param, "DPointData");
+        return queueService.addRequestToQueue(IMPORTANT, param, "DPointData");
     }
 
     @GetMapping("/AllDPointData")

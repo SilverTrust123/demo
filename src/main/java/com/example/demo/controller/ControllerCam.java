@@ -32,7 +32,7 @@ public class ControllerCam {
     @PostMapping("/")
     public CompletableFuture<Object> receiveCamData(@RequestBody SensorDataCam data) {
         log.info("Received and transfer cam data");
-        return queueService.addRequestToQueue(NORMAL, data, "receiveCamData");
+        return queueService.addRequestToQueue(URGENT, data, "receiveCamData");
     }
 
     @GetMapping("/{deviceId}")

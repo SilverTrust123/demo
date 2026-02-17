@@ -34,13 +34,13 @@
             <systemPath>${project.basedir}/lib/modbus4j-v3.1.0.jar</systemPath>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/commons-logging-1.2.jar</systemPath>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
