@@ -17,7 +17,7 @@ import com.example.demo.priorityQueueTask.QueueService;
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping("/cam")
+@RequestMapping("/camData")
 public class ControllerCam {
     private static final Logger log = LoggerFactory.getLogger(ControllerCam.class);
     @Value("${important}")
@@ -29,19 +29,19 @@ public class ControllerCam {
     @Autowired
     private QueueService queueService;
 
-    @PostMapping("/CamData")
+    @PostMapping("/")
     public CompletableFuture<Object> receiveCamData(@RequestBody SensorDataCam data) {
         log.info("Received and transfer cam data");
         return queueService.addRequestToQueue(NORMAL, data, "receiveCamData");
     }
 
-    @GetMapping("/CamData/{deviceId}")
+    @GetMapping("/{deviceId}")
     public CompletableFuture<Object> getCamData(@PathVariable String deviceId) {
         log.info("Received and transfer request for cam data of device");
         return queueService.addRequestToQueue(IMPORTANT, deviceId, "getCamData");
     }
 
-    @GetMapping("/CamData")
+    @GetMapping("/")
     public CompletableFuture<Object> getAllCamData() {
         log.info("Received and transfer request for all cam data");
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllCamData");

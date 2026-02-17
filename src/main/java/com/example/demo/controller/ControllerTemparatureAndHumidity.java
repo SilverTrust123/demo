@@ -18,7 +18,7 @@ import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping("/temperatureAndHumidity")
+@RequestMapping("/temperatureAndHumidityData")
 public class ControllerTemparatureAndHumidity {
     private static final Logger log = LoggerFactory.getLogger(ControllerTemparatureAndHumidity.class);
     @Value("${important}")
@@ -31,7 +31,7 @@ public class ControllerTemparatureAndHumidity {
     @Autowired
     private QueueService queueService;
 
-    @PostMapping("/TemparatureAndHumidityData")
+    @PostMapping("/")
     public CompletableFuture<Object> receiveTemparatureAndHumidityData(
             @RequestBody SensorDataTemperatureAndHumidity data) {
         log.info("Received and put in priority queue and transfer to service");
@@ -39,14 +39,14 @@ public class ControllerTemparatureAndHumidity {
     }
 
     // 船空的回去就是找不到東西
-    @GetMapping("/TemparatureAndHumidityData/{deviceId}")
+    @GetMapping("/{deviceId}")
     public CompletableFuture<Object> getTemparatureAndHumidityData(@PathVariable String deviceId) {
         log.info("Received and transfer request for temperature and humidity data of device");
         return queueService.addRequestToQueue(NORMAL, deviceId, "getTemparatureAndHumidityData");
     }
 
     // 打掉太舊的資料 然後回傳剩下的 可能會只剩一個 等一下要跟董事長說一下
-    @GetMapping("/TemparatureAndHumidityData")
+    @GetMapping("/")
     public CompletableFuture<Object> getAllTemparatureAndHumidityData() {
         log.info("Received and transfer request for all temperature and humidity data");
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllTemparatureAndHumidityData");

@@ -13,7 +13,7 @@ import com.example.demo.priorityQueueTask.QueueService;
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping("/data")
+@RequestMapping("/allData")
 public class ControllerData {
     private static final Logger log = LoggerFactory.getLogger(ControllerData.class);
     @Value("${important}")
@@ -25,7 +25,7 @@ public class ControllerData {
     @Autowired
     private QueueService queueService;
 
-    @GetMapping("/AllData")
+    @GetMapping("/")
     public CompletableFuture<Object> AllData() throws Exception {
         log.info("Received and transfer request for all data ");
         return queueService.addRequestToQueue(IMPORTANT, null, "ALLData");

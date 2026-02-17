@@ -17,7 +17,7 @@ import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.sensor.SensorDataAirQuality;
 
 @RestController
-@RequestMapping("/airQuality")
+@RequestMapping("/airQualityData")
 public class ControllerAirQuality {
     private static final Logger log = LoggerFactory.getLogger(ControllerTemparatureAndHumidity.class);
     @Value("${important}")
@@ -29,19 +29,19 @@ public class ControllerAirQuality {
     @Autowired
     private QueueService queueService;
 
-    @PostMapping("/AirQualityData")
+    @PostMapping("/")
     public CompletableFuture<Object> recriveAirQuality(@RequestBody SensorDataAirQuality data) {
         log.info("Received and transfer air quality data");
         return queueService.addRequestToQueue(NORMAL, data, "recriveAirQuality");
     }
 
-    @GetMapping("/AirQualityData/{deviceId}")
+    @GetMapping("/{deviceId}")
     public CompletableFuture<Object> getAirQualityData(@PathVariable String deviceId) {
         log.info("Received and transfer request for air quality data of device");
         return queueService.addRequestToQueue(IMPORTANT, deviceId, "getAirQualityData");
     }
 
-    @GetMapping("/AirQualityData")
+    @GetMapping("/")
     public CompletableFuture<Object> getAllAirQualityData() {
         log.info("Received and transfer request for all air quality data");
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllAirQualityData");

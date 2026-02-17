@@ -17,7 +17,7 @@ import com.example.demo.sensor.SensorDataAirParticulates;
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping("/airParticulates")
+@RequestMapping("/airParticulatesData")
 public class ControllerAirParticulates {
     private static final Logger log = LoggerFactory.getLogger(ControllerAirParticulates.class);
     @Value("${important}")
@@ -29,19 +29,19 @@ public class ControllerAirParticulates {
     @Autowired
     private QueueService queueService;
 
-    @PostMapping("/AirParticalData")
+    @PostMapping("/")
     public CompletableFuture<Object> recriveAirPartical(@RequestBody SensorDataAirParticulates data) {
         log.info("Received and transfer air particulates data");
         return queueService.addRequestToQueue(NORMAL, data, "recriveAirPartical");
     }
 
-    @GetMapping("/AirParticalData/{deviceId}")
+    @GetMapping("/{deviceId}")
     public CompletableFuture<Object> getAirParticalData(@PathVariable String deviceId) {
         log.info("Received and transfer request for air particulates data of device");
         return queueService.addRequestToQueue(IMPORTANT, deviceId, "getAirParticalData");
     }
 
-    @GetMapping("/AirParticalData")
+    @GetMapping("/")
     public CompletableFuture<Object> getAllAirParticalData() {
         log.info("Received and transfer request for all air particulates data");
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllAirParticalData");

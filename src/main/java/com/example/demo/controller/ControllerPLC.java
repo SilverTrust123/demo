@@ -39,7 +39,7 @@ public class ControllerPLC {
 
     // 數位雙生：讀取 M 點狀態
     // 回傳：NoDevice / Error / 真偽值
-    @GetMapping("/plc/MPointState")
+    @GetMapping("/MPointState")
     public CompletableFuture<Object> MpointState(@RequestParam(required = false) String param) {
         log.info("transfer received read m point request {} ", param);
         return queueService.addRequestToQueue(NORMAL, param, "MpointState");
@@ -47,31 +47,31 @@ public class ControllerPLC {
 
     // 詢問現在參數：讀取 D 點數值
     // 回傳：NoDevice / Error / 實際數值
-    @GetMapping("/plc/DPointData")
+    @GetMapping("/DPointData")
     public CompletableFuture<Object> DPointData(@RequestParam(required = false) String param) {
         log.info("transfer received read d point request {} ", param);
         return queueService.addRequestToQueue(NORMAL, param, "DPointData");
     }
 
-    @GetMapping("/plc/AllDPointData")
+    @GetMapping("/AllDPointData")
     public CompletableFuture<Object> AllDPointData() throws Exception {
         log.info("transfer received read all DPoint request");
         return queueService.addRequestToQueue(IMPORTANT, null, "AllDPointData");
     }
 
-    @GetMapping("/plc/AllMPointData")
+    @GetMapping("/AllMPointData")
     public CompletableFuture<Object> AllMPointData() throws Exception {
         log.info("transfer received read all MPoint request");
         return queueService.addRequestToQueue(IMPORTANT, null, "AllMPointData");
     }
 
-    @GetMapping("/plc/state")
+    @GetMapping("/state")
     public CompletableFuture<Object> plcState() {
         log.info("transfer received plc state request");
         return queueService.addRequestToQueue(IMPORTANT, null, "plcState");
     }
 
-    @PostMapping("/plc/writeMPoint")
+    @PostMapping("/writeMPoint")
     public CompletableFuture<Object> writeMPoint(@RequestBody Map<String, Object> payload) {
         String param = (String) payload.get("param");
         Boolean value = (Boolean) payload.get("value");
@@ -79,7 +79,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(URGENT, payload, "writeMPoint");
     }
 
-    @PostMapping("/plc/writeDPoint")
+    @PostMapping("/writeDPoint")
     public CompletableFuture<Object> writeDPoint(@RequestBody Map<String, Object> payload) {
         String param = (String) payload.get("param");
         Object valueObj = payload.get("value");
