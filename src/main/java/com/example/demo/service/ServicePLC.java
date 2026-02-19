@@ -108,13 +108,13 @@ public class ServicePLC {
         return new ResponseAllMPointStateDTO(curr);
     }
 
-    public String plcState() {
+    public ResponsePointState plcState() {
         try {
             log.info("received plc state request");
-            return String.valueOf(plc.readD(plc.getDPoint("STATE")));
+            return new ResponsePointState(String.valueOf(plc.readD(plc.getDPoint("STATE"))));
         } catch (Exception e) {
             log.error("Error reading PLC state: {}", e.getMessage());
-            return "PLC Disconnected: " + e.getMessage();
+            return new ResponsePointState("PLC Disconnected: " + e.getMessage());
         }
     }
 
