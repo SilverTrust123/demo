@@ -7,8 +7,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.plc.PLCController;
 
@@ -37,7 +35,7 @@ public class ServicePLC {
         }
     }
 
-    public String MpointState(@RequestParam(required = false) String param) {
+    public String MpointState(String param) {
         log.info("receieved read m point request {} ", param);
         try {
             if (param == null || param.isEmpty()) {
@@ -61,7 +59,7 @@ public class ServicePLC {
         }
     }
 
-    public String DPointData(@RequestParam(required = false) String param) {
+    public String DPointData(String param) {
         try {
             log.info("received read d point request {} ", param);
 
@@ -123,7 +121,7 @@ public class ServicePLC {
         }
     }
 
-    public String writeMPoint(@RequestBody Map<String, Object> payload) {
+    public String writeMPoint(Map<String, Object> payload) {
         try {
 
             log.info("Received payload: {}", payload);
@@ -161,7 +159,7 @@ public class ServicePLC {
         }
     }
 
-    public String writeDPoint(@RequestBody Map<String, Object> payload) {
+    public String writeDPoint(Map<String, Object> payload) {
         try {
 
             log.info("Received payload: {}", payload);

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.cam.SensorDataCam;
+import com.example.demo.DTO.requestDTO.RequestCamDTO;
 import com.example.demo.priorityQueueTask.QueueService;
 import org.slf4j.Logger;
 

@@ -1,11 +1,10 @@
-package com.example.demo.cam;
+package com.example.demo.DTO.requestDTO;
 
 import java.util.List;
 
-public class SensorDataCam {
+public class RequestCamDTO {
 
-    private String deviceId; // 攝影機 ID
-    // private LocalDateTime timestamp; // 時間戳記
+    private String deviceId;
     private boolean danger; // 是否危險
     private int personCount; // 人數
     private List<List<Integer>> dangerZone; // 危險區座標
