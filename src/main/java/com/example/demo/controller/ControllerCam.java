@@ -30,7 +30,7 @@ public class ControllerCam {
     private QueueService queueService;
 
     @PostMapping("/")
-    public CompletableFuture<Object> receiveCamData(@RequestBody SensorDataCam data) {
+    public CompletableFuture<Object> receiveCamData(@RequestBody RequestCamDTO data) {
         log.info("Received and transfer cam data");
         return queueService.addRequestToQueue(URGENT, data, "receiveCamData");
     }

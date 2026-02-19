@@ -3,8 +3,8 @@ package com.example.demo.DTO.responseDTO;
 import com.example.demo.DTO.requestDTO.DetectedObjectDTO;
 import java.util.List;
 
-public record ResponseCam(String deviceId, boolean danger, int personCount, List<List<Integer>> dangerZone,
-        List<DetectedObjectDTO> objects, int timestamp) {
+public record ResponseCamDTO(String deviceId, boolean danger, int personCount, List<List<Integer>> dangerZone,
+                List<DetectedObjectDTO> objects, int timestamp) {
 }
 
 // private String deviceId;

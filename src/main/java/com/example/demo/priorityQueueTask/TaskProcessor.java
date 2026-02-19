@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.cam.SensorDataCam;
 import com.example.demo.service.*;
 import org.slf4j.Logger;
 
@@ -137,7 +136,7 @@ public class TaskProcessor {
                                 result = serviceCircuit.getAllCircuitData();
 
                             case "receiveCamData":
-                                SensorDataCam data_cam = (SensorDataCam) task.getData();
+                                RequestCamDTO data_cam = (RequestCamDTO) task.getData();
                                 result = serviceCam.receiveCamData(data_cam);
 
                             case "getCamData":
