@@ -8,14 +8,14 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.plc.PLCController;
+import com.example.demo.plc.PLCDriver;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
 
 @Service
 public class ServicePLC {
-    private PLCController plc;
+    private PLCDriver plc;
     Dotenv dotenv = Dotenv.load();
     private String plcIP = dotenv.get("PLC_IP");
     private int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
@@ -25,7 +25,7 @@ public class ServicePLC {
     @PostConstruct
     public void init() {
         try {
-            this.plc = new PLCController(plcIP, tcpPort);
+            this.plc = new PLCDriver(plcIP, tcpPort);
             plcConnected = true;
             log.info("PLC connect secces");
             System.out.println("PLC 連線成功");

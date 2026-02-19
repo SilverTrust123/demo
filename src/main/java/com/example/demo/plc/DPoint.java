@@ -9,6 +9,11 @@ public class DPoint {
         this.name = name;
     }
 
-    public int getAddress() { return address; }
-    public String getName() { return name; }
+    public int getAddress() {
+        return address;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

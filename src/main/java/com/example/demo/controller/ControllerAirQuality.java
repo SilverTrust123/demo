@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.requestDTO.RequestAirParticulatesDTO;
-import com.example.demo.DTO.responseDTO.ResponseAirParticulatesDTO;
 import com.example.demo.priorityQueueTask.QueueService;
 
 @RestController

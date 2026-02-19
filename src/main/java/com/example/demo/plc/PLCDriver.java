@@ -13,7 +13,7 @@ import com.serotonin.modbus4j.msg.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PLCController {
+public class PLCDriver {
     private ModbusMaster master;
 
     private final MPoint RTESTART = new MPoint(90, "重來");
@@ -44,7 +44,7 @@ public class PLCController {
     private final Map<String, MPoint> MPointMap = new HashMap<>();
     private final Map<String, DPoint> DPointMap = new HashMap<>();
 
-    private static final Logger log = LoggerFactory.getLogger(PLCController.class);
+    private static final Logger log = LoggerFactory.getLogger(PLCDriver.class);
 
     // 先預留RTU街口 直接搬到PC上面實驗 當備案吧
     // SerialParameters params = new SerialParameters();
@@ -54,7 +54,7 @@ public class PLCController {
     // params.setStopBits(1);
     // params.setParity(0); // 0=None, 1=Odd, 2=Even
 
-    public PLCController(String ip, int port) throws Exception {
+    public PLCDriver(String ip, int port) throws Exception {
         IpParameters params = new IpParameters();
         params.setHost(ip);
         params.setPort(port);

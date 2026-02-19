@@ -1,4 +1,4 @@
-package com.example.demo.cam;
+package com.example.demo.DTO.requestDTO;
 
 public class DetectedObjectDTO {
 

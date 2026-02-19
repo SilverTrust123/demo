@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.requestDTO.RequestTemperatureAndHumidityDTO;
-import com.example.demo.DTO.responseDTO.ResponseTemperatureAndHumidityDTO;
 
 import com.example.demo.priorityQueueTask.QueueService;
 

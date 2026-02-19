@@ -37,6 +37,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(NORMAL, null, "PLCConnect");
     }
 
+    // -----------
     // 數位雙生：讀取 M 點狀態
     // 回傳：NoDevice / Error / 真偽值
     @GetMapping("/MPointState")
@@ -45,6 +46,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, param, "MpointState");
     }
 
+    // -----------
     // 詢問現在參數：讀取 D 點數值
     // 回傳：NoDevice / Error / 實際數值
     @GetMapping("/DPointData")
@@ -71,6 +73,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, null, "plcState");
     }
 
+    // ----------------
     @PostMapping("/writeMPoint")
     public CompletableFuture<Object> writeMPoint(@RequestBody Map<String, Object> payload) {
         String param = (String) payload.get("param");
@@ -79,6 +82,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(URGENT, payload, "writeMPoint");
     }
 
+    // ---------------------------------
     @PostMapping("/writeDPoint")
     public CompletableFuture<Object> writeDPoint(@RequestBody Map<String, Object> payload) {
         String param = (String) payload.get("param");
