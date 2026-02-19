@@ -60,10 +60,10 @@ public class TaskProcessor {
                 while (true) {
                     try {
                         JobTask<?> task = queueService.takeTask();
-                        String type = task.getTaskType(); // 看看標籤寫什麼
+                        String type = task.getTaskType();
                         Object result = null;
 
-                        // --- 分流開始 ---
+                        // 分流開始
                         switch (type) {
                             case "receiveTemparatureAndHumidityData":
                                 RequestTemperatureAndHumidityDTO data_temp = (RequestTemperatureAndHumidityDTO) task
@@ -172,9 +172,7 @@ public class TaskProcessor {
                                 log.warn("Unknown task type: {}", type);
                                 break;
                         }
-                        // --- 分流結束 ---
 
-                        // 把結果回傳
                         if (task.getFuture() != null) {
                             task.getFuture().complete(result);
                             log.info("Task of type {} completed with result: {}", type, result);
