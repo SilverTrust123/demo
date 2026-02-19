@@ -76,9 +76,9 @@ public class ControllerPLC {
 
     // ----------------
     @PostMapping("/writeMPoint")
-    public CompletableFuture<Object> writeMPoint(@RequestBody Map<String, Object> payload) {
-        String param = (String) payload.get("param");
-        Boolean value = (Boolean) payload.get("value");
+    public CompletableFuture<Object> writeMPoint(@RequestBody RequestWriteMPointDTO payload) {
+        String param = (String) payload.param();
+        Boolean value = (Boolean) payload.value();
         log.info("transfer received write MPoint request with param {} and value {}", param, value);
         return queueService.addRequestToQueue(URGENT, payload, "writeMPoint");
     }

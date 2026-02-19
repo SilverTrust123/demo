@@ -118,41 +118,50 @@ public class ServicePLC {
         }
     }
 
-    public String writeMPoint(Map<String, Object> payload) {
+    // try {
+
+    // log.info("Received payload: {}", payload);
+    // Object deviceObj = payload.get("device");
+    // if (!(deviceObj instanceof String)) {
+    // log.warn("Device parameter is not a string: {}", deviceObj);
+    // return "device Error: must be a string";
+    // }
+    // String param = (String) deviceObj;
+    // if (param.isEmpty() || plc.MdeviceIsEmpty(param)) {
+    // log.warn("MPoint write: device not found -> {}", param);
+    // return "NoDevice";
+    // }
+
+    // Object valueObj = payload.get("value");
+    // boolean value;
+    // if (valueObj instanceof Boolean) {
+    // value = (Boolean) valueObj;
+    // } else if (valueObj instanceof String) {
+    // value = Boolean.parseBoolean((String) valueObj);
+    // } else if (valueObj instanceof Number) {
+    // value = ((Number) valueObj).intValue() != 0;
+    // } else {
+    // log.warn("Value parameter is not a valid type: {}", valueObj);
+    // return "value Error: must be boolean, string, or number";
+    // }
+    // plc.writeM(plc.getMPoint(param), value);
+    // log.info("Success MPoint {} set to {}", param, value);
+    // return "Success: " + param + " set to " + value;
+
+    // } catch (Exception e) {
+    // log.error("Error writing MPoint: {}", e.getMessage());
+    // e.printStackTrace();
+    // return "Error: " + e.getMessage();
+    // }
+    public ResponsePointState writeMPoint(String param, Boolean value) {
         try {
-
-            log.info("Received payload: {}", payload);
-            Object deviceObj = payload.get("device");
-            if (!(deviceObj instanceof String)) {
-                log.warn("Device parameter is not a string: {}", deviceObj);
-                return "device Error: must be a string";
-            }
-            String param = (String) deviceObj;
-            if (param.isEmpty() || plc.MdeviceIsEmpty(param)) {
-                log.warn("MPoint write: device not found -> {}", param);
-                return "NoDevice";
-            }
-
-            Object valueObj = payload.get("value");
-            boolean value;
-            if (valueObj instanceof Boolean) {
-                value = (Boolean) valueObj;
-            } else if (valueObj instanceof String) {
-                value = Boolean.parseBoolean((String) valueObj);
-            } else if (valueObj instanceof Number) {
-                value = ((Number) valueObj).intValue() != 0;
-            } else {
-                log.warn("Value parameter is not a valid type: {}", valueObj);
-                return "value Error: must be boolean, string, or number";
-            }
             plc.writeM(plc.getMPoint(param), value);
             log.info("Success MPoint {} set to {}", param, value);
-            return "Success: " + param + " set to " + value;
-
+            return new ResponsePointState("Success: " + param + " set to " + value);
         } catch (Exception e) {
             log.error("Error writing MPoint: {}", e.getMessage());
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return new ResponsePointState("Error: " + e.getMessage());
         }
     }
 
