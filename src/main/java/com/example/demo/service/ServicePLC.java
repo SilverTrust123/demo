@@ -86,26 +86,26 @@ public class ServicePLC {
         }
     }
 
-    public Map<String, Integer> AllDPointData() throws Exception {
+    public ResponseAllDPointStateDTO AllDPointData() throws Exception {
         HashMap<String, Integer> curr = plc.getAllDPoints();
         log.info("received get all DPoint request");
         if (curr.isEmpty()) {
             log.warn("no DPoint data its empty");
-            return new HashMap<>();
+            return new ResponseAllDPointStateDTO(curr);
         }
         log.info("request accept return {} ", curr);
-        return curr;
+        return new ResponseAllDPointStateDTO(curr);
     }
 
-    public Map<String, Boolean> AllMPointData() throws Exception {
+    public ResponseAllMPointStateDTO AllMPointData() throws Exception {
         HashMap<String, Boolean> curr = plc.getAllMPoints();
         log.info("received get all MPoint request");
         if (curr.isEmpty()) {
             log.warn("no M point data its empty");
-            return new HashMap<>();
+            return new ResponseAllMPointStateDTO();
         }
         log.info("request accept return {} ", curr);
-        return curr;
+        return new ResponseAllMPointStateDTO(curr);
     }
 
     public String plcState() {

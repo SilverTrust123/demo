@@ -1,7 +1,7 @@
 package com.example.demo.DTO.responseDTO.PLCResponseDTO;
 
-import java.util.Map;
+import java.util.HashMap;
 
-public record ResponseAllDPointStateDTO(Map<String, Integer> reply) {
+public record ResponseAllDPointStateDTO(HashMap<String, Integer> reply) {
 
 }
