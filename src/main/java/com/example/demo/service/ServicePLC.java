@@ -61,29 +61,28 @@ public class ServicePLC {
         }
     }
 
-    public String DPointData(String param) {
+    public ResponsePointState DPointData(String param) {
         try {
             log.info("received read d point request {} ", param);
 
             if (param == null || param.isEmpty()) {
                 log.warn("DPointData: param is null or empty");
-                return "NoDevice";
+                return new ResponsePointState("NoDevice");
             }
 
             if (plc.DdeviceIsEmpty(param)) {
                 log.warn("DPointData: device not found -> {}", param);
-                return "NoDevice";
+                return new ResponsePointState("NoDevice");
             }
 
             int val = plc.readD(plc.getDPoint(param));
             log.info("DPointData: {} = {}", param, val);
-
-            return String.valueOf(val);
+            return new ResponsePointState(String.valueOf(val));
 
         } catch (Exception e) {
             log.error("DPointData error param {} with error {}", param, e.getMessage());
             e.printStackTrace();
-            return "Error";
+            return new ResponsePointState("Error");
         }
     }
 

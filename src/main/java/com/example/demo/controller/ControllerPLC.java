@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
@@ -52,7 +51,7 @@ public class ControllerPLC {
     // 詢問現在參數：讀取 D 點數值
     // 回傳：NoDevice / Error / 實際數值
     @GetMapping("/DPointData")
-    public CompletableFuture<Object> DPointData(@RequestParam(required = false) String param) {
+    public CompletableFuture<Object> DPointData(@RequestBody RequestDPointStateDTO param) {
         log.info("transfer received read d point request {} ", param);
         return queueService.addRequestToQueue(IMPORTANT, param, "DPointData");
     }

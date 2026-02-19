@@ -14,6 +14,7 @@ import com.example.demo.service.*;
 import org.slf4j.Logger;
 
 import com.example.demo.DTO.requestDTO.*;
+import com.example.demo.DTO.requestDTO.PLCRequestDTO.RequestDPointStateDTO;
 import com.example.demo.DTO.requestDTO.PLCRequestDTO.RequestMPointStateDTO;
 
 import java.util.concurrent.ExecutorService;
@@ -94,7 +95,8 @@ public class TaskProcessor {
                                 break;
 
                             case "DPointData":
-                                String dPointParam = (String) task.getData();
+                                RequestDPointStateDTO rqDPoint = (RequestDPointStateDTO) task.getData();
+                                String dPointParam = rqDPoint.param();
                                 result = servicePLC.DPointData(dPointParam);
                                 break;
 
