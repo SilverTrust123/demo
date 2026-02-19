@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.requestDTO.RequestAirParticulatesDTO;
 import com.example.demo.priorityQueueTask.QueueService;
-import com.example.demo.sensor.SensorDataAirParticulates;
+
 import org.slf4j.Logger;
 
 @RestController
@@ -30,7 +31,7 @@ public class ControllerAirParticulates {
     private QueueService queueService;
 
     @PostMapping("/")
-    public CompletableFuture<Object> recriveAirPartical(@RequestBody SensorDataAirParticulates data) {
+    public CompletableFuture<Object> recriveAirPartical(@RequestBody RequestAirParticulatesDTO data) {
         log.info("Received and transfer air particulates data");
         return queueService.addRequestToQueue(NORMAL, data, "recriveAirPartical");
     }

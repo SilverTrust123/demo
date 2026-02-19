@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.requestDTO.RequestTemperatureAndHumidityDTO;
+import com.example.demo.DTO.responseDTO.ResponseTemperatureAndHumidityDTO;
+
 import com.example.demo.priorityQueueTask.QueueService;
-import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 
 import org.slf4j.Logger;
 
@@ -33,7 +35,7 @@ public class ControllerTemparatureAndHumidity {
 
     @PostMapping("/")
     public CompletableFuture<Object> receiveTemparatureAndHumidityData(
-            @RequestBody SensorDataTemperatureAndHumidity data) {
+            @RequestBody RequestTemperatureAndHumidityDTO data) {
         log.info("Received and put in priority queue and transfer to service");
         return queueService.addRequestToQueue(NORMAL, data, "receiveTemparatureAndHumidityData");
     }

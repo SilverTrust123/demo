@@ -1,9 +1,15 @@
-package com.example.demo.sensor;
+package com.example.demo.DTO.responseDTO;
 
-public class SensorDataAirQuality {
+public class ResponseAirQualityDTO {
     private String deviceId;
     private float airPollution;
     private int timestamp;
+
+    public ResponseAirQualityDTO(String deviceId, float airPollution, int timestamp) {
+        this.deviceId = deviceId;
+        this.airPollution = airPollution;
+        this.timestamp = timestamp;
+    }
 
     public int getTimestamp() {
         return timestamp;

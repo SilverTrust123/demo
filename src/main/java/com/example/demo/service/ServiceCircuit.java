@@ -7,10 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.example.demo.sensor.SensorDataCircuit;
+import com.example.demo.DTO.requestDTO.RequestCircuitDTO;
+import com.example.demo.DTO.responseDTO.ResponseCircuitDTO;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -19,40 +17,54 @@ import org.slf4j.LoggerFactory;
 
 @Service
 public class ServiceCircuit {
-    private Map<String, SensorDataCircuit> circuitDataMap = new ConcurrentHashMap<>();
+    private Map<String, ResponseCircuitDTO> circuitDataMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(ServiceCircuit.class);
 
-    public String receiveCircuitData(@RequestBody SensorDataCircuit data) {
-        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
-            log.info("circuit data is required follow by detail", data);
+    public String receiveCircuitData(RequestCircuitDTO request) {
+        if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
+            log.info("circuit data is required follow by detail", request);
             return "circuit deviceId is required";
         }
-        // historyMap, String deviceId,double newValue
-        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
-        String deviceId = data.getDeviceId();
-        float rawVol = data.getVoltage();
-        float smoothVol = calculateAverage(circuitHistoryMap, deviceId, (double) rawVol);
-        data.setVoltage(smoothVol);
-        circuitDataMap.put(deviceId, data);
-        log.info("{}put in ok", deviceId);
+
+        String deviceId = request.getDeviceId();
+        float rawVoltage = request.getVoltage();
+        float smoothVoltage = calculateAverage(circuitHistoryMap, deviceId, (double) rawVoltage);
+        float rawCurrent = request.getCurrent();
+        float smoothCurrent = calculateAverage(circuitHistoryMap, deviceId, rawCurrent);
+        float rawPower = request.getPower();
+        float smoothPower = calculateAverage(circuitHistoryMap, deviceId, rawPower);
+        float rawEnergy = request.getEnergy();
+        float smoothEnergy = calculateAverage(circuitHistoryMap, deviceId, rawEnergy);
+        int currentTimestamp = (int) (System.currentTimeMillis() / 1000L);
+        ResponseCircuitDTO finalData = new ResponseCircuitDTO(
+                deviceId,
+                smoothVoltage,
+                smoothCurrent,
+                smoothPower,
+                smoothEnergy,
+                currentTimestamp);
+
+        circuitDataMap.put(deviceId, finalData);
+
+        log.info("{} put in ok", deviceId);
         return "OK";
     }
 
-    public SensorDataCircuit getCircuitData(@PathVariable String deviceId) {
-        SensorDataCircuit ans = circuitDataMap.get(deviceId);
+    public ResponseCircuitDTO getCircuitData(String deviceId) {
+        ResponseCircuitDTO ans = circuitDataMap.get(deviceId);
         if (ans != null && isTimeValid(ans)) {
             log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
-        return new SensorDataCircuit();
+        return new ResponseCircuitDTO(deviceId, 0f, 0f, 0f, 0f, 0);
     }
 
-    public Collection<SensorDataCircuit> getAllCircuitData() {
-        Collection<SensorDataCircuit> ans = circuitDataMap.values()
+    public Collection<ResponseCircuitDTO> getAllCircuitData() {
+        Collection<ResponseCircuitDTO> ans = circuitDataMap.values()
                 .stream()
                 .filter(this::isTimeValid)
                 .toList();
@@ -60,7 +72,7 @@ public class ServiceCircuit {
         return ans;
     }
 
-    private boolean isTimeValid(SensorDataCircuit data) {
+    private boolean isTimeValid(ResponseCircuitDTO data) {
         if (data == null) {
             return false;
         }

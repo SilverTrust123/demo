@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.cam.SensorDataCam;
-import com.example.demo.sensor.SensorDataAirParticulates;
-import com.example.demo.sensor.SensorDataAirQuality;
-import com.example.demo.sensor.SensorDataCircuit;
-import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
 import com.example.demo.service.*;
 import org.slf4j.Logger;
+
+import com.example.demo.DTO.requestDTO.*;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,7 +67,7 @@ public class TaskProcessor {
                         // --- 分流開始 ---
                         switch (type) {
                             case "receiveTemparatureAndHumidityData":
-                                SensorDataTemperatureAndHumidity data_temp = (SensorDataTemperatureAndHumidity) task
+                                RequestTemperatureAndHumidityDTO data_temp = (RequestTemperatureAndHumidityDTO) task
                                         .getData();
                                 result = serviceTemparatureAndHumidity
                                         .receiveTemparatureAndHumidityData(data_temp);
@@ -127,7 +125,7 @@ public class TaskProcessor {
                                 result = serviceData.AllData();
 
                             case "receiveCircuitData":
-                                SensorDataCircuit data_cir = (SensorDataCircuit) task.getData();
+                                RequestCircuitDTO data_cir = (RequestCircuitDTO) task.getData();
                                 result = serviceCircuit.receiveCircuitData(data_cir);
 
                             case "getCircuitData":
@@ -150,7 +148,7 @@ public class TaskProcessor {
                                 result = serviceCam.getAllCamData();
 
                             case "recriveAirQuality":
-                                SensorDataAirQuality data_air_qua = (SensorDataAirQuality) task.getData();
+                                RequestAirQualityDTO data_air_qua = (RequestAirQualityDTO) task.getData();
                                 result = serviceAirQuality.recriveAirQuality(data_air_qua);
 
                             case "getAirQualityData":
@@ -161,7 +159,7 @@ public class TaskProcessor {
                                 result = serviceAirQuality.getAllAirQualityData();
 
                             case "recriveAirPartical":
-                                SensorDataAirParticulates data_air_par = (SensorDataAirParticulates) task.getData();
+                                RequestAirParticulatesDTO data_air_par = (RequestAirParticulatesDTO) task.getData();
                                 result = serviceAirParticulates.recriveAirPartical(data_air_par);
 
                             case "getAirParticalData":

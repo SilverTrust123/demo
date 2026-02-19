@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.requestDTO.RequestAirParticulatesDTO;
+import com.example.demo.DTO.responseDTO.ResponseAirParticulatesDTO;
 import com.example.demo.priorityQueueTask.QueueService;
-import com.example.demo.sensor.SensorDataAirQuality;
 
 @RestController
 @RequestMapping("/airQualityData")
@@ -30,7 +31,7 @@ public class ControllerAirQuality {
     private QueueService queueService;
 
     @PostMapping("/")
-    public CompletableFuture<Object> recriveAirQuality(@RequestBody SensorDataAirQuality data) {
+    public CompletableFuture<Object> recriveAirQuality(@RequestBody RequestAirParticulatesDTO data) {
         log.info("Received and transfer air quality data");
         return queueService.addRequestToQueue(NORMAL, data, "recriveAirQuality");
     }

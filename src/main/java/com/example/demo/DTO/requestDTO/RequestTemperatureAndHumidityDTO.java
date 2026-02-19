@@ -1,6 +1,6 @@
-package com.example.demo.sensor;
+package com.example.demo.DTO.requestDTO;
 
-public class SensorDataTemperatureAndHumidity {
+public class RequestTemperatureAndHumidityDTO {
     private String deviceId;
     private float temperature;
     private float humidity;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.sensor.SensorDataCircuit;
+import com.example.demo.DTO.requestDTO.RequestCircuitDTO;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -31,7 +32,7 @@ public class ControllerCircuit {
     private QueueService queueService;
 
     @PostMapping("/")
-    public CompletableFuture<Object> receiveCircuitData(@RequestBody SensorDataCircuit data) {
+    public CompletableFuture<Object> receiveCircuitData(@RequestBody RequestCircuitDTO data) {
         log.info("Received and transfer circuit data");
         return queueService.addRequestToQueue(NORMAL, data, "receiveCircuitData");
     }

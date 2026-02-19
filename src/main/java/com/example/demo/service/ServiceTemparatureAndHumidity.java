@@ -9,55 +9,69 @@ import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.example.demo.sensor.SensorDataTemperatureAndHumidity;
+import com.example.demo.DTO.requestDTO.RequestTemperatureAndHumidityDTO;
+import com.example.demo.DTO.responseDTO.ResponseTemperatureAndHumidityDTO;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
 @Service
 public class ServiceTemparatureAndHumidity {
 
-    private Map<String, SensorDataTemperatureAndHumidity> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
+    private Map<String, ResponseTemperatureAndHumidityDTO> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> humidHistoryMap = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(ServiceTemparatureAndHumidity.class);
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
 
-    public String receiveTemparatureAndHumidityData(@RequestBody SensorDataTemperatureAndHumidity data) {
-        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
-            log.info("Temparature and humidity deviceId is required follow by detail", data);
+    public String receiveTemparatureAndHumidityData(RequestTemperatureAndHumidityDTO request) {
+        if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
+            log.info("Temparature and humidity deviceId is required follow by detail {}", request);
             return "Temparature and humidity deviceId is required";
         }
-        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
-        String deviceId = data.getDeviceId();
-        double rawTemp = data.getTemperature();
-        float smoothTemp = calculateAverage(tempHistoryMap, deviceId, rawTemp);
-        data.setTemperature(smoothTemp);
-        double rawHumid = data.getHumidity();
-        float smoothHumid = calculateAverage(humidHistoryMap, deviceId, rawHumid);
-        data.setHumidity(smoothHumid);
-        temperatureAndHumidityDataMap.put(deviceId, data);
+        // data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
+        String deviceId = request.getDeviceId();
+        int timestamp = (int) (System.currentTimeMillis() / 1000L);
+        float rawTemparature = request.getTemperature();
+        float smoothTemparature = calculateAverage(tempHistoryMap, deviceId, rawTemparature);
+        float rawHumidity = request.getHumidity();
+        float smoothHumidity = calculateAverage(humidHistoryMap, deviceId, rawHumidity);
+        // double rawTemp = data.getTemperature();
+        // float smoothTemp = calculateAverage(tempHistoryMap, deviceId, rawTemp);
+        // data.setTemperature(smoothTemp);
+        // double rawHumid = data.getHumidity();
+        // float smoothHumid = calculateAverage(humidHistoryMap, deviceId, rawHumid);
+        // data.setHumidity(smoothHumid);
+        // private String deviceId;
+        // private float temperature;
+        // private float humidity;
+        // private int timestamp;
+        ResponseTemperatureAndHumidityDTO finalData = new ResponseTemperatureAndHumidityDTO(
+                deviceId,
+                smoothTemparature,
+                smoothHumidity,
+                timestamp);
+
+        temperatureAndHumidityDataMap.put(deviceId, finalData);
         log.info("{}put in ok", deviceId);
 
         return "OK";
     }
 
-    public SensorDataTemperatureAndHumidity getTemparatureAndHumidityData(@PathVariable String deviceId) {
-        SensorDataTemperatureAndHumidity ans = temperatureAndHumidityDataMap.get(deviceId);
+    public ResponseTemperatureAndHumidityDTO getTemparatureAndHumidityData(String deviceId) {
+        ResponseTemperatureAndHumidityDTO ans = temperatureAndHumidityDataMap.get(deviceId);
         if (ans != null && isTimeValid(ans)) {
             log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
-        return new SensorDataTemperatureAndHumidity();
+        return new ResponseTemperatureAndHumidityDTO(deviceId, 0, 0, 0);
 
     }
 
-    public Collection<SensorDataTemperatureAndHumidity> getAllTemparatureAndHumidityData() {
-        Collection<SensorDataTemperatureAndHumidity> ans = temperatureAndHumidityDataMap.values()
+    public Collection<ResponseTemperatureAndHumidityDTO> getAllTemparatureAndHumidityData() {
+        Collection<ResponseTemperatureAndHumidityDTO> ans = temperatureAndHumidityDataMap.values()
                 .stream()
                 .filter(this::isTimeValid)
                 .toList();
@@ -65,7 +79,7 @@ public class ServiceTemparatureAndHumidity {
         return ans;
     }
 
-    private boolean isTimeValid(SensorDataTemperatureAndHumidity data) {
+    private boolean isTimeValid(ResponseTemperatureAndHumidityDTO data) {
         if (data == null) {
             return false;
         }

@@ -9,48 +9,50 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.example.demo.sensor.SensorDataAirQuality;
+import com.example.demo.DTO.requestDTO.RequestAirQualityDTO;
+import com.example.demo.DTO.responseDTO.ResponseAirQualityDTO;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
 @Service
 public class ServiceAirQuality {
-    private Map<String, SensorDataAirQuality> airQualityDataMap = new ConcurrentHashMap<>();
+    private Map<String, ResponseAirQualityDTO> airQualityDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> airQualityHistoryMap = new ConcurrentHashMap<>();
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(ServiceAirQuality.class);
 
-    public String recriveAirQuality(@RequestBody SensorDataAirQuality data) {
-        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
-            log.info("air quality deviceId is required detaild by follow {} ", data);
+    public String recriveAirQuality(RequestAirQualityDTO request) {
+        if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
+            log.info("air quality deviceId is required detaild by follow {} ", request);
             return "air quality deviceId is required";
         }
-        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
-        String deviceId = data.getDeviceId();
-        float rawAQ = data.getAirPollution();
+        String deviceId = request.getDeviceId();
+        float rawAQ = request.getAirPollution();
         float smoothAQ = calculateAverage(airQualityHistoryMap, deviceId, rawAQ);
-        data.setAirPollution(smoothAQ);
-        airQualityDataMap.put(deviceId, data);
+        int currentTimestamp = (int) (System.currentTimeMillis() / 1000L);
+        ResponseAirQualityDTO finalData = new ResponseAirQualityDTO(
+                deviceId,
+                smoothAQ,
+                currentTimestamp);
+        airQualityDataMap.put(deviceId, finalData);
         log.info("{} put in ok", deviceId);
         return "OK";
     }
 
-    public SensorDataAirQuality getAirQualityData(@PathVariable String deviceId) {
-        SensorDataAirQuality ans = airQualityDataMap.get(deviceId);
+    public ResponseAirQualityDTO getAirQualityData(String deviceId) {
+        ResponseAirQualityDTO ans = airQualityDataMap.get(deviceId);
         if (ans != null && isTimeValid(ans)) {
             log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
-        return new SensorDataAirQuality();
+        return new ResponseAirQualityDTO(deviceId, 0f, 0);
     }
 
-    public Collection<SensorDataAirQuality> getAllAirQualityData() {
-        Collection<SensorDataAirQuality> ans = airQualityDataMap.values()
+    public Collection<ResponseAirQualityDTO> getAllAirQualityData() {
+        Collection<ResponseAirQualityDTO> ans = airQualityDataMap.values()
                 .stream()
                 .filter(this::isTimeValid)
                 .toList();
@@ -58,7 +60,7 @@ public class ServiceAirQuality {
         return ans;
     }
 
-    private boolean isTimeValid(SensorDataAirQuality data) {
+    private boolean isTimeValid(ResponseAirQualityDTO data) {
         if (data == null) {
             return false;
         }

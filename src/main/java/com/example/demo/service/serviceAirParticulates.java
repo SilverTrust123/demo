@@ -9,49 +9,51 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.example.demo.sensor.SensorDataAirParticulates;
+import com.example.demo.DTO.requestDTO.RequestAirParticulatesDTO;
+import com.example.demo.DTO.responseDTO.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
 @Service
 public class ServiceAirParticulates {
 
-    private Map<String, SensorDataAirParticulates> airParticulatesDataMap = new ConcurrentHashMap<>();
+    private Map<String, ResponseAirParticulatesDTO> airParticulatesDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> airParticulatesHistoryMap = new ConcurrentHashMap<>();
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(ServiceAirParticulates.class);
 
-    public String recriveAirPartical(@RequestBody SensorDataAirParticulates data) {
-        if (data.getDeviceId() == null || data.getDeviceId().isEmpty()) {
-            log.info("air particulates deviceId is required detaild by follow {} ", data);
+    public String recriveAirPartical(RequestAirParticulatesDTO request) {
+        if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
+            log.info("air particulates deviceId is required detaild by follow {} ", request);
             return "air particulates deviceId is required";
         }
-        String deviceId = data.getDeviceId();
-        float rawAP = data.getPm2_5();
-        float smoothAP = calculateAverage(airParticulatesHistoryMap, deviceId, rawAP);
-        data.setPm2_5(smoothAP);
-        data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
-        airParticulatesDataMap.put(deviceId, data);
+        String deviceId = request.getDeviceId();
+        float rawAP = request.getPm2_5();
+        int currentTimestamp = (int) (System.currentTimeMillis() / 1000L);
+        float smoothAP = calculateAverage(airParticulatesHistoryMap, deviceId, (double) rawAP);
+        ResponseAirParticulatesDTO finalData = new ResponseAirParticulatesDTO(
+                deviceId,
+                smoothAP,
+                currentTimestamp);
+        airParticulatesDataMap.put(deviceId, finalData);
         log.info("{} put in ok", deviceId);
         return "OK";
     }
 
-    public SensorDataAirParticulates getAirParticalData(@PathVariable String deviceId) {
-        SensorDataAirParticulates ans = airParticulatesDataMap.get(deviceId);
+    public ResponseAirParticulatesDTO getAirParticalData(String deviceId) {
+        ResponseAirParticulatesDTO ans = airParticulatesDataMap.get(deviceId);
         if (ans != null && isTimeValid(ans)) {
             log.info("Received request single device {} and return detail {}", deviceId, ans);
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
-        return new SensorDataAirParticulates();
+        return new ResponseAirParticulatesDTO(deviceId, 0.0f, 0);
     }
 
-    public Collection<SensorDataAirParticulates> getAllAirParticalData() {
-        Collection<SensorDataAirParticulates> ans = airParticulatesDataMap.values()
+    public Collection<ResponseAirParticulatesDTO> getAllAirParticalData() {
+        Collection<ResponseAirParticulatesDTO> ans = airParticulatesDataMap.values()
                 .stream()
                 .filter(this::isTimeValid)
                 .toList();
@@ -73,7 +75,7 @@ public class ServiceAirParticulates {
         }
     }
 
-    private boolean isTimeValid(SensorDataAirParticulates data) {
+    private boolean isTimeValid(ResponseAirParticulatesDTO data) {
         if (data == null) {
             return false;
         }
