@@ -6,6 +6,9 @@ public class RequestTemperatureAndHumidityDTO {
     private float humidity;
     private int timestamp;
 
+    public RequestTemperatureAndHumidityDTO() {
+    }
+
     public int getTimestamp() {
         return timestamp;
     }

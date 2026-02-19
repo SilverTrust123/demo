@@ -77,11 +77,11 @@ public class ServiceCircuit {
             return false;
         }
         int now = (int) (System.currentTimeMillis() / 1000L);
-        int gap = now - data.getTimestamp();
+        int gap = now - data.timestamp();
 
         if (gap > 60) {
             log.warn("Data of device {} is too old, timestamp {}, now {}",
-                    data.getDeviceId(), data.getTimestamp(), now);
+                    data.deviceId(), data.timestamp(), now);
             return false;
         }
         return true;

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
-import com.example.demo.sensor.SensorDataCircuit;
 import com.example.demo.DTO.requestDTO.RequestCircuitDTO;
 
 import java.util.concurrent.CompletableFuture;

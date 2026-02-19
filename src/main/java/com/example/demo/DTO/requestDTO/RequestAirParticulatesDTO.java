@@ -5,6 +5,9 @@ public class RequestAirParticulatesDTO {
     private float pm2_5;
     private int timestamp;
 
+    public RequestAirParticulatesDTO() {
+    }
+
     public int getTimestamp() {
         return timestamp;
     }

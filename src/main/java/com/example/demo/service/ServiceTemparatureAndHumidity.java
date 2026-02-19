@@ -30,23 +30,12 @@ public class ServiceTemparatureAndHumidity {
             log.info("Temparature and humidity deviceId is required follow by detail {}", request);
             return "Temparature and humidity deviceId is required";
         }
-        // data.setTimestamp((int) (System.currentTimeMillis() / 1000L));
         String deviceId = request.getDeviceId();
         int timestamp = (int) (System.currentTimeMillis() / 1000L);
         float rawTemparature = request.getTemperature();
         float smoothTemparature = calculateAverage(tempHistoryMap, deviceId, rawTemparature);
         float rawHumidity = request.getHumidity();
         float smoothHumidity = calculateAverage(humidHistoryMap, deviceId, rawHumidity);
-        // double rawTemp = data.getTemperature();
-        // float smoothTemp = calculateAverage(tempHistoryMap, deviceId, rawTemp);
-        // data.setTemperature(smoothTemp);
-        // double rawHumid = data.getHumidity();
-        // float smoothHumid = calculateAverage(humidHistoryMap, deviceId, rawHumid);
-        // data.setHumidity(smoothHumid);
-        // private String deviceId;
-        // private float temperature;
-        // private float humidity;
-        // private int timestamp;
         ResponseTemperatureAndHumidityDTO finalData = new ResponseTemperatureAndHumidityDTO(
                 deviceId,
                 smoothTemparature,
@@ -84,11 +73,11 @@ public class ServiceTemparatureAndHumidity {
             return false;
         }
         int now = (int) (System.currentTimeMillis() / 1000L);
-        int gap = now - data.getTimestamp();
+        int gap = now - data.timestamp();
 
         if (gap > 60) {
             log.warn("Data of device {} is too old, timestamp {}, now {}",
-                    data.getDeviceId(), data.getTimestamp(), now);
+                    data.deviceId(), data.timestamp(), now);
             return false;
         }
         return true;

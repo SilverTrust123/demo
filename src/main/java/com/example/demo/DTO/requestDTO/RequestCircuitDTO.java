@@ -8,6 +8,9 @@ public class RequestCircuitDTO {
     private float energy;
     private int timestamp;
 
+    public RequestCircuitDTO() {
+    }
+
     public int getTimestamp() {
         return timestamp;
     }

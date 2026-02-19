@@ -5,6 +5,9 @@ public class RequestAirQualityDTO {
     private float airPollution;
     private int timestamp;
 
+    public RequestAirQualityDTO() {
+    }
+
     public int getTimestamp() {
         return timestamp;
     }
