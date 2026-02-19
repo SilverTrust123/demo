@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.DTO.requestDTO.PLCRequestDTO.*;
 import org.slf4j.Logger;
 
 @RestController
@@ -40,8 +41,9 @@ public class ControllerPLC {
     // -----------
     // 數位雙生：讀取 M 點狀態
     // 回傳：NoDevice / Error / 真偽值
+    // @RequestParam(required = false) String param
     @GetMapping("/MPointState")
-    public CompletableFuture<Object> MpointState(@RequestParam(required = false) String param) {
+    public CompletableFuture<Object> MpointState(@RequestBody RequestMPointStateDTO param) {
         log.info("transfer received read m point request {} ", param);
         return queueService.addRequestToQueue(IMPORTANT, param, "MpointState");
     }

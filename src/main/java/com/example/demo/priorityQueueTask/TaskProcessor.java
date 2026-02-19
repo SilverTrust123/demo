@@ -14,6 +14,7 @@ import com.example.demo.service.*;
 import org.slf4j.Logger;
 
 import com.example.demo.DTO.requestDTO.*;
+import com.example.demo.DTO.requestDTO.PLCRequestDTO.RequestMPointStateDTO;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -87,7 +88,8 @@ public class TaskProcessor {
                                 result = servicePLC.isPlcConnected();
 
                             case "MpointState":
-                                String mPointParam = (String) task.getData();
+                                RequestMPointStateDTO rqMPoint = (RequestMPointStateDTO) task.getData();
+                                String mPointParam = rqMPoint.param();
                                 result = servicePLC.MpointState(mPointParam);
                                 break;
 

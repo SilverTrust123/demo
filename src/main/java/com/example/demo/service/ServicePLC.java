@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.plc.PLCDriver;
+import com.example.demo.DTO.responseDTO.PLCResponseDTO.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
@@ -35,27 +36,28 @@ public class ServicePLC {
         }
     }
 
-    public String MpointState(String param) {
+    public ResponsePointState MpointState(String param) {
         log.info("receieved read m point request {} ", param);
         try {
             if (param == null || param.isEmpty()) {
                 log.warn("MPointState: param is null or empty");
-                return "MPointState: param is null or empty";
+                return new ResponsePointState("MPointState: param is null or empty");
             }
 
             if (plc.MdeviceIsEmpty(param)) {
                 log.warn("MPointState: device not found {} ", param);
-                return "MPointState: device not found " + param;
+                return new ResponsePointState("MPointState: device not found " + param);
+
             }
 
             boolean state = plc.readM(plc.getMPoint(param));
             log.info("MPoint state {} been {}", param, state);
-            return "MPointState: " + param + " = " + state;
+            return new ResponsePointState("MPointState: " + param + " = " + state);
 
         } catch (Exception e) {
             log.error("MPointState error param {} with error {}", param, e.getMessage());
             e.printStackTrace();
-            return "MPointState error, param=" + param;
+            return new ResponsePointState("MPointState error, param=" + param);
         }
     }
 
