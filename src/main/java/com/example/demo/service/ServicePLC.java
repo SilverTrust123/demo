@@ -3,7 +3,6 @@ package com.example.demo.service;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
@@ -165,48 +164,16 @@ public class ServicePLC {
         }
     }
 
-    public String writeDPoint(Map<String, Object> payload) {
+    public ResponsePointState writeDPoint(String param, Integer value) {
         try {
-
-            log.info("Received payload: {}", payload);
-            Object deviceObj = payload.get("device");
-            if (!(deviceObj instanceof String)) {
-                log.warn("Device parameter is not a string: {}", deviceObj);
-                return "device Error: must be a string";
-            }
-            String param = (String) deviceObj;
-            if (param.isEmpty() || plc.DdeviceIsEmpty(param)) {
-                log.warn("DPoint write: device not found -> {}", param);
-                return "NoDevice";
-            }
-
-            Object valueObj = payload.get("value");
-            int value;
-
-            if (valueObj instanceof Number) {
-                value = ((Number) valueObj).intValue();
-            } else if (valueObj instanceof String) {
-                try {
-                    // 如果是字串，嘗試解析成整數
-                    value = Integer.parseInt((String) valueObj);
-                } catch (NumberFormatException e) {
-                    log.warn("Value string is not a valid integer: {}", valueObj);
-                    return "value Error: string must be a valid integer";
-                }
-            } else if (valueObj instanceof Boolean) {
-                value = (Boolean) valueObj ? 1 : 0;
-            } else {
-                log.warn("Value parameter is not a valid type: {}", valueObj);
-                return "value Error: must be integer, string, or boolean";
-            }
             plc.writeD(plc.getDPoint(param), value);
             log.info("Success DPoint {} set to {}", param, value);
-            return "Success: " + param + " set to " + value;
+            return new ResponsePointState("Success: " + param + " set to " + value);
 
         } catch (Exception e) {
             log.error("Error writing DPoint: {}", e.getMessage());
             e.printStackTrace();
-            return "Error: " + e.getMessage();
+            return new ResponsePointState("Error: " + e.getMessage());
         }
     }
 

@@ -3,8 +3,6 @@ package com.example.demo.priorityQueueTask;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
-import java.util.Map;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +14,8 @@ import org.slf4j.Logger;
 import com.example.demo.DTO.requestDTO.*;
 import com.example.demo.DTO.requestDTO.PLCRequestDTO.RequestDPointStateDTO;
 import com.example.demo.DTO.requestDTO.PLCRequestDTO.RequestMPointStateDTO;
+import com.example.demo.DTO.requestDTO.PLCRequestDTO.RequestWriteMPointDTO;
+import com.example.demo.DTO.requestDTO.PLCRequestDTO.RequestWriteDPointDTO;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -113,15 +113,17 @@ public class TaskProcessor {
                                 break;
 
                             case "writeMPoint":
-                                @SuppressWarnings("unchecked")
-                                Map<String, Object> dataMapM = (Map<String, Object>) task.getData();
-                                result = servicePLC.writeMPoint(dataMapM);
+                                RequestWriteMPointDTO dataMapM = (RequestWriteMPointDTO) task.getData();
+                                String paramM = (String) dataMapM.param();
+                                Boolean valueM = (Boolean) dataMapM.value();
+                                result = servicePLC.writeMPoint(paramM, valueM);
                                 break;
 
                             case "writeDPoint":
-                                @SuppressWarnings("unchecked")
-                                Map<String, Object> dataMapD = (Map<String, Object>) task.getData();
-                                result = servicePLC.writeDPoint(dataMapD);
+                                RequestWriteDPointDTO dataMapD = (RequestWriteDPointDTO) task.getData();
+                                String paramD = (String) dataMapD.param();
+                                Integer valueD = (Integer) dataMapD.value();
+                                result = servicePLC.writeDPoint(paramD, valueD);
                                 break;
 
                             case "ALLData":

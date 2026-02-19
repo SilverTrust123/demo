@@ -1,7 +1,5 @@
 package com.example.demo.DTO.requestDTO.PLCRequestDTO;
 
-import java.util.Map;
-
-public record RequestWriteDPointDTO(Map<String, Integer> request) {
+public record RequestWriteDPointDTO(String param, Integer value) {
 
 }

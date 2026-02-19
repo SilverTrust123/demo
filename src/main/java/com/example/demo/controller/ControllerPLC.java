@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.LoggerFactory;
@@ -85,10 +84,10 @@ public class ControllerPLC {
 
     // ---------------------------------
     @PostMapping("/writeDPoint")
-    public CompletableFuture<Object> writeDPoint(@RequestBody Map<String, Object> payload) {
-        String param = (String) payload.get("param");
-        Object valueObj = payload.get("value");
-        log.info("transfer received write DPoint request with param {} and value {}", param, valueObj);
+    public CompletableFuture<Object> writeDPoint(@RequestBody RequestWriteDPointDTO payload) {
+        String param = (String) payload.param();
+        Integer value = (Integer) payload.value();
+        log.info("transfer received write DPoint request with param {} and value {}", param, value);
         return queueService.addRequestToQueue(URGENT, payload, "writeDPoint");
     }
 }
