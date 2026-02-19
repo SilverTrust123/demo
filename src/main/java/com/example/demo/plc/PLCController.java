@@ -105,7 +105,6 @@ public class PLCController {
         return DPointMap.get(name);
     }
 
-    // 查詢是否存在
     public boolean hasMPoint(String name) {
         return MPointMap.containsKey(name);
     }
@@ -114,7 +113,6 @@ public class PLCController {
         return DPointMap.containsKey(name);
     }
 
-    // M點
     public void writeM(MPoint point, boolean value) throws Exception {
         master.send(new WriteCoilRequest(1, point.getAddress(), value));
     }
@@ -125,7 +123,6 @@ public class PLCController {
         return response.getBooleanData()[0];
     }
 
-    // D點
     public void writeD(DPoint point, int value) throws Exception {
         master.send(new WriteRegisterRequest(1, point.getAddress(), value));
     }
