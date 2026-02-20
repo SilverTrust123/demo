@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.demo.DTO.responseDTO.ResponseAllDataDTO;
 
 import org.slf4j.Logger;
 
@@ -25,20 +25,25 @@ public class ServiceData {
     @Autowired
     private ServicePLC servicePLC;
 
-    private ConcurrentHashMap<String, Object> magicData = new ConcurrentHashMap<>();
     private static final Logger log = LoggerFactory.getLogger(ServiceData.class);
 
     @GetMapping("/AllData")
-    public ConcurrentHashMap<String, Object> AllData() throws Exception {
-        magicData.put("temperatureAndHumidityDataMap",
-                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData());
-        magicData.put("circuitDataMap", serviceCircuit.getAllCircuitData());
-        magicData.put("airQualityDataMap", serviceAirQuality.getAllAirQualityData());
-        magicData.put("airParticulatesDataMap", serviceAirParticulates.getAllAirParticalData());
-        magicData.put("camDataMap", serviceCam.getAllCamData());
-        magicData.put("DPoint", servicePLC.AllDPointData());
-        magicData.put("MPoint", servicePLC.AllMPointData());
-        log.info("received all data request return {}", magicData);
-        return magicData;
+    public ResponseAllDataDTO AllData() throws Exception {
+        ResponseAllDataDTO ans = new ResponseAllDataDTO(
+                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
+                serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData());
+        log.info("received all data request return {}", ans);
+        return ans;
     }
 }
+
+// magicData.put("temperatureAndHumidityDataMap",
+// serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData());
+// magicData.put("circuitDataMap", serviceCircuit.getAllCircuitData());
+// magicData.put("airQualityDataMap", serviceAirQuality.getAllAirQualityData());
+// magicData.put("airParticulatesDataMap",
+// serviceAirParticulates.getAllAirParticalData());
+// magicData.put("camDataMap", serviceCam.getAllCamData());
+// magicData.put("DPoint", servicePLC.AllDPointData());
+// magicData.put("MPoint", servicePLC.AllMPointData());
