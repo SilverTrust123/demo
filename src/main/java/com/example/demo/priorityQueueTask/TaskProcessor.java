@@ -137,6 +137,7 @@ public class TaskProcessor {
                                 result = serviceData.AllDataAndDeviceState();
                             case "receiveCircuitData":
                                 RequestCircuitDTO data_cir = (RequestCircuitDTO) task.getData();
+                                serviceDeviceState.updateHeartbeat(data_cir.getDeviceId());
                                 result = serviceCircuit.receiveCircuitData(data_cir);
 
                             case "getCircuitData":
@@ -149,6 +150,7 @@ public class TaskProcessor {
 
                             case "receiveCamData":
                                 RequestCamDTO data_cam = (RequestCamDTO) task.getData();
+                                serviceDeviceState.updateHeartbeat(data_cam.getDeviceId());
                                 result = serviceCam.receiveCamData(data_cam);
 
                             case "getCamData":
@@ -160,6 +162,7 @@ public class TaskProcessor {
 
                             case "recriveAirQuality":
                                 RequestAirQualityDTO data_air_qua = (RequestAirQualityDTO) task.getData();
+                                serviceDeviceState.updateHeartbeat(data_air_qua.getDeviceId());
                                 result = serviceAirQuality.recriveAirQuality(data_air_qua);
 
                             case "getAirQualityData":
@@ -171,6 +174,7 @@ public class TaskProcessor {
 
                             case "recriveAirPartical":
                                 RequestAirParticulatesDTO data_air_par = (RequestAirParticulatesDTO) task.getData();
+                                serviceDeviceState.updateHeartbeat(data_air_par.getDeviceId());
                                 result = serviceAirParticulates.recriveAirPartical(data_air_par);
 
                             case "getAirParticalData":
