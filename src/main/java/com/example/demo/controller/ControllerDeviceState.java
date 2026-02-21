@@ -13,8 +13,8 @@ import com.example.demo.priorityQueueTask.QueueService;
 import org.slf4j.Logger;
 
 @RestController
-@RequestMapping("/allData")
-public class ControllerData {
+@RequestMapping("/deviceState")
+public class ControllerDeviceState {
     private static final Logger log = LoggerFactory.getLogger(ControllerData.class);
     @Value("${important}")
     private int IMPORTANT;
@@ -26,15 +26,8 @@ public class ControllerData {
     private QueueService queueService;
 
     @GetMapping("/")
-    public CompletableFuture<Object> AllData() throws Exception {
-        log.info("Received and transfer request for all data ");
-        return queueService.addRequestToQueue(IMPORTANT, null, "ALLData");
+    public CompletableFuture<Object> AllDeviceState() throws Exception {
+        log.info("Received and transfer request for AllDeviceState ");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllDeviceState");
     }
-
-    @GetMapping("/allDataAndDeviceState")
-    public CompletableFuture<Object> AllDataAndDeviceState() {
-        log.info("Received and transfer request for all data and device state");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceState");
-    }
-
 }

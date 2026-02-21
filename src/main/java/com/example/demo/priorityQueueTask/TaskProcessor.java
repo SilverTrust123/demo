@@ -45,6 +45,8 @@ public class TaskProcessor {
     private ServiceAirQuality serviceAirQuality;
     @Autowired
     private ServiceAirParticulates serviceAirParticulates;
+    @Autowired
+    private ServiceDeviceState serviceDeviceState;
 
     private ExecutorService executor;
 
@@ -70,6 +72,7 @@ public class TaskProcessor {
                             case "receiveTemparatureAndHumidityData":
                                 RequestTemperatureAndHumidityDTO data_temp = (RequestTemperatureAndHumidityDTO) task
                                         .getData();
+                                serviceDeviceState.updateHeartbeat(data_temp.getDeviceId());
                                 result = serviceTemparatureAndHumidity
                                         .receiveTemparatureAndHumidityData(data_temp);
                                 break;
@@ -128,7 +131,10 @@ public class TaskProcessor {
 
                             case "ALLData":
                                 result = serviceData.AllData();
-
+                            case "AllDeviceState":
+                                result = serviceDeviceState.getAllDeviceStatuses();
+                            case "AllDataAndDeviceState":
+                                result = serviceData.AllDataAndDeviceState();
                             case "receiveCircuitData":
                                 RequestCircuitDTO data_cir = (RequestCircuitDTO) task.getData();
                                 result = serviceCircuit.receiveCircuitData(data_cir);

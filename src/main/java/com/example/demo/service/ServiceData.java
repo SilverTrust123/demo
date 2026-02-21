@@ -3,8 +3,8 @@ package com.example.demo.service;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.demo.DTO.responseDTO.ResponseAllDataAndDeviceStateDTO;
 import com.example.demo.DTO.responseDTO.ResponseAllDataDTO;
 
 import org.slf4j.Logger;
@@ -24,16 +24,27 @@ public class ServiceData {
     private ServiceCam serviceCam;
     @Autowired
     private ServicePLC servicePLC;
+    @Autowired
+    private ServiceDeviceState serviceDeviceState;
 
     private static final Logger log = LoggerFactory.getLogger(ServiceData.class);
 
-    @GetMapping("/AllData")
     public ResponseAllDataDTO AllData() throws Exception {
         ResponseAllDataDTO ans = new ResponseAllDataDTO(
                 serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
                 serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
                 serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData());
         log.info("received all data request return {}", ans);
+        return ans;
+    }
+
+    public ResponseAllDataAndDeviceStateDTO AllDataAndDeviceState() throws Exception {
+        ResponseAllDataAndDeviceStateDTO ans = new ResponseAllDataAndDeviceStateDTO(
+                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
+                serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData(),
+                serviceDeviceState.getAllDeviceStatuses());
+        log.info("received all data and device state request return {}", ans);
         return ans;
     }
 }
