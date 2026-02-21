@@ -101,7 +101,7 @@ public class ServicePLC {
         log.info("received get all MPoint request");
         if (curr.isEmpty()) {
             log.warn("no M point data its empty");
-            return new ResponseAllMPointStateDTO();
+            return new ResponseAllMPointStateDTO(curr);
         }
         log.info("request accept return {} ", curr);
         return new ResponseAllMPointStateDTO(curr);
