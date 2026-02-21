@@ -13,8 +13,7 @@ import com.example.demo.DTO.responseDTO.*;
 public class ServiceDeviceState {
 
     private Map<String, Long> heartbeatMap = new ConcurrentHashMap<>();
-    private Map<String, Boolean> stateMap = new ConcurrentHashMap<>() {
-    };
+    private Map<String, Boolean> stateMap = new ConcurrentHashMap<>();
     @Value("${offline_time}")
     private int OFFLINE_TIME;
 
