@@ -5,8 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.entity.Circuit;
 import com.example.demo.db.entity.CircuitId;
+import java.util.List;
 
 @Repository
 public interface CircuitRepository extends JpaRepository<Circuit, CircuitId> {
-
+    List<Circuit> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
+            String deviceId, int startTime, int endTime);
 }

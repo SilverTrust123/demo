@@ -1,5 +1,6 @@
 package com.example.demo.priorityQueueTask;
 
+import com.example.demo.service.history.ServiceHistoryCircuit;
 import com.example.demo.service.history.ServiceHistoryTemparatureAndHumidity;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -54,6 +55,8 @@ public class TaskProcessor {
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
+    @Autowired
+    private ServiceHistoryCircuit serviceHistoryCircuit;
 
     private ExecutorService executor;
 
@@ -203,7 +206,11 @@ public class TaskProcessor {
                                 result = serviceHistoryTemparatureAndHumidity.getTempHistory(
                                         data_TemperatureAndHumidity.deviceId(), data_TemperatureAndHumidity.start(),
                                         data_TemperatureAndHumidity.end());
-
+                            case "getCircuit":
+                                RequestHistoryCircuitDTO data_Circuit = (RequestHistoryCircuitDTO) task.getData();
+                                result = serviceHistoryCircuit.getCircuitHistory(
+                                        data_Circuit.deviceId(), data_Circuit.start(),
+                                        data_Circuit.end());
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 break;

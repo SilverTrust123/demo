@@ -34,4 +34,10 @@ public class ControllerHistoryData {
         return queueService.addRequestToQueue(IMPORTANT, request, "getTemparatureAndHumidity");
     }
 
+    @GetMapping("/circuit")
+    public CompletableFuture<Object> getCitcuit(@RequestBody RequestHistoryCircuitDTO request) throws Exception {
+        log.info("Received and transfer circuit data to logic");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getCitcuit");
+    }
+
 }
