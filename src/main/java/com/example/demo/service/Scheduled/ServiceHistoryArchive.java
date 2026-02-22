@@ -1,10 +1,11 @@
 package com.example.demo.service.Scheduled;
 
-import com.example.demo.DTO.responseDTO.ResponseCircuitDTO;
-import com.example.demo.DTO.responseDTO.ResponseTemperatureAndHumidityDTO;
+import com.example.demo.DTO.responseDTO.*;
 import com.example.demo.db.entity.*;
+import com.example.demo.db.repository.AirQualityRepository;
 import com.example.demo.db.repository.CircuitRepository;
 import com.example.demo.db.repository.TemperatureAndHumidityRepository;
+import com.example.demo.service.ServiceAirQuality;
 import com.example.demo.service.ServiceCircuit;
 import com.example.demo.service.ServiceTemparatureAndHumidity;
 
@@ -25,11 +26,15 @@ public class ServiceHistoryArchive {
     private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity; // 抄數據的地方
     @Autowired
     private ServiceCircuit serviceCircuit;
+    @Autowired
+    private ServiceAirQuality serviceAirQuality;
 
     @Autowired
     private TemperatureAndHumidityRepository tempRepo; // 存檔的地方
     @Autowired
     private CircuitRepository circuitRepo;
+    @Autowired
+    private AirQualityRepository aqRepo;
 
     @Scheduled(fixedRate = 300000)
     public void archiveTempData() {
@@ -65,7 +70,7 @@ public class ServiceHistoryArchive {
     public void archiveCircuitData() {
         Collection<ResponseCircuitDTO> currentData = serviceCircuit.getAllCircuitData();
         if (currentData == null || currentData.isEmpty()) {
-            log.warn("no temperature and humidity data to archive, skip this round");
+            log.warn("no circuit data to archive, skip this round");
             return;
         }
         List<Circuit> entitiesToSave = new ArrayList<>();
@@ -82,6 +87,30 @@ public class ServiceHistoryArchive {
         }
         circuitRepo.saveAll(entitiesToSave);
         log.info("circuit seces put in db");
+    }
+
+    @Scheduled(fixedRate = 300000)
+    public void archiveAirQualityData() {
+        Collection<ResponseAirQualityDTO> currentData = serviceAirQuality.getAllAirQualityData();
+        if (currentData == null || currentData.isEmpty()) {
+            log.warn("no tair quality data to archive, skip this round");
+            return;
+        }
+        // device_id VARCHAR(255) NOT NULL,
+        // air_pollution FLOAT,
+        // timestamp INT,
+        // PRIMARY KEY (device_id, timestamp)
+        List<AirQuality> entitiesToSave = new ArrayList<>();
+        for (ResponseAirQualityDTO dto : currentData) {
+            AirQuality entity = new AirQuality();
+            entity.setDeviceId(dto.deviceId());
+            entity.setAirPollution(dto.airPollution());
+            entity.setTimestamp(dto.timestamp());
+
+            entitiesToSave.add(entity);
+        }
+        aqRepo.saveAll(entitiesToSave);
+        log.info("air quality seces put in db");
     }
 
 }
