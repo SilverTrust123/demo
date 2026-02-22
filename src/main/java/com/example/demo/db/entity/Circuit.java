@@ -21,6 +21,7 @@ public class Circuit {
     @Id
     @Column(name = "timestamp")
     private int timestamp;
+
     private float voltage;
     private float current;
     private float power;
