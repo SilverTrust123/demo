@@ -1,8 +1,11 @@
 package com.example.demo.service.Scheduled;
 
+import com.example.demo.DTO.responseDTO.ResponseCircuitDTO;
 import com.example.demo.DTO.responseDTO.ResponseTemperatureAndHumidityDTO;
-import com.example.demo.db.entity.TemperatureAndHumidity;
+import com.example.demo.db.entity.*;
+import com.example.demo.db.repository.CircuitRepository;
 import com.example.demo.db.repository.TemperatureAndHumidityRepository;
+import com.example.demo.service.ServiceCircuit;
 import com.example.demo.service.ServiceTemparatureAndHumidity;
 
 import org.slf4j.LoggerFactory;
@@ -20,9 +23,13 @@ public class ServiceHistoryArchive {
 
     @Autowired
     private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity; // 抄數據的地方
+    @Autowired
+    private ServiceCircuit serviceCircuit;
 
     @Autowired
     private TemperatureAndHumidityRepository tempRepo; // 存檔的地方
+    @Autowired
+    private CircuitRepository circuitRepo;
 
     @Scheduled(fixedRate = 300000)
     public void archiveTempData() {
@@ -53,4 +60,28 @@ public class ServiceHistoryArchive {
         tempRepo.saveAll(entitiesToSave);
         log.info("temp n humid seces put in db");
     }
+
+    @Scheduled(fixedRate = 100000)
+    public void archiveCircuitData() {
+        Collection<ResponseCircuitDTO> currentData = serviceCircuit.getAllCircuitData();
+        if (currentData == null || currentData.isEmpty()) {
+            log.warn("no temperature and humidity data to archive, skip this round");
+            return;
+        }
+        List<Circuit> entitiesToSave = new ArrayList<>();
+        for (ResponseCircuitDTO dto : currentData) {
+            Circuit entity = new Circuit();
+            entity.setDeviceId(dto.deviceId());
+            entity.setVoltage(dto.voltage());
+            entity.setCurrent(dto.current());
+            entity.setPower(dto.power());
+            entity.setEnergy(dto.energy());
+            entity.setTimestamp(dto.timestamp());
+
+            entitiesToSave.add(entity);
+        }
+        circuitRepo.saveAll(entitiesToSave);
+        log.info("circuit seces put in db");
+    }
+
 }
