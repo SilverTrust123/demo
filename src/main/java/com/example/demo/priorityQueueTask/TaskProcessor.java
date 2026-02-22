@@ -1,7 +1,10 @@
 package com.example.demo.priorityQueueTask;
 
+import com.example.demo.service.history.ServiceHistoryTemparatureAndHumidity;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import com.example.demo.DTO.requestDTO.RequestTemperatureAndHumidityDTO;
+import com.example.demo.DTO.requestDTO.history.*;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class TaskProcessor {
+
     private static final Logger log = LoggerFactory.getLogger(ServiceCircuit.class);
 
     @Value("${thread_count}")
@@ -48,7 +52,14 @@ public class TaskProcessor {
     @Autowired
     private ServiceDeviceState serviceDeviceState;
 
+    @Autowired
+    private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
+
     private ExecutorService executor;
+
+    TaskProcessor(ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity) {
+        this.serviceHistoryTemparatureAndHumidity = serviceHistoryTemparatureAndHumidity;
+    }
 
     @PostConstruct
     public void startWorking() {
@@ -132,7 +143,6 @@ public class TaskProcessor {
                                 result = servicePLC.getCountMetal();
                             case "getCountNonMetal":
                                 result = servicePLC.getCountNonMetal();
-
                             case "ALLData":
                                 result = serviceData.AllData();
                             case "AllDeviceState":
@@ -187,6 +197,12 @@ public class TaskProcessor {
 
                             case "getAllAirParticalData":
                                 result = serviceAirParticulates.getAllAirParticalData();
+                            case "getTemparatureAndHumidity":
+                                RequestHistoryTemparatureAndHumidityDTO data_TemperatureAndHumidity = (RequestHistoryTemparatureAndHumidityDTO) task
+                                        .getData();
+                                result = serviceHistoryTemparatureAndHumidity.getTempHistory(
+                                        data_TemperatureAndHumidity.deviceId(), data_TemperatureAndHumidity.start(),
+                                        data_TemperatureAndHumidity.end());
 
                             default:
                                 log.warn("Unknown task type: {}", type);
