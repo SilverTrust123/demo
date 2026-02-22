@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.DTO.requestDTO.PLCRequestDTO.*;
+import com.example.demo.DTO.responseDTO.PLCResponseDTO.ResponseCountMetal;
+
 import org.slf4j.Logger;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/plc")
@@ -90,4 +93,17 @@ public class ControllerPLC {
         log.info("transfer received write DPoint request with param {} and value {}", param, value);
         return queueService.addRequestToQueue(URGENT, payload, "writeDPoint");
     }
+
+    @GetMapping("getCountMetal")
+    public CompletableFuture<Object> getCountMetal() {
+        log.info("transfer received get count metal request");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getCountMetal");
+    }
+
+    @GetMapping("getCountNonMetal")
+    public CompletableFuture<Object> getCountNonMetal() {
+        log.info("transfer received get count non metal request");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getCountNonMetal");
+    }
+
 }

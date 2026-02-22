@@ -117,6 +117,26 @@ public class ServicePLC {
         }
     }
 
+    public ResponseCountMetal getCountMetal() {
+        try {
+            log.info("received get count metal");
+            return new ResponseCountMetal(plc.getCountMetal());
+        } catch (Exception e) {
+            log.error("Error reading get count metal: {}", e.getMessage());
+            return new ResponseCountMetal(0);
+        }
+    }
+
+    public ResponseCountNonMetal getCountNonMetal() {
+        try {
+            log.info("received get count metal");
+            return new ResponseCountNonMetal(plc.getCountNonMetal());
+        } catch (Exception e) {
+            log.error("Error reading get count non metal: {}", e.getMessage());
+            return new ResponseCountNonMetal(0);
+        }
+    }
+
     // try {
 
     // log.info("Received payload: {}", payload);

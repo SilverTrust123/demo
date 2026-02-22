@@ -154,4 +154,11 @@ public class PLCDriver {
         return ans;
     }
 
+    public int getCountMetal() throws Exception {
+        return readD(COUNT_METAL);
+    }
+
+    public int getCountNonMetal() throws Exception {
+        return readD(COUNT_NON_METAL);
+    }
 }

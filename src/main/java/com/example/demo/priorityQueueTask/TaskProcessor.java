@@ -128,6 +128,10 @@ public class TaskProcessor {
                                 Integer valueD = (Integer) dataMapD.value();
                                 result = servicePLC.writeDPoint(paramD, valueD);
                                 break;
+                            case "getCountMetal":
+                                result = servicePLC.getCountMetal();
+                            case "getCountNonMetal":
+                                result = servicePLC.getCountNonMetal();
 
                             case "ALLData":
                                 result = serviceData.AllData();
