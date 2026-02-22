@@ -1,10 +1,9 @@
 package com.example.demo.priorityQueueTask;
 
-import com.example.demo.service.history.ServiceHistoryCircuit;
-import com.example.demo.service.history.ServiceHistoryTemparatureAndHumidity;
+import com.example.demo.service.history.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import com.example.demo.DTO.requestDTO.RequestTemperatureAndHumidityDTO;
+
 import com.example.demo.DTO.requestDTO.history.*;
 
 import org.slf4j.LoggerFactory;
@@ -57,6 +56,8 @@ public class TaskProcessor {
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
     @Autowired
     private ServiceHistoryCircuit serviceHistoryCircuit;
+    @Autowired
+    private ServiceHistoryAirQuality serviceHistoryAirQuality;
 
     private ExecutorService executor;
 
@@ -211,6 +212,11 @@ public class TaskProcessor {
                                 result = serviceHistoryCircuit.getCircuitHistory(
                                         data_Circuit.deviceId(), data_Circuit.start(),
                                         data_Circuit.end());
+                            case "getAirQuality":
+                                RequestHistoryAirQualityDTO data_AirQuality = (RequestHistoryAirQualityDTO) task
+                                        .getData();
+                                result = serviceHistoryAirQuality.getAirQualityHistory(data_AirQuality.deviceId(),
+                                        data_AirQuality.start(), data_AirQuality.end());
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 break;

@@ -40,4 +40,10 @@ public class ControllerHistoryData {
         return queueService.addRequestToQueue(IMPORTANT, request, "getCircuit");
     }
 
+    @GetMapping("/airQuality")
+    public CompletableFuture<Object> getAirQuality(@RequestBody RequestHistoryCircuitDTO request) throws Exception {
+        log.info("Received and transfer air quality data to logic");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getAirQuality");
+    }
+
 }
