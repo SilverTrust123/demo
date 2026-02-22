@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.DTO.requestDTO.PLCRequestDTO.*;
-import com.example.demo.DTO.responseDTO.PLCResponseDTO.ResponseCountMetal;
 
 import org.slf4j.Logger;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/plc")
