@@ -41,9 +41,16 @@ public class ControllerHistoryData {
     }
 
     @GetMapping("/airQuality")
-    public CompletableFuture<Object> getAirQuality(@RequestBody RequestHistoryCircuitDTO request) throws Exception {
+    public CompletableFuture<Object> getAirQuality(@RequestBody RequestHistoryAirQualityDTO request) throws Exception {
         log.info("Received and transfer air quality data to logic");
         return queueService.addRequestToQueue(IMPORTANT, request, "getAirQuality");
+    }
+
+    @GetMapping("/airParticulates")
+    public CompletableFuture<Object> getAirParticulates(@RequestBody RequestHistoryAirParticulatesDTO request)
+            throws Exception {
+        log.info("Received and transfer air particulates data to logic");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getAirParticulates");
     }
 
 }

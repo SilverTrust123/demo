@@ -58,6 +58,8 @@ public class TaskProcessor {
     private ServiceHistoryCircuit serviceHistoryCircuit;
     @Autowired
     private ServiceHistoryAirQuality serviceHistoryAirQuality;
+    @Autowired
+    private ServiceHistoryAirParticulates serviceHistoryAirParticulates;
 
     private ExecutorService executor;
 
@@ -217,6 +219,12 @@ public class TaskProcessor {
                                         .getData();
                                 result = serviceHistoryAirQuality.getAirQualityHistory(data_AirQuality.deviceId(),
                                         data_AirQuality.start(), data_AirQuality.end());
+                            case "getAirParticulates":
+                                RequestHistoryAirParticulatesDTO data_AirParticulates = (RequestHistoryAirParticulatesDTO) task
+                                        .getData();
+                                result = serviceHistoryAirParticulates.getAirParticulatesHistory(
+                                        data_AirParticulates.deviceId(), data_AirParticulates.start(),
+                                        data_AirParticulates.end());
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 break;
