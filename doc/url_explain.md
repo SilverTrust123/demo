@@ -9,3 +9,8 @@
 ![alt text](image-5.png)
 ![alt text](image-6.png)
 ![alt text](image-7.png)
+
+DTO資料參考
+http://localhost:9090/swagger-ui/index.html
+![alt text](image-8.png)
+/temperatureAndHumidityData/
