@@ -22,6 +22,8 @@ silding window 平滑數據 就可以消除一些突發的雜訊阿之類的
 多線處理
 log推給前端
 ORM (Object-Relational Mapping，物件關係映射)
+swagger-ui
+
 -----------------------------------------
 圖
 系統環境架構圖 (看硬體怎麼連)
