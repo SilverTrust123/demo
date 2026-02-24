@@ -1,4 +1,4 @@
-### Industrial Control & Monitoring System (ICMS) 
+# Industrial Control & Monitoring System (ICMS) 
 
 ## 簡介:
 
@@ -11,7 +11,7 @@ Industrial Control & Monitoring System (ICMS) 是一套基於 Spring Boot 所打
 
 > URL地圖請直接造訪[這裡](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 
-# 如果上面地址失靈請點這裡的URL -> 
+### 如果上面地址失靈請點這裡的URL -> 
 https://github.com/SilverTrust123/demo/releases/tag/V2.0.0
 https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html
@@ -26,12 +26,12 @@ Industrial Control & Monitoring System (ICMS) is an industrial-grade backend pla
 
 > for all URL track plz visit [here](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 
-# anything went woring plz try the fellowing URL instead ->
+### anything went woring plz try the fellowing URL instead ->
 https://github.com/SilverTrust123/demo/releases/tag/V2.0.0
 https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html
 
-# 系統特點:
+## 系統特點:
 
 - 系統技術特點（Highlights）
 
@@ -51,7 +51,7 @@ https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/m
 
 - 全域log
 
-# system heighlight
+## system heighlight
 
 - Implements layered architecture to achieve clean separation of concerns and high system maintainability.
 
@@ -67,7 +67,7 @@ https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/m
 
 - log for every function
 
-# 開發者筆記:
+### 開發者筆記:
 
 > 目前已完成:
 
