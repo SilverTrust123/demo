@@ -6,7 +6,9 @@
 > 或直接造訪[這個靜態網頁](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 / 我強烈建議直接造訪上面
 
-### 或藉由下面各分部查詢詳細規格
+### 或藉由下面各分部查詢詳細規格       
+## 說明: 以下都是圖片特定區塊api資訊請點擊區塊上方的超連結進入對應規格說明書
+
 > [controller detail](https://github.com/SilverTrust123/demo/blob/main/doc/doc_controller/0.md)
 ![contoller](image-4.png)
 > [temparature and hudmidity detail](https://github.com/SilverTrust123/demo/blob/main/doc/doc_controller-temparature-and-humidity/0.md)
