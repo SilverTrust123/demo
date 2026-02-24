@@ -8,7 +8,6 @@ Industrial Control & Monitoring System (ICMS) 是一套基於 Spring Boot 所打
 > 最新版本 version 2.0.0 (關於本本資訊請點)[這裡](https://github.com/SilverTrust123/demo/releases/tag/V2.0.0)
 
 > URL街口相關資訊請參考 [這裡](https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md)
-https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 
 > URL地圖請直接造訪[這裡](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 
