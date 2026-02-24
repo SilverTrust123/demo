@@ -12,8 +12,8 @@ Industrial Control & Monitoring System (ICMS) 是一套基於 Spring Boot 所打
 > URL地圖請直接造訪[這裡](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 
 ### 如果上面地址失靈請點這裡的URL -> 
-https://github.com/SilverTrust123/demo/releases/tag/V2.0.0
-https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
+https://github.com/SilverTrust123/demo/releases/tag/V2.0.0      
+https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md      
 https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html
 
 ## introduction:
@@ -27,9 +27,9 @@ Industrial Control & Monitoring System (ICMS) is an industrial-grade backend pla
 > for all URL track plz visit [here](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 
 ### anything went woring plz try the fellowing URL instead ->
-https://github.com/SilverTrust123/demo/releases/tag/V2.0.0
-https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
-https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html
+https://github.com/SilverTrust123/demo/releases/tag/V2.0.0     
+https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md     
+https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html     
 
 ## 系統特點:
 
