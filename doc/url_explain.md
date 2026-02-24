@@ -2,7 +2,7 @@
 以下使用swagger-ui自動生成
 
 請選擇以下章節進入
-或直接造訪[這個靜態網頁](Swagger UI.html)
+或直接造訪[這個靜態網頁](Swagger%20UI.html)
 
 ![contoller](image-4.png)
 <!-- [controller detail] -->
