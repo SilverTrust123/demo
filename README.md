@@ -7,12 +7,16 @@ Industrial Control & Monitoring System (ICMS) 是一套基於 Spring Boot 所打
 
 > 最新版本 version 2.0.0
 
+> URL街口相關資訊請參考https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
+
 
 ## introduction:
 
 Industrial Control & Monitoring System (ICMS) is an industrial-grade backend platform built with Spring Boot, designed to integrate PLC control, multi-sensor data acquisition, camera-based object detection, and real-time monitoring into a unified management system.The system adopts a layered architecture (Controller → Service → Device Layer) to ensure high modularity, maintainability, and scalability. It collects real-time data from various sensors including temperature, humidity, air quality, particulate matter, and circuit monitoring, while enabling industrial device control through PLC communication modules. In addition, camera-based object detection is integrated to provide enhanced situational awareness and intelligent monitoring capabilities.By providing centralized data processing, device management, and real-time monitoring, ICMS serves as a robust backend solution for smart factories, industrial automation systems, environmental monitoring platforms, and intranet-based industrial control systems, delivering a reliable and scalable core infrastructure for industrial IoT applications.
 
 > latest version 2.0.0
+
+>URL detail plz check here https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 
 # 系統特點:
 
