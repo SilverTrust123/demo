@@ -10,6 +10,7 @@
 ![controller-circuit](image-1.png)
 ![controller-air-quality](image-2.png)
 ![controller-air-particulates](image-3.png)
+![cam](image-9.png)
 ![data_and_state](image-5.png)
 ![history](image-6.png)
 ![plc](image-7.png)
