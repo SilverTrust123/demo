@@ -88,3 +88,7 @@ https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/m
 - 邏輯分層
 
 - 可以做溫溼度等等的預測
+
+### 白話文
+
+我試著用描述的說了一下做了甚麼[請點這裡](https://github.com/SilverTrust123/demo/blob/main/doc/talk/0.md)
