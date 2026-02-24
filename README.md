@@ -8,7 +8,7 @@ Industrial Control & Monitoring System (ICMS) 是一套基於 Spring Boot 所打
 > 最新版本 version 2.0.0 (關於本本資訊請點)-> 
 https://github.com/SilverTrust123/demo/releases/tag/V2.0.0
 
-> URL街口相關資訊請參考
+> URL街口相關資訊請參考 ->
 https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 
 
@@ -19,7 +19,7 @@ Industrial Control & Monitoring System (ICMS) is an industrial-grade backend pla
 > latest version 2.0.0 (for version detail plc check here)->  
 https://github.com/SilverTrust123/demo/releases/tag/V2.0.0
 
->URL detail plz check here 
+>URL detail plz check here -> 
 https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 
 # 系統特點:
@@ -38,6 +38,10 @@ https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 
 - 系統架構設計符合工業內網與 IoT 應用場景，可穩定支援長時間運作與高可靠度需求。
 
+- 歷史資料查詢功能，方便追蹤錯誤
+
+- 全域log
+
 # system heighlight
 
 - Implements layered architecture to achieve clean separation of concerns and high system maintainability.
@@ -50,6 +54,9 @@ https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 
 - Centralized monitoring and control architecture simplifies industrial system management.
 
+- history search function 
+
+- log for every function
 
 # 開發者筆記:
 
