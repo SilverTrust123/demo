@@ -34,3 +34,13 @@ CREATE TABLE air_particulates (
     timestamp INT,
     PRIMARY KEY (device_id, timestamp)
 );
+
+--Log
+CREATE TABLE log (
+    id BIGINT AUTO_INCREMENT NOT NULL,
+    log_level VARCHAR(255),
+    source VARCHAR(255),
+    message TEXT,
+    timestamp INT,
+    PRIMARY KEY (id)
+);
