@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.responseDTO.ResponseAllLogDTO;
 import com.example.demo.DTO.responseDTO.ResponseLogDTO;
 import com.example.demo.db.entity.Log;
 import com.example.demo.db.repository.LogRepository;
@@ -41,33 +42,33 @@ public class ServiceLog {
                 .collect(Collectors.toList());
     }
 
-    public List<ResponseLogDTO> getErrorLogs() {
-        return logRepo.findByLogLevelOrderByTimestampDesc("ERROR").stream()
+    public ResponseAllLogDTO getErrorLogs() {
+        return new ResponseAllLogDTO(logRepo.findByLogLevelOrderByTimestampDesc("ERROR").stream()
                 .map(entity -> new ResponseLogDTO(entity.getId(),
                         entity.getLogLevel(),
                         entity.getSource(),
                         entity.getMessage(),
                         entity.getTimestamp()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
-    public List<ResponseLogDTO> getWarnLogs() {
-        return logRepo.findByLogLevelOrderByTimestampDesc("WARN").stream()
+    public ResponseAllLogDTO getWarnLogs() {
+        return new ResponseAllLogDTO(logRepo.findByLogLevelOrderByTimestampDesc("WARN").stream()
                 .map(entity -> new ResponseLogDTO(entity.getId(),
                         entity.getLogLevel(),
                         entity.getSource(),
                         entity.getMessage(),
                         entity.getTimestamp()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
-    public List<ResponseLogDTO> getLogsByTime(int start, int end) {
-        return logRepo.findByTimestampBetweenOrderByTimestampDesc(start, end).stream()
+    public ResponseAllLogDTO getLogsByTime(int start, int end) {
+        return new ResponseAllLogDTO(logRepo.findByTimestampBetweenOrderByTimestampDesc(start, end).stream()
                 .map(entity -> new ResponseLogDTO(entity.getId(),
                         entity.getLogLevel(),
                         entity.getSource(),
                         entity.getMessage(),
                         entity.getTimestamp()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 }

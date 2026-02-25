@@ -51,6 +51,8 @@ public class TaskProcessor {
     private ServiceAirParticulates serviceAirParticulates;
     @Autowired
     private ServiceDeviceState serviceDeviceState;
+    @Autowired
+    private ServiceLog serviceLog;
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
@@ -225,6 +227,16 @@ public class TaskProcessor {
                                 result = serviceHistoryAirParticulates.getAirParticulatesHistory(
                                         data_AirParticulates.deviceId(), data_AirParticulates.start(),
                                         data_AirParticulates.end());
+                            case "getAllLogs":
+                                result = serviceLog.getAllLogs();
+                            case "getErrorLogs":
+                                result = serviceLog.getErrorLogs();
+                            case "getWarnLogs":
+                                result = serviceLog.getWarnLogs();
+                            case "getLogByTime":
+                                RequestLogDTO data_Log = (RequestLogDTO) task.getData();
+                                result = serviceLog.getLogsByTime(data_Log.start(), data_Log.end());
+
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 break;

@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.DTO.requestDTO.RequestLogDTO;
 import com.example.demo.priorityQueueTask.QueueService;
+
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import org.slf4j.Logger;
 
 @RestController
@@ -29,5 +33,17 @@ public class ControllerLog {
     public CompletableFuture<Object> getAllLogs() throws Exception {
         log.info("Received and transfer request for All logs ");
         return queueService.addRequestToQueue(URGENT, null, "getAllLogs");
+    }
+
+    @GetMapping("/error")
+    public CompletableFuture<Object> getErrorLogs() throws Exception {
+        log.info("Received and transfer request for All error logs ");
+        return queueService.addRequestToQueue(URGENT, null, "getErrorLogs");
+    }
+
+    @GetMapping("/byTime")
+    public CompletableFuture<Object> getLogByTime(@RequestBody RequestLogDTO request) throws Exception {
+        log.info("Received and transfer request for  getLogByTime");
+        return queueService.addRequestToQueue(URGENT, request, "getLogByTime");
     }
 }
