@@ -34,7 +34,8 @@ public class ServicePLC {
             log.info("PLC connect secces");
             System.out.println("PLC 連線成功");
         } catch (Exception e) {
-            log.error("cant connect to plc, error code", e.getMessage());
+            log.error("cant connect to plc, error code {}", e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "cant connect to plc, error code" + e.getMessage());
             System.err.println("PLC 連線失敗 code: " + e.getMessage());
         }
     }
