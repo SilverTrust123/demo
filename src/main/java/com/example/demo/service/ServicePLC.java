@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.plc.PLCDriver;
@@ -21,6 +22,9 @@ public class ServicePLC {
     private int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
     private static final Logger log = LoggerFactory.getLogger(ServicePLC.class);
     private boolean plcConnected = false;
+
+    @Autowired
+    private ServiceLog serviceLog;
 
     @PostConstruct
     public void init() {
@@ -40,11 +44,13 @@ public class ServicePLC {
         try {
             if (param == null || param.isEmpty()) {
                 log.warn("MPointState: param is null or empty");
+                serviceLog.record("WARN", "ServicePLC", "MPointState: param is null or empty");
                 return new ResponsePointState("MPointState: param is null or empty");
             }
 
             if (plc.MdeviceIsEmpty(param)) {
                 log.warn("MPointState: device not found {} ", param);
+                serviceLog.record("WARN", "ServicePLC", "MPointState: device not found " + param);
                 return new ResponsePointState("MPointState: device not found " + param);
 
             }
@@ -66,11 +72,13 @@ public class ServicePLC {
 
             if (param == null || param.isEmpty()) {
                 log.warn("DPointData: param is null or empty");
+                serviceLog.record("WARN", "ServicePLC", "DPointState: param is null or empty");
                 return new ResponsePointState("NoDevice");
             }
 
             if (plc.DdeviceIsEmpty(param)) {
                 log.warn("DPointData: device not found -> {}", param);
+                serviceLog.record("WARN", "ServicePLC", "DPointState: device not found " + param);
                 return new ResponsePointState("NoDevice");
             }
 
@@ -80,6 +88,8 @@ public class ServicePLC {
 
         } catch (Exception e) {
             log.error("DPointData error param {} with error {}", param, e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC",
+                    "DPointData error param " + param + " with error " + e.getMessage());
             e.printStackTrace();
             return new ResponsePointState("Error");
         }
@@ -90,6 +100,7 @@ public class ServicePLC {
         log.info("received get all DPoint request");
         if (curr.isEmpty()) {
             log.warn("no DPoint data its empty");
+            serviceLog.record("ERROR", "ServicePLC", "no DPoint data its empty");
             return new ResponseAllDPointStateDTO(curr);
         }
         log.info("request accept return {} ", curr);
@@ -101,6 +112,7 @@ public class ServicePLC {
         log.info("received get all MPoint request");
         if (curr.isEmpty()) {
             log.warn("no M point data its empty");
+            serviceLog.record("WARN", "ServicePLC", "received get all MPoint request");
             return new ResponseAllMPointStateDTO(curr);
         }
         log.info("request accept return {} ", curr);
@@ -113,6 +125,7 @@ public class ServicePLC {
             return new ResponsePointState(String.valueOf(plc.readD(plc.getDPoint("STATE"))));
         } catch (Exception e) {
             log.error("Error reading PLC state: {}", e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "Error reading PLC state: " + e.getMessage());
             return new ResponsePointState("PLC Disconnected: " + e.getMessage());
         }
     }
@@ -123,6 +136,7 @@ public class ServicePLC {
             return new ResponseCountMetal(plc.getCountMetal());
         } catch (Exception e) {
             log.error("Error reading get count metal: {}", e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "Error reading get count metal: " + e.getMessage());
             return new ResponseCountMetal(0);
         }
     }
@@ -133,6 +147,7 @@ public class ServicePLC {
             return new ResponseCountNonMetal(plc.getCountNonMetal());
         } catch (Exception e) {
             log.error("Error reading get count non metal: {}", e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "Error reading get count non metal: " + e.getMessage());
             return new ResponseCountNonMetal(0);
         }
     }
