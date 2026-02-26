@@ -41,6 +41,12 @@ public class ControllerLog {
         return queueService.addRequestToQueue(URGENT, null, "getErrorLogs");
     }
 
+    @GetMapping("/warn")
+    public CompletableFuture<Object> getWarnLogs() throws Exception {
+        log.info("Received and transfer request for All warn logs ");
+        return queueService.addRequestToQueue(URGENT, null, "getWarnLogs");
+    }
+
     @GetMapping("/byTime")
     public CompletableFuture<Object> getLogByTime(@RequestBody RequestLogDTO request) throws Exception {
         log.info("Received and transfer request for  getLogByTime");
