@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.requestDTO.*;
@@ -16,6 +17,9 @@ import org.slf4j.Logger;
 public class ServiceCam {
     private static final Logger log = LoggerFactory.getLogger(ServiceCam.class);
     private Map<String, ResponseCamDTO> camDataMap = new ConcurrentHashMap<>();
+
+    @Autowired
+    private ServiceLog serviceLog;
 
     public String receiveCamData(RequestCamDTO request) {
         String deviceId = request.getDeviceId();
@@ -45,6 +49,7 @@ public class ServiceCam {
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
+        serviceLog.record("WARN", "ServiceCam", "Cannot find valid data for device name " + deviceId);
         return new ResponseCamDTO(deviceId, false, 0, null, null, 0);
     }
 
@@ -67,6 +72,8 @@ public class ServiceCam {
         if (gap > 60) {
             log.warn("Data of device {} is too old, timestamp {}, now {}",
                     data.deviceId(), data.timestamp(), now);
+            serviceLog.record("WARN", "ServiceCam", "Data of device " + data.deviceId()
+                    + " is too old, timestamp " + data.timestamp() + ", now " + now);
             return false;
         }
         return true;

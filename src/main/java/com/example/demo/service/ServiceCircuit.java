@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.DTO.requestDTO.RequestCircuitDTO;
 import com.example.demo.DTO.responseDTO.ResponseCircuitDTO;
@@ -22,6 +23,8 @@ public class ServiceCircuit {
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(ServiceCircuit.class);
+    @Autowired
+    private ServiceLog serviceLog;
 
     public String receiveCircuitData(RequestCircuitDTO request) {
         if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
@@ -60,6 +63,7 @@ public class ServiceCircuit {
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
+        serviceLog.record("WARN", "ServiceCircuit", "Cannot find valid data for device name " + deviceId);
         return new ResponseCircuitDTO(deviceId, 0f, 0f, 0f, 0f, 0);
     }
 
@@ -82,6 +86,8 @@ public class ServiceCircuit {
         if (gap > 60) {
             log.warn("Data of device {} is too old, timestamp {}, now {}",
                     data.deviceId(), data.timestamp(), now);
+            serviceLog.record("WARN", "ServiceCircuit", "Data of device " + data.deviceId()
+                    + " is too old, timestamp " + data.timestamp() + ", now " + now);
             return false;
         }
         return true;

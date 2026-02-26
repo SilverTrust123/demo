@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.requestDTO.RequestAirParticulatesDTO;
@@ -23,6 +24,8 @@ public class ServiceAirParticulates {
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(ServiceAirParticulates.class);
+    @Autowired
+    private ServiceLog serviceLog;
 
     public String recriveAirPartical(RequestAirParticulatesDTO request) {
         if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
@@ -49,6 +52,7 @@ public class ServiceAirParticulates {
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
+        serviceLog.record("WARN", "ServiceAirParticulates", "Cannot find valid data for device name " + deviceId);
         return new ResponseAirParticulatesDTO(deviceId, 0.0f, 0);
     }
 
@@ -85,6 +89,8 @@ public class ServiceAirParticulates {
         if (gap > 60) {
             log.warn("Data of device {} is too old, timestamp {}, now {}",
                     data.deviceId(), data.timestamp(), now);
+            serviceLog.record("WARN", "ServiceAirParticulates", "Data of device " + data.deviceId()
+                    + " is too old, timestamp " + data.timestamp() + ", now " + now);
             return false;
         }
         return true;
