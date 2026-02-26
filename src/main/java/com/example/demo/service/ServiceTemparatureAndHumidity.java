@@ -84,6 +84,8 @@ public class ServiceTemparatureAndHumidity {
         if (gap > 60) {
             log.warn("Data of device {} is too old, timestamp {}, now {}",
                     data.deviceId(), data.timestamp(), now);
+            serviceLog.record("WARN", "ServiceTemparatureAndHumidity", "Data of device " + data.deviceId()
+                    + " is too old, timestamp " + data.timestamp() + ", now " + now);
             return false;
         }
         return true;
