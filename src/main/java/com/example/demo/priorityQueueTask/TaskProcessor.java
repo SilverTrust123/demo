@@ -109,6 +109,7 @@ public class TaskProcessor {
 
                             case "PLCConnect":
                                 result = servicePLC.isPlcConnected();
+                                break;
 
                             case "MpointState":
                                 RequestMPointStateDTO rqMPoint = (RequestMPointStateDTO) task.getData();
@@ -149,18 +150,24 @@ public class TaskProcessor {
                                 break;
                             case "getCountMetal":
                                 result = servicePLC.getCountMetal();
+                                break;
                             case "getCountNonMetal":
                                 result = servicePLC.getCountNonMetal();
+                                break;
                             case "ALLData":
                                 result = serviceData.AllData();
+                                break;
                             case "AllDeviceState":
                                 result = serviceDeviceState.getAllDeviceStatuses();
+                                break;
                             case "AllDataAndDeviceState":
                                 result = serviceData.AllDataAndDeviceState();
+                                break;
                             case "receiveCircuitData":
                                 RequestCircuitDTO data_cir = (RequestCircuitDTO) task.getData();
                                 serviceDeviceState.updateHeartbeat(data_cir.getDeviceId());
                                 result = serviceCircuit.receiveCircuitData(data_cir);
+                                break;
 
                             case "getCircuitData":
                                 String deviceId_cir = (String) task.getData();
@@ -169,73 +176,91 @@ public class TaskProcessor {
 
                             case "getAllCircuitData":
                                 result = serviceCircuit.getAllCircuitData();
+                                break;
 
                             case "receiveCamData":
                                 RequestCamDTO data_cam = (RequestCamDTO) task.getData();
                                 serviceDeviceState.updateHeartbeat(data_cam.getDeviceId());
                                 result = serviceCam.receiveCamData(data_cam);
+                                break;
 
                             case "getCamData":
                                 String deviceId_cam = (String) task.getData();
                                 result = serviceCam.getCamData(deviceId_cam);
+                                break;
 
                             case "getAllCamData":
                                 result = serviceCam.getAllCamData();
+                                break;
 
                             case "recriveAirQuality":
                                 RequestAirQualityDTO data_air_qua = (RequestAirQualityDTO) task.getData();
                                 serviceDeviceState.updateHeartbeat(data_air_qua.getDeviceId());
                                 result = serviceAirQuality.recriveAirQuality(data_air_qua);
+                                break;
 
                             case "getAirQualityData":
                                 String deviceId_air_qua = (String) task.getData();
                                 result = serviceAirQuality.getAirQualityData(deviceId_air_qua);
+                                break;
 
                             case "getAllAirQualityData":
                                 result = serviceAirQuality.getAllAirQualityData();
+                                break;
 
                             case "recriveAirPartical":
                                 RequestAirParticulatesDTO data_air_par = (RequestAirParticulatesDTO) task.getData();
                                 serviceDeviceState.updateHeartbeat(data_air_par.getDeviceId());
                                 result = serviceAirParticulates.recriveAirPartical(data_air_par);
+                                break;
 
                             case "getAirParticalData":
                                 String deviceId_air_par = (String) task.getData();
                                 result = serviceAirParticulates.getAirParticalData(deviceId_air_par);
+                                break;
 
                             case "getAllAirParticalData":
                                 result = serviceAirParticulates.getAllAirParticalData();
+                                break;
                             case "getTemparatureAndHumidity":
                                 RequestHistoryTemparatureAndHumidityDTO data_TemperatureAndHumidity = (RequestHistoryTemparatureAndHumidityDTO) task
                                         .getData();
                                 result = serviceHistoryTemparatureAndHumidity.getTempHistory(
                                         data_TemperatureAndHumidity.deviceId(), data_TemperatureAndHumidity.start(),
                                         data_TemperatureAndHumidity.end());
+                                break;
                             case "getCircuit":
                                 RequestHistoryCircuitDTO data_Circuit = (RequestHistoryCircuitDTO) task.getData();
                                 result = serviceHistoryCircuit.getCircuitHistory(
                                         data_Circuit.deviceId(), data_Circuit.start(),
                                         data_Circuit.end());
+                                break;
                             case "getAirQuality":
                                 RequestHistoryAirQualityDTO data_AirQuality = (RequestHistoryAirQualityDTO) task
                                         .getData();
                                 result = serviceHistoryAirQuality.getAirQualityHistory(data_AirQuality.deviceId(),
                                         data_AirQuality.start(), data_AirQuality.end());
+                                break;
                             case "getAirParticulates":
                                 RequestHistoryAirParticulatesDTO data_AirParticulates = (RequestHistoryAirParticulatesDTO) task
                                         .getData();
                                 result = serviceHistoryAirParticulates.getAirParticulatesHistory(
                                         data_AirParticulates.deviceId(), data_AirParticulates.start(),
                                         data_AirParticulates.end());
+                                break;
                             case "getAllLogs":
                                 result = serviceLog.getAllLogs();
+                                break;
                             case "getErrorLogs":
                                 result = serviceLog.getErrorLogs();
+                                break;
                             case "getWarnLogs":
                                 result = serviceLog.getWarnLogs();
+                                break;
                             case "getLogByTime":
                                 RequestLogDTO data_Log = (RequestLogDTO) task.getData();
                                 result = serviceLog.getLogsByTime(data_Log.start(), data_Log.end());
+                                break;
 
                             default:
                                 log.warn("Unknown task type: {}", type);
