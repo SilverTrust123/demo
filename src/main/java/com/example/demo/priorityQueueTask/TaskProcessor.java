@@ -239,6 +239,7 @@ public class TaskProcessor {
 
                             default:
                                 log.warn("Unknown task type: {}", type);
+                                serviceLog.record("WARN", "TaskProcessor", "Unknown task type: " + type);
                                 break;
                         }
 
@@ -261,7 +262,7 @@ public class TaskProcessor {
     @PreDestroy
     public void stopWorking() {
         log.warn("system doing predestroy");
-
+        serviceLog.record("WARN", "TaskProcessor", "system doing predestroy, start shutting down executor");
         executor.shutdown();
         try {
             if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
@@ -271,5 +272,6 @@ public class TaskProcessor {
             executor.shutdownNow();
         }
         log.warn("system shutdown");
+        serviceLog.record("WARN", "TaskProcessor", "system shutdown, executor stopped");
     }
 }
