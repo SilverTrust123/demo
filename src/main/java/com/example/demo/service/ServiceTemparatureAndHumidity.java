@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
@@ -17,6 +19,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 @Service
 public class ServiceTemparatureAndHumidity {
+    @Autowired
+    private ServiceLog serviceLog;
 
     private Map<String, ResponseTemperatureAndHumidityDTO> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
@@ -55,6 +59,8 @@ public class ServiceTemparatureAndHumidity {
             return ans;
         }
         log.warn("Cannot find valid data for device name {}", deviceId);
+        serviceLog.record("WARN", "ServiceTemparatureAndHumidity",
+                "Cannot find valid data for device name " + deviceId);
         return new ResponseTemperatureAndHumidityDTO(deviceId, 0, 0, 0);
 
     }
