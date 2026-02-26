@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.DTO.requestDTO.RequestLogDTO;
 import com.example.demo.priorityQueueTask.QueueService;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import org.slf4j.Logger;
 
@@ -49,7 +48,8 @@ public class ControllerLog {
 
     @GetMapping("/byTime")
     public CompletableFuture<Object> getLogByTime(@RequestBody RequestLogDTO request) throws Exception {
-        log.info("Received and transfer request for  getLogByTime");
+        log.info("Received and transfer request for getLogByTime");
         return queueService.addRequestToQueue(URGENT, request, "getLogByTime");
     }
+
 }

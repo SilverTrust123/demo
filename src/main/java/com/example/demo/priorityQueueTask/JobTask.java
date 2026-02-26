@@ -2,6 +2,8 @@ package com.example.demo.priorityQueueTask;
 
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.security.core.Authentication;
+
 public class JobTask<T> implements Comparable<JobTask<T>> {
 
     private final int priority;
@@ -9,6 +11,15 @@ public class JobTask<T> implements Comparable<JobTask<T>> {
 
     private final CompletableFuture<Object> future;
     private final String taskType;
+    private Authentication auth;
+
+    public JobTask(int priority, T data, String taskType, Authentication auth) {
+        this.priority = priority;
+        this.data = data;
+        this.taskType = taskType;
+        this.auth = auth;
+        this.future = new CompletableFuture<>();
+    }
 
     public JobTask(int priority, T data, String taskType) {
         this.priority = priority;
@@ -32,6 +43,14 @@ public class JobTask<T> implements Comparable<JobTask<T>> {
 
     public CompletableFuture<Object> getFuture() {
         return future;
+    }
+
+    public Authentication getAuth() {
+        return auth;
+    }
+
+    public void setAuth(Authentication auth) {
+        this.auth = auth;
     }
 
     @Override

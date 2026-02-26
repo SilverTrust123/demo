@@ -27,30 +27,31 @@ public class ControllerHistoryData {
     @Autowired
     private QueueService queueService;
 
-    @GetMapping("/temparatureAndHumidity")
-    public CompletableFuture<Object> getTemparatureAndHumidity(
+    @GetMapping("/temparatureAndHumidityHistory")
+    public CompletableFuture<Object> getTemparatureAndHumidityHistory(
             @RequestBody RequestHistoryTemparatureAndHumidityDTO request) throws Exception {
         log.info("Received and transfer request for getTemparatureAndHumidity ");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getTemparatureAndHumidity");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getTemparatureAndHumidityHistory");
     }
 
-    @GetMapping("/circuit")
-    public CompletableFuture<Object> getCircuit(@RequestBody RequestHistoryCircuitDTO request) throws Exception {
+    @GetMapping("/circuitHistory")
+    public CompletableFuture<Object> getCircuitHistory(@RequestBody RequestHistoryCircuitDTO request) throws Exception {
         log.info("Received and transfer circuit data to logic");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getCircuit");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getCircuitHistory");
     }
 
-    @GetMapping("/airQuality")
-    public CompletableFuture<Object> getAirQuality(@RequestBody RequestHistoryAirQualityDTO request) throws Exception {
+    @GetMapping("/airQualityHistory")
+    public CompletableFuture<Object> getAirQualityHistory(@RequestBody RequestHistoryAirQualityDTO request)
+            throws Exception {
         log.info("Received and transfer air quality data to logic");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getAirQuality");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getAirQualityHistory");
     }
 
-    @GetMapping("/airParticulates")
-    public CompletableFuture<Object> getAirParticulates(@RequestBody RequestHistoryAirParticulatesDTO request)
+    @GetMapping("/airParticulatesHistory")
+    public CompletableFuture<Object> getAirParticulatesHistory(@RequestBody RequestHistoryAirParticulatesDTO request)
             throws Exception {
         log.info("Received and transfer air particulates data to logic");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getAirParticulates");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getAirParticulatesHistory");
     }
 
 }

@@ -9,6 +9,7 @@ import com.example.demo.DTO.requestDTO.history.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.service.*;
@@ -222,26 +223,26 @@ public class TaskProcessor {
                             case "getAllAirParticalData":
                                 result = serviceAirParticulates.getAllAirParticalData();
                                 break;
-                            case "getTemparatureAndHumidity":
+                            case "getTemparatureAndHumidityHistory":
                                 RequestHistoryTemparatureAndHumidityDTO data_TemperatureAndHumidity = (RequestHistoryTemparatureAndHumidityDTO) task
                                         .getData();
                                 result = serviceHistoryTemparatureAndHumidity.getTempHistory(
                                         data_TemperatureAndHumidity.deviceId(), data_TemperatureAndHumidity.start(),
                                         data_TemperatureAndHumidity.end());
                                 break;
-                            case "getCircuit":
+                            case "getCircuitHistory":
                                 RequestHistoryCircuitDTO data_Circuit = (RequestHistoryCircuitDTO) task.getData();
                                 result = serviceHistoryCircuit.getCircuitHistory(
                                         data_Circuit.deviceId(), data_Circuit.start(),
                                         data_Circuit.end());
                                 break;
-                            case "getAirQuality":
+                            case "getAirQualityHistory":
                                 RequestHistoryAirQualityDTO data_AirQuality = (RequestHistoryAirQualityDTO) task
                                         .getData();
                                 result = serviceHistoryAirQuality.getAirQualityHistory(data_AirQuality.deviceId(),
                                         data_AirQuality.start(), data_AirQuality.end());
                                 break;
-                            case "getAirParticulates":
+                            case "getAirParticulatesHistory":
                                 RequestHistoryAirParticulatesDTO data_AirParticulates = (RequestHistoryAirParticulatesDTO) task
                                         .getData();
                                 result = serviceHistoryAirParticulates.getAirParticulatesHistory(
@@ -278,6 +279,8 @@ public class TaskProcessor {
                         break;
                     } catch (Exception e) {
                         e.printStackTrace();
+                    } finally {
+                        SecurityContextHolder.clearContext();
                     }
                 }
             });
