@@ -32,3 +32,7 @@
 可以獲得更詳細的資料
 ![alt text](image-8.png)
 > [search DTO](https://github.com/SilverTrust123/demo/blob/main/doc/search_DTO/0.md)
+
+
+## 獲得完整API情報(openAPI-Swagger)
+> 完整個json檔請享用[點這裡](https://github.com/SilverTrust123/demo/blob/main/doc/api-docs.json)
