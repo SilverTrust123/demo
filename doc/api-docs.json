@@ -1,1 +1,1299 @@
-{"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost:9090","description":"Generated server url"}],"security":[{"BearerAuth":[]}],"paths":{"/temperatureAndHumidityData/":{"get":{"tags":["controller-temparature-and-humidity"],"operationId":"getAllTemparatureAndHumidityData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}},"post":{"tags":["controller-temparature-and-humidity"],"operationId":"receiveTemparatureAndHumidityData","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestTemperatureAndHumidityDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/writeMPoint":{"post":{"tags":["controller-plc"],"operationId":"writeMPoint","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestWriteMPointDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/writeDPoint":{"post":{"tags":["controller-plc"],"operationId":"writeDPoint","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestWriteDPointDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/login/":{"post":{"tags":["controller-auth"],"operationId":"login","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestLoginDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object","additionalProperties":{"type":"string"}}}}}}}},"/circuitData/":{"post":{"tags":["controller-circuit"],"operationId":"receiveCircuitData","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestCircuitDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/camData/":{"get":{"tags":["controller-cam"],"operationId":"getAllCamData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}},"post":{"tags":["controller-cam"],"operationId":"receiveCamData","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestCamDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/airQualityData/":{"get":{"tags":["controller-air-quality"],"operationId":"getAllAirQualityData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}},"post":{"tags":["controller-air-quality"],"operationId":"recriveAirQuality","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestAirParticulatesDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/airParticulatesData/":{"get":{"tags":["controller-air-particulates"],"operationId":"getAllAirParticalData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}},"post":{"tags":["controller-air-particulates"],"operationId":"recriveAirPartical","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RequestAirParticulatesDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/temperatureAndHumidityData/{deviceId}":{"get":{"tags":["controller-temparature-and-humidity"],"operationId":"getTemparatureAndHumidityData","parameters":[{"name":"deviceId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/state":{"get":{"tags":["controller-plc"],"operationId":"plcState","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/getCountNonMetal":{"get":{"tags":["controller-plc"],"operationId":"getCountNonMetal","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/getCountMetal":{"get":{"tags":["controller-plc"],"operationId":"getCountMetal","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/PLCConnect":{"get":{"tags":["controller-plc"],"operationId":"PLCConnect","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/MPointState":{"get":{"tags":["controller-plc"],"operationId":"MpointState","parameters":[{"name":"param","in":"query","required":true,"schema":{"$ref":"#/components/schemas/RequestMPointStateDTO"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/DPointData":{"get":{"tags":["controller-plc"],"operationId":"DPointData","parameters":[{"name":"param","in":"query","required":true,"schema":{"$ref":"#/components/schemas/RequestDPointStateDTO"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/AllMPointData":{"get":{"tags":["controller-plc"],"operationId":"AllMPointData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/plc/AllDPointData":{"get":{"tags":["controller-plc"],"operationId":"AllDPointData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/log/warn":{"get":{"tags":["controller-log"],"operationId":"getWarnLogs","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/log/error":{"get":{"tags":["controller-log"],"operationId":"getErrorLogs","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/log/byTime":{"get":{"tags":["controller-log"],"operationId":"getLogByTime","parameters":[{"name":"request","in":"query","required":true,"schema":{"$ref":"#/components/schemas/RequestLogDTO"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/log/all":{"get":{"tags":["controller-log"],"operationId":"getAllLogs","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/latestLog":{"get":{"tags":["controller"],"operationId":"getLatestLogs","parameters":[{"name":"lines","in":"query","required":false,"schema":{"type":"integer","format":"int32","default":100}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"type":"string"}}}}}}}},"/history/temparatureAndHumidityHistory":{"get":{"tags":["controller-history-data"],"operationId":"getTemparatureAndHumidityHistory","parameters":[{"name":"request","in":"query","required":true,"schema":{"$ref":"#/components/schemas/RequestHistoryTemparatureAndHumidityDTO"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/history/circuitHistory":{"get":{"tags":["controller-history-data"],"operationId":"getCircuitHistory","parameters":[{"name":"request","in":"query","required":true,"schema":{"$ref":"#/components/schemas/RequestHistoryCircuitDTO"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/history/airQualityHistory":{"get":{"tags":["controller-history-data"],"operationId":"getAirQualityHistory","parameters":[{"name":"request","in":"query","required":true,"schema":{"$ref":"#/components/schemas/RequestHistoryAirQualityDTO"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/history/airParticulatesHistory":{"get":{"tags":["controller-history-data"],"operationId":"getAirParticulatesHistory","parameters":[{"name":"request","in":"query","required":true,"schema":{"$ref":"#/components/schemas/RequestHistoryAirParticulatesDTO"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/fullLog":{"get":{"tags":["controller"],"operationId":"getfullLogs","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"string"}}}}}}},"/deviceState/":{"get":{"tags":["controller-device-state"],"operationId":"AllDeviceState","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/circuitData":{"get":{"tags":["controller-circuit"],"operationId":"getAllCircuitData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/circuitData/{deviceId}":{"get":{"tags":["controller-circuit"],"operationId":"getCircuitData","parameters":[{"name":"deviceId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/camData/{deviceId}":{"get":{"tags":["controller-cam"],"operationId":"getCamData","parameters":[{"name":"deviceId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/allData/allDataAndDeviceState":{"get":{"tags":["controller-data"],"operationId":"AllDataAndDeviceState","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/allData/":{"get":{"tags":["controller-data"],"operationId":"AllData","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/airQualityData/{deviceId}":{"get":{"tags":["controller-air-quality"],"operationId":"getAirQualityData","parameters":[{"name":"deviceId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/airParticulatesData/{deviceId}":{"get":{"tags":["controller-air-particulates"],"operationId":"getAirParticalData","parameters":[{"name":"deviceId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/":{"get":{"tags":["controller"],"operationId":"checkConnect","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"string"}}}}}}}},"components":{"schemas":{"RequestTemperatureAndHumidityDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"temperature":{"type":"number","format":"float"},"humidity":{"type":"number","format":"float"},"timestamp":{"type":"integer","format":"int32"}}},"RequestWriteMPointDTO":{"type":"object","properties":{"param":{"type":"string"},"value":{"type":"boolean"}}},"RequestWriteDPointDTO":{"type":"object","properties":{"param":{"type":"string"},"value":{"type":"integer","format":"int32"}}},"RequestLoginDTO":{"type":"object","properties":{"request":{"type":"object","additionalProperties":{"type":"string"}}}},"RequestCircuitDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"voltage":{"type":"number","format":"float"},"current":{"type":"number","format":"float"},"power":{"type":"number","format":"float"},"energy":{"type":"number","format":"float"},"timestamp":{"type":"integer","format":"int32"}}},"DetectedObjectDTO":{"type":"object","properties":{"className":{"type":"string"},"x1":{"type":"integer","format":"int32"},"y1":{"type":"integer","format":"int32"},"x2":{"type":"integer","format":"int32"},"y2":{"type":"integer","format":"int32"},"footX":{"type":"integer","format":"int32"},"footY":{"type":"integer","format":"int32"}}},"RequestCamDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"danger":{"type":"boolean"},"personCount":{"type":"integer","format":"int32"},"dangerZone":{"type":"array","items":{"type":"array","items":{"type":"integer","format":"int32"}}},"objects":{"type":"array","items":{"$ref":"#/components/schemas/DetectedObjectDTO"}},"timestamp":{"type":"integer","format":"int32"}}},"RequestAirParticulatesDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"pm2_5":{"type":"number","format":"float"},"timestamp":{"type":"integer","format":"int32"}}},"RequestMPointStateDTO":{"type":"object","properties":{"param":{"type":"string"}}},"RequestDPointStateDTO":{"type":"object","properties":{"param":{"type":"string"}}},"RequestLogDTO":{"type":"object","properties":{"start":{"type":"integer","format":"int32"},"end":{"type":"integer","format":"int32"}}},"RequestHistoryTemparatureAndHumidityDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"start":{"type":"integer","format":"int32"},"end":{"type":"integer","format":"int32"}}},"RequestHistoryCircuitDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"start":{"type":"integer","format":"int32"},"end":{"type":"integer","format":"int32"}}},"RequestHistoryAirQualityDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"start":{"type":"integer","format":"int32"},"end":{"type":"integer","format":"int32"}}},"RequestHistoryAirParticulatesDTO":{"type":"object","properties":{"deviceId":{"type":"string"},"start":{"type":"integer","format":"int32"},"end":{"type":"integer","format":"int32"}}}},"securitySchemes":{"BearerAuth":{"type":"http","scheme":"bearer","bearerFormat":"JWT"}}}}
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:9090",
+            "description": "Generated server url"
+        }
+    ],
+    "security": [
+        {
+            "BearerAuth": []
+        }
+    ],
+    "paths": {
+        "/temperatureAndHumidityData/": {
+            "get": {
+                "tags": [
+                    "controller-temparature-and-humidity"
+                ],
+                "operationId": "getAllTemparatureAndHumidityData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "controller-temparature-and-humidity"
+                ],
+                "operationId": "receiveTemparatureAndHumidityData",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestTemperatureAndHumidityDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/writeMPoint": {
+            "post": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "writeMPoint",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestWriteMPointDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/writeDPoint": {
+            "post": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "writeDPoint",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestWriteDPointDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/login/": {
+            "post": {
+                "tags": [
+                    "controller-auth"
+                ],
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestLoginDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/circuitData/": {
+            "post": {
+                "tags": [
+                    "controller-circuit"
+                ],
+                "operationId": "receiveCircuitData",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestCircuitDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/camData/": {
+            "get": {
+                "tags": [
+                    "controller-cam"
+                ],
+                "operationId": "getAllCamData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "controller-cam"
+                ],
+                "operationId": "receiveCamData",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestCamDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/airQualityData/": {
+            "get": {
+                "tags": [
+                    "controller-air-quality"
+                ],
+                "operationId": "getAllAirQualityData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "controller-air-quality"
+                ],
+                "operationId": "recriveAirQuality",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestAirParticulatesDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/airParticulatesData/": {
+            "get": {
+                "tags": [
+                    "controller-air-particulates"
+                ],
+                "operationId": "getAllAirParticalData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "controller-air-particulates"
+                ],
+                "operationId": "recriveAirPartical",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestAirParticulatesDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/temperatureAndHumidityData/{deviceId}": {
+            "get": {
+                "tags": [
+                    "controller-temparature-and-humidity"
+                ],
+                "operationId": "getTemparatureAndHumidityData",
+                "parameters": [
+                    {
+                        "name": "deviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/state": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "plcState",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/getCountNonMetal": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "getCountNonMetal",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/getCountMetal": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "getCountMetal",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/PLCConnect": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "PLCConnect",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/MPointState": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "MpointState",
+                "parameters": [
+                    {
+                        "name": "param",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestMPointStateDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/DPointData": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "DPointData",
+                "parameters": [
+                    {
+                        "name": "param",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestDPointStateDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/AllMPointData": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "AllMPointData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/plc/AllDPointData": {
+            "get": {
+                "tags": [
+                    "controller-plc"
+                ],
+                "operationId": "AllDPointData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/log/warn": {
+            "get": {
+                "tags": [
+                    "controller-log"
+                ],
+                "operationId": "getWarnLogs",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/log/error": {
+            "get": {
+                "tags": [
+                    "controller-log"
+                ],
+                "operationId": "getErrorLogs",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/log/byTime": {
+            "get": {
+                "tags": [
+                    "controller-log"
+                ],
+                "operationId": "getLogByTime",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestLogDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/log/all": {
+            "get": {
+                "tags": [
+                    "controller-log"
+                ],
+                "operationId": "getAllLogs",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/latestLog": {
+            "get": {
+                "tags": [
+                    "controller"
+                ],
+                "operationId": "getLatestLogs",
+                "parameters": [
+                    {
+                        "name": "lines",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/history/temparatureAndHumidityHistory": {
+            "get": {
+                "tags": [
+                    "controller-history-data"
+                ],
+                "operationId": "getTemparatureAndHumidityHistory",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestHistoryTemparatureAndHumidityDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/history/circuitHistory": {
+            "get": {
+                "tags": [
+                    "controller-history-data"
+                ],
+                "operationId": "getCircuitHistory",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestHistoryCircuitDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/history/airQualityHistory": {
+            "get": {
+                "tags": [
+                    "controller-history-data"
+                ],
+                "operationId": "getAirQualityHistory",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestHistoryAirQualityDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/history/airParticulatesHistory": {
+            "get": {
+                "tags": [
+                    "controller-history-data"
+                ],
+                "operationId": "getAirParticulatesHistory",
+                "parameters": [
+                    {
+                        "name": "request",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/RequestHistoryAirParticulatesDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/fullLog": {
+            "get": {
+                "tags": [
+                    "controller"
+                ],
+                "operationId": "getfullLogs",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/deviceState/": {
+            "get": {
+                "tags": [
+                    "controller-device-state"
+                ],
+                "operationId": "AllDeviceState",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/circuitData": {
+            "get": {
+                "tags": [
+                    "controller-circuit"
+                ],
+                "operationId": "getAllCircuitData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/circuitData/{deviceId}": {
+            "get": {
+                "tags": [
+                    "controller-circuit"
+                ],
+                "operationId": "getCircuitData",
+                "parameters": [
+                    {
+                        "name": "deviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/camData/{deviceId}": {
+            "get": {
+                "tags": [
+                    "controller-cam"
+                ],
+                "operationId": "getCamData",
+                "parameters": [
+                    {
+                        "name": "deviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/allData/allDataAndDeviceState": {
+            "get": {
+                "tags": [
+                    "controller-data"
+                ],
+                "operationId": "AllDataAndDeviceState",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/allData/": {
+            "get": {
+                "tags": [
+                    "controller-data"
+                ],
+                "operationId": "AllData",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/airQualityData/{deviceId}": {
+            "get": {
+                "tags": [
+                    "controller-air-quality"
+                ],
+                "operationId": "getAirQualityData",
+                "parameters": [
+                    {
+                        "name": "deviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/airParticulatesData/{deviceId}": {
+            "get": {
+                "tags": [
+                    "controller-air-particulates"
+                ],
+                "operationId": "getAirParticalData",
+                "parameters": [
+                    {
+                        "name": "deviceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "controller"
+                ],
+                "operationId": "checkConnect",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RequestTemperatureAndHumidityDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "temperature": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "humidity": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "timestamp": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestWriteMPointDTO": {
+                "type": "object",
+                "properties": {
+                    "param": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "RequestWriteDPointDTO": {
+                "type": "object",
+                "properties": {
+                    "param": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestLoginDTO": {
+                "type": "object",
+                "properties": {
+                    "request": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "RequestCircuitDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "voltage": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "current": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "power": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "energy": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "timestamp": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "DetectedObjectDTO": {
+                "type": "object",
+                "properties": {
+                    "className": {
+                        "type": "string"
+                    },
+                    "x1": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "y1": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "x2": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "y2": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "footX": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "footY": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestCamDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "danger": {
+                        "type": "boolean"
+                    },
+                    "personCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "dangerZone": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "format": "int32"
+                            }
+                        }
+                    },
+                    "objects": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DetectedObjectDTO"
+                        }
+                    },
+                    "timestamp": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestAirParticulatesDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "pm2_5": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "timestamp": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestMPointStateDTO": {
+                "type": "object",
+                "properties": {
+                    "param": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RequestDPointStateDTO": {
+                "type": "object",
+                "properties": {
+                    "param": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RequestLogDTO": {
+                "type": "object",
+                "properties": {
+                    "start": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "end": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestHistoryTemparatureAndHumidityDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "start": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "end": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestHistoryCircuitDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "start": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "end": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestHistoryAirQualityDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "start": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "end": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            },
+            "RequestHistoryAirParticulatesDTO": {
+                "type": "object",
+                "properties": {
+                    "deviceId": {
+                        "type": "string"
+                    },
+                    "start": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "end": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

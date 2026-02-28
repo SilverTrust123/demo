@@ -12,5 +12,5 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 
     List<Log> findByLogLevelOrderByTimestampDesc(String logLevel);
 
-    List<Log> findByTimestampBetweenOrderByTimestampDesc(long start, long end);
+    List<Log> findByTimestampBetweenOrderByTimestampDesc(int start, int end);
 }

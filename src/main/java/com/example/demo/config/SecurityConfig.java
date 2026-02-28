@@ -41,6 +41,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
+        return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
     }
 }

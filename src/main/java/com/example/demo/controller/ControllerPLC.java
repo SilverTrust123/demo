@@ -104,4 +104,10 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, null, "getCountNonMetal");
     }
 
+    @GetMapping("test")
+    public String test() {
+        log.info("test");
+        return new String("secess");
+    }
+
 }

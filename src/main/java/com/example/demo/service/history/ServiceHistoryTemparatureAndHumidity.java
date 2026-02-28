@@ -11,18 +11,18 @@ import com.example.demo.DTO.responseDTO.history.*;
 
 @Service
 public class ServiceHistoryTemparatureAndHumidity {
-    @Autowired
-    private TemperatureAndHumidityRepository tempRepo;
+        @Autowired
+        private TemperatureAndHumidityRepository tempRepo;
 
-    public ResponseHistoryTemparatureAndHumidityDTO getTempHistory(String deviceId, int start, int end) {
-        return new ResponseHistoryTemparatureAndHumidityDTO(
-                tempRepo.findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(deviceId, start, end)
-                        .stream()
-                        .map(entity -> new ResponseTemperatureAndHumidityDTO(
-                                entity.getDeviceId(),
-                                entity.getTemperature(),
-                                entity.getHumidity(),
-                                entity.getTimestamp()))
-                        .collect(Collectors.toList()));
-    }
+        public ResponseHistoryTemparatureAndHumidityDTO getTempHistory(String deviceId, int start, int end) {
+                return new ResponseHistoryTemparatureAndHumidityDTO(
+                                tempRepo.findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(deviceId, start, end)
+                                                .stream()
+                                                .map(entity -> new ResponseTemperatureAndHumidityDTO(
+                                                                entity.getDeviceId(),
+                                                                entity.getTemperature(),
+                                                                entity.getHumidity(),
+                                                                entity.getTimestamp()))
+                                                .collect(Collectors.toList()));
+        }
 }

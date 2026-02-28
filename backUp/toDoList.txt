@@ -23,7 +23,7 @@ silding window 平滑數據 就可以消除一些突發的雜訊阿之類的
 log推給前端
 ORM (Object-Relational Mapping，物件關係映射)
 swagger-ui
-
+全線管制登入
 -----------------------------------------
 圖
 系統環境架構圖 (看硬體怎麼連)
@@ -40,7 +40,14 @@ http://localhost:9090/swagger-ui/index.html
 
 {
   "request": {
-  "username": "admin",
-  "password": "admin123"
+    "username": "admin",
+    "password": "admin123"
+    }
 }
+
+{
+  "request": {
+    "username": "admin001",
+    "password": "admin123"
+    }
 }
