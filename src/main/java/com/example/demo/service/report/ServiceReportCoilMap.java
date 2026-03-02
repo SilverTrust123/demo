@@ -3,9 +3,7 @@ package com.example.demo.service.report;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.demo.service.ServicePLC;
 import com.example.demo.plc.*;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
@@ -17,9 +15,7 @@ import com.lowagie.text.pdf.PdfWriter;
 
 @Service
 public class ServiceReportCoilMap {
-
-    @Autowired
-    private ServicePLC servicePLC;
+    private final PointList pointList = new PointList();
 
     public byte[] generatePLCCoilAddressAllocationTable() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -36,11 +32,11 @@ public class ServiceReportCoilMap {
             table.setWidthPercentage(100);
             table.addCell("Coil Type");
             table.addCell("Name");
-            table.addCell("Address");
             table.addCell("Detail");
+            table.addCell("Address");
 
-            Map<String, MPoint> ms = servicePLC.getMPointMap();
-            Map<String, DPoint> ds = servicePLC.getDPointMap();
+            Map<String, MPoint> ms = pointList.getMPointMap();
+            Map<String, DPoint> ds = pointList.getDPointMap();
 
             for (Map.Entry<String, MPoint> entry : ms.entrySet()) {
                 String key = entry.getKey();

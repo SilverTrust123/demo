@@ -3,14 +3,14 @@ package com.example.demo.service;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.Map;
+// import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.plc.DPoint;
-import com.example.demo.plc.MPoint;
+// import com.example.demo.plc.DPoint;
+// import com.example.demo.plc.MPoint;
 import com.example.demo.plc.PLCDriver;
 import com.example.demo.DTO.responseDTO.PLCResponseDTO.*;
 
@@ -156,13 +156,13 @@ public class ServicePLC {
         }
     }
 
-    public Map<String, MPoint> getMPointMap() {
-        return plc.getMPointMap();
-    }
+    // public Map<String, MPoint> getMPointMap() {
+    // return plc.getMPointMap();
+    // }
 
-    public Map<String, DPoint> getDPointMap() {
-        return plc.getDPointMap();
-    }
+    // public Map<String, DPoint> getDPointMap() {
+    // return plc.getDPointMap();
+    // }
 
     // try {
 

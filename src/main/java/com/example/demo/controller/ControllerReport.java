@@ -130,7 +130,7 @@ public class ControllerReport {
                 .thenApply(pdfContent -> {
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_PDF);
-                    headers.setContentDispositionFormData("inline", "AddressTable.pdf");
+                    headers.setContentDispositionFormData("attachment", "AddressTable.pdf");
                     headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
                     return new ResponseEntity<>(
