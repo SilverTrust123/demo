@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.responseDTO.ResponseAllDataAndDeviceStateDTO;
 import com.example.demo.DTO.responseDTO.ResponseAllDataDTO;
+import com.example.demo.DTO.responseDTO.ResponseAllDataAndDeviceStateWithoutPLCDTO;
 
 import org.slf4j.Logger;
 
@@ -43,6 +44,16 @@ public class ServiceData {
                 serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
                 serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
                 serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData(),
+                serviceDeviceState.getAllDeviceStatuses());
+        log.info("received all data and device state request return {}", ans);
+        return ans;
+    }
+
+    public ResponseAllDataAndDeviceStateWithoutPLCDTO AllDataAndDeviceStateWithoutPLC() throws Exception {
+        ResponseAllDataAndDeviceStateWithoutPLCDTO ans = new ResponseAllDataAndDeviceStateWithoutPLCDTO(
+                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
+                serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                serviceCam.getAllCamData(),
                 serviceDeviceState.getAllDeviceStatuses());
         log.info("received all data and device state request return {}", ans);
         return ans;

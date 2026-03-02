@@ -174,6 +174,9 @@ public class TaskProcessor {
                             case "AllDataAndDeviceState":
                                 result = serviceData.AllDataAndDeviceState();
                                 break;
+                            case "AllDataAndDeviceStateWithoutPLC":
+                                result = serviceData.AllDataAndDeviceStateWithoutPLC();
+                                break;
                             case "receiveCircuitData":
                                 RequestCircuitDTO data_cir = (RequestCircuitDTO) task.getData();
                                 serviceDeviceState.updateHeartbeat(data_cir.getDeviceId());

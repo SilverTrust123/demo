@@ -37,4 +37,9 @@ public class ControllerData {
         return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceState");
     }
 
+    @GetMapping("/allDataAndDeviceStateWithoutPLC")
+    public CompletableFuture<Object> AllDataAndDeviceStateWithoutPLC() {
+        log.info("Received and transfer request for all data and device state without plc ");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceStateWithoutPLC");
+    }
 }
