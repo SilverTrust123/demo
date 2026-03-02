@@ -28,11 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class TaskProcessor {
-
-    private final ServiceReportAirParticulates serviceReportAirParticulates;
-
-    private final ServiceReportAirQuality serviceReportAirQuality;
-
     private static final Logger log = LoggerFactory.getLogger(TaskProcessor.class);
 
     @Value("${thread_count}")
@@ -65,6 +60,12 @@ public class TaskProcessor {
     private ServiceReportTemparatureAndHumidity serviceReportTemparatureAndHumidity;
     @Autowired
     private ServiceReportCircuit serviceReportCircuit;
+    @Autowired
+    private ServiceReportAirParticulates serviceReportAirParticulates;
+    @Autowired
+    private ServiceReportCoilMap serviceReportCoilMap;
+    @Autowired
+    private ServiceReportAirQuality serviceReportAirQuality;
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
@@ -79,10 +80,11 @@ public class TaskProcessor {
 
     TaskProcessor(ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity,
             ServiceReportAirQuality serviceReportAirQuality,
-            ServiceReportAirParticulates serviceReportAirParticulates) {
+            ServiceReportAirParticulates serviceReportAirParticulates, ServiceReportCoilMap serviceReportCoilMap) {
         this.serviceHistoryTemparatureAndHumidity = serviceHistoryTemparatureAndHumidity;
         this.serviceReportAirQuality = serviceReportAirQuality;
         this.serviceReportAirParticulates = serviceReportAirParticulates;
+        this.serviceReportCoilMap = serviceReportCoilMap;
     }
 
     @PostConstruct
@@ -295,6 +297,8 @@ public class TaskProcessor {
                             case "getAirParticulatresReport":
                                 result = serviceReportAirParticulates.generateAirQualityReport();
                                 break;
+                            case "getAddressTable":
+                                result = serviceReportCoilMap.generatePLCCoilAddressAllocationTable();
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 serviceLog.record("WARN", "TaskProcessor", "Unknown task type: " + type);

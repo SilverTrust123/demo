@@ -121,4 +121,22 @@ public class ControllerReport {
                             HttpStatus.OK);
                 });
     }
+
+    @GetMapping("/addressTable")
+    public CompletableFuture<ResponseEntity<byte[]>> getAddressTable() throws Exception {
+        log.info("Received and transfer request for address table");
+        return queueService
+                .addRequestToQueue(URGENT, null, "getAddressTable")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("inline", "AddressTable.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
 }

@@ -161,4 +161,12 @@ public class PLCDriver {
     public int getCountNonMetal() throws Exception {
         return readD(COUNT_NON_METAL);
     }
+
+    public Map<String, MPoint> getMPointMap() {
+        return MPointMap;
+    }
+
+    public Map<String, DPoint> getDPointMap() {
+        return DPointMap;
+    }
 }
