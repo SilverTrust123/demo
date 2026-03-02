@@ -8,4 +8,6 @@ import java.util.List;
 public interface AirParticulatesRepository extends JpaRepository<AirParticulates, AirParticulatesId> {
     List<AirParticulates> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
             String deviceId, int startTime, int endTime);
+
+    List<AirParticulates> findAllByOrderByTimestampDesc();
 }

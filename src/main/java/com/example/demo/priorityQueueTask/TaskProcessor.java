@@ -1,10 +1,7 @@
 package com.example.demo.priorityQueueTask;
 
 import com.example.demo.service.history.*;
-import com.example.demo.service.report.ServiceReportCircuit;
-import com.example.demo.service.report.ServiceReportLog;
-import com.example.demo.service.report.ServiceReportTemparatureAndHumidity;
-
+import com.example.demo.service.report.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
@@ -31,6 +28,10 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class TaskProcessor {
+
+    private final ServiceReportAirParticulates serviceReportAirParticulates;
+
+    private final ServiceReportAirQuality serviceReportAirQuality;
 
     private static final Logger log = LoggerFactory.getLogger(TaskProcessor.class);
 
@@ -76,8 +77,12 @@ public class TaskProcessor {
 
     private ExecutorService executor;
 
-    TaskProcessor(ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity) {
+    TaskProcessor(ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity,
+            ServiceReportAirQuality serviceReportAirQuality,
+            ServiceReportAirParticulates serviceReportAirParticulates) {
         this.serviceHistoryTemparatureAndHumidity = serviceHistoryTemparatureAndHumidity;
+        this.serviceReportAirQuality = serviceReportAirQuality;
+        this.serviceReportAirParticulates = serviceReportAirParticulates;
     }
 
     @PostConstruct
@@ -283,6 +288,12 @@ public class TaskProcessor {
                                 break;
                             case "getCircuitReport":
                                 result = serviceReportCircuit.generateTemparatureAndHumidityReport();
+                                break;
+                            case "getAirQualityReport":
+                                result = serviceReportAirQuality.generateAirQualityReport();
+                                break;
+                            case "getAirParticulatresReport":
+                                result = serviceReportAirParticulates.generateAirQualityReport();
                                 break;
                             default:
                                 log.warn("Unknown task type: {}", type);

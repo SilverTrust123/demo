@@ -85,4 +85,40 @@ public class ControllerReport {
                 });
 
     }
+
+    @GetMapping("/airQuality")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirQualityReport() throws Exception {
+        log.info("Received and transfer request for air quality report ");
+        return queueService
+                .addRequestToQueue(URGENT, null, "getAirQualityReport")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "AirQualityReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/airParticulates")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReport() throws Exception {
+        log.info("Received and transfer request for air particulates report ");
+        return queueService
+                .addRequestToQueue(URGENT, null, "getAirParticulatresReport")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "AirParticulatesReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
 }
