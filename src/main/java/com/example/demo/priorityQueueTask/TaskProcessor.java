@@ -1,7 +1,9 @@
 package com.example.demo.priorityQueueTask;
 
 import com.example.demo.service.history.*;
+import com.example.demo.service.report.ServiceReportCircuit;
 import com.example.demo.service.report.ServiceReportLog;
+import com.example.demo.service.report.ServiceReportTemparatureAndHumidity;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -58,6 +60,10 @@ public class TaskProcessor {
     private ServiceLog serviceLog;
     @Autowired
     private ServiceReportLog serviceReportLog;
+    @Autowired
+    private ServiceReportTemparatureAndHumidity serviceReportTemparatureAndHumidity;
+    @Autowired
+    private ServiceReportCircuit serviceReportCircuit;
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
@@ -269,7 +275,12 @@ public class TaskProcessor {
                             case "getLogReport":
                                 result = serviceReportLog.generateLogReport();
                                 break;
-
+                            case "getTemperatureAndHumidityReport":
+                                result = serviceReportTemparatureAndHumidity.generateTemparatureAndHumidityReport();
+                                break;
+                            case "getCircuitReport":
+                                result = serviceReportCircuit.generateTemparatureAndHumidityReport();
+                                break;
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 serviceLog.record("WARN", "TaskProcessor", "Unknown task type: " + type);

@@ -8,7 +8,9 @@ import java.util.List;
 
 @Repository
 public interface TemperatureAndHumidityRepository
-        extends JpaRepository<TemperatureAndHumidity, TemperatureAndHumidityId> {
-    List<TemperatureAndHumidity> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
-            String deviceId, int startTime, int endTime);
+                extends JpaRepository<TemperatureAndHumidity, TemperatureAndHumidityId> {
+        List<TemperatureAndHumidity> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
+                        String deviceId, int startTime, int endTime);
+
+        List<TemperatureAndHumidity> findAllByOrderByTimestampDesc();
 }

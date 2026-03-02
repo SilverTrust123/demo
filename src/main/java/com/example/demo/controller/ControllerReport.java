@@ -30,7 +30,6 @@ public class ControllerReport {
     private QueueService queueService;
 
     @GetMapping("/log")
-
     public CompletableFuture<ResponseEntity<byte[]>> getLogReport() throws Exception {
         log.info("Received and transfer request for logs report ");
         return queueService
@@ -38,7 +37,45 @@ public class ControllerReport {
                 .thenApply(pdfContent -> {
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_PDF);
-                    headers.setContentDispositionFormData("attachment", "log_report.pdf");
+                    headers.setContentDispositionFormData("attachment", "logReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+
+    }
+
+    @GetMapping("/temperatureAndHumidity")
+    public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityReport() throws Exception {
+        log.info("Received and transfer request for TemperatureAndHumidity report ");
+        return queueService
+                .addRequestToQueue(URGENT, null, "getTemperatureAndHumidityReport")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "temperatureAndHumidityReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+
+    }
+
+    @GetMapping("/circuit")
+    public CompletableFuture<ResponseEntity<byte[]>> getCircuitReport() throws Exception {
+        log.info("Received and transfer request for Circuit report ");
+        return queueService
+                .addRequestToQueue(URGENT, null, "getCircuitReport")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "circuitReport.pdf");
                     headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
                     return new ResponseEntity<>(
