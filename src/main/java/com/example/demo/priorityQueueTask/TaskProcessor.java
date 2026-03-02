@@ -1,6 +1,8 @@
 package com.example.demo.priorityQueueTask;
 
 import com.example.demo.service.history.*;
+import com.example.demo.service.report.ServiceReportLog;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 
@@ -28,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class TaskProcessor {
 
-    private static final Logger log = LoggerFactory.getLogger(ServiceCircuit.class);
+    private static final Logger log = LoggerFactory.getLogger(TaskProcessor.class);
 
     @Value("${thread_count}")
     private int threadCount;
@@ -54,6 +56,8 @@ public class TaskProcessor {
     private ServiceDeviceState serviceDeviceState;
     @Autowired
     private ServiceLog serviceLog;
+    @Autowired
+    private ServiceReportLog serviceReportLog;
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
@@ -261,6 +265,9 @@ public class TaskProcessor {
                             case "getLogByTime":
                                 RequestLogDTO data_Log = (RequestLogDTO) task.getData();
                                 result = serviceLog.getLogsByTime(data_Log.start(), data_Log.end());
+                                break;
+                            case "getLogReport":
+                                result = serviceReportLog.generateLogReport();
                                 break;
 
                             default:
