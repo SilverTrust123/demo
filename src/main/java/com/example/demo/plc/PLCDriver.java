@@ -6,9 +6,9 @@ import java.util.Map;
 import com.serotonin.modbus4j.ModbusFactory;
 import com.serotonin.modbus4j.ModbusMaster;
 import com.serotonin.modbus4j.ip.IpParameters;
+import com.serotonin.modbus4j.msg.*;
 // import com.serotonin.modbus4j.serial.*;
 // import com.serotonin.modbus4j.serial.rtu.*;
-import com.serotonin.modbus4j.msg.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +21,14 @@ public class PLCDriver {
 
     private static final Logger log = LoggerFactory.getLogger(PLCDriver.class);
 
-    // 先預留RTU街口 直接搬到PC上面實驗 當備案吧
-    // SerialParameters params = new SerialParameters();
-    // params.setCommPortId("COM3"); // Windows 用 COMx, Linux 用 /dev/ttyUSBx
-    // params.setBaudRate(9600);
-    // params.setDataBits(8);
-    // params.setStopBits(1);
-    // params.setParity(0); // 0=None, 1=Odd, 2=Even
-
     public PLCDriver(String ip, int port) throws Exception {
+        // 先預留RTU街口 直接搬到PC上面實驗 當備案吧
+        // SerialParameters params = new SerialParameters();
+        // params.setCommPortId("COM3"); // Windows 用 COMx
+        // params.setBaudRate(9600);
+        // params.setDataBits(8);
+        // params.setStopBits(1);
+        // params.setParity(0); // 0=None, 1=Odd, 2=Even
         IpParameters params = new IpParameters();
         params.setHost(ip);
         params.setPort(port);

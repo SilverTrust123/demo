@@ -19,7 +19,7 @@ import com.example.demo.priorityQueueTask.QueueService;
 @RestController
 @RequestMapping("/airQualityData")
 public class ControllerAirQuality {
-    private static final Logger log = LoggerFactory.getLogger(ControllerTemparatureAndHumidity.class);
+    private static final Logger log = LoggerFactory.getLogger(ControllerAirQuality.class);
     @Value("${important}")
     private int IMPORTANT;
     @Value("${normal}")
