@@ -175,6 +175,9 @@ public class TaskProcessor {
                             case "ALLData":
                                 result = serviceData.AllData();
                                 break;
+                            case "AllSensorData":
+                                result = serviceData.AllSensorData();
+                                break;
                             case "AllDeviceState":
                                 result = serviceDeviceState.getAllDeviceStatuses();
                                 break;

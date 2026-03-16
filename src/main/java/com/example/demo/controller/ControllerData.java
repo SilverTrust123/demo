@@ -42,4 +42,10 @@ public class ControllerData {
         log.info("Received and transfer request for all data and device state without plc ");
         return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceStateWithoutPLC");
     }
+
+    @GetMapping("/allSenosrData")
+    public CompletableFuture<Object> AllSensorData() {
+        log.info("Received and transfer request for all sensor data ");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllSensorData");
+    }
 }

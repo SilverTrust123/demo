@@ -4,9 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.DTO.responseDTO.ResponseAllDataAndDeviceStateDTO;
-import com.example.demo.DTO.responseDTO.ResponseAllDataDTO;
-import com.example.demo.DTO.responseDTO.ResponseAllDataAndDeviceStateWithoutPLCDTO;
+import com.example.demo.DTO.responseDTO.*;
 
 import org.slf4j.Logger;
 
@@ -35,6 +33,15 @@ public class ServiceData {
                 serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
                 serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
                 serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData());
+        log.info("received all data request return {}", ans);
+        return ans;
+    }
+
+    public ResponseAllSensorDataDTO AllSensorData() throws Exception {
+        ResponseAllSensorDataDTO ans = new ResponseAllSensorDataDTO(
+                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
+                serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                serviceCam.getAllCamData());
         log.info("received all data request return {}", ans);
         return ans;
     }
