@@ -41,7 +41,7 @@ public class ServiceData {
         ResponseAllSensorDataDTO ans = new ResponseAllSensorDataDTO(
                 serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
                 serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
-                serviceCam.getAllCamData());
+                serviceCam.getAllCamData(), serviceDeviceState.getAllDeviceStatuses());
         log.info("received all data request return {}", ans);
         return ans;
     }

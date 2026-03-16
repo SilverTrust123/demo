@@ -1,11 +1,6 @@
 代辦事項
 視情況更改優先級------------(等吳紫陽)
-報表-----------------------(等吳紫陽)
 可以做溫溼度等等的預測
-生成圖給他
-讀歷史數據
-
-還沒完成全部的Servicelog.recode----------(只完成service的部分)
 --------------------------------------------------
 不能馬上做
 每一個sensor都要做內網
@@ -36,7 +31,7 @@ UI 介面設計圖 (Dashboard 的 Mockup 或截圖)
 RWD
 http://localhost:9090/swagger-ui/index.html
 雖然現在 DTO 只傳字串，但因為有傳 logLevel，前端可以根據這個值來換顏色：ERROR $\rightarrow$ 紅色文字WARN $\rightarrow$ 橘色文字INFO $\rightarrow$ 藍色或黑色
-
+跟他說sensor all data
 
 {
   "request": {
