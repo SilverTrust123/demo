@@ -1,6 +1,6 @@
 package com.example.demo.DTO.responseDTO;
 
-public record ResponseAirQualityDTO(String deviceId, float pm2_5, int timestamp) {
+public record ResponseAirQualityDTO(String deviceId, float airPollution, int timestamp) {
 }
 // private String deviceId;
 // private float airPollution;

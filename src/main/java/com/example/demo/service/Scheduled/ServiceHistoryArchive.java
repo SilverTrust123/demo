@@ -110,7 +110,7 @@ public class ServiceHistoryArchive {
         for (ResponseAirQualityDTO dto : currentData) {
             AirQuality entity = new AirQuality();
             entity.setDeviceId(dto.deviceId());
-            entity.setAirPollution(dto.pm2_5());
+            entity.setAirPollution(dto.airPollution());
             entity.setTimestamp(dto.timestamp());
 
             entitiesToSave.add(entity);

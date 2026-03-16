@@ -19,28 +19,34 @@ import org.slf4j.LoggerFactory;
 @Service
 public class ServiceCircuit {
     private Map<String, ResponseCircuitDTO> circuitDataMap = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, Deque<Double>> circuitHistoryMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, DeviceHistory> circuitHistoryMap = new ConcurrentHashMap<>();
     Dotenv dotenv = Dotenv.load();
     private final int WINDOW_SIZE = Integer.parseInt(dotenv.get("WINDOW_SIZE"));
     private static final Logger log = LoggerFactory.getLogger(ServiceCircuit.class);
+
     @Autowired
     private ServiceLog serviceLog;
 
     public String receiveCircuitData(RequestCircuitDTO request) {
         if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
-            log.info("circuit data is required follow by detail", request);
+            log.info("circuit data is required follow by detail {}", request);
             return "circuit deviceId is required";
         }
 
         String deviceId = request.getDeviceId();
+
         float rawVoltage = request.getVoltage();
-        float smoothVoltage = calculateAverage(circuitHistoryMap, deviceId, (double) rawVoltage);
+        float smoothVoltage = calculateAverageForMetric(deviceId, Metric.VOLTAGE, rawVoltage);
+
         float rawCurrent = request.getCurrent();
-        float smoothCurrent = calculateAverage(circuitHistoryMap, deviceId, rawCurrent);
+        float smoothCurrent = calculateAverageForMetric(deviceId, Metric.CURRENT, rawCurrent);
+
         float rawPower = request.getPower();
-        float smoothPower = calculateAverage(circuitHistoryMap, deviceId, rawPower);
+        float smoothPower = calculateAverageForMetric(deviceId, Metric.POWER, rawPower);
+
         float rawEnergy = request.getEnergy();
-        float smoothEnergy = calculateAverage(circuitHistoryMap, deviceId, rawEnergy);
+        float smoothEnergy = calculateAverageForMetric(deviceId, Metric.ENERGY, rawEnergy);
+
         int currentTimestamp = (int) (System.currentTimeMillis() / 1000L);
         ResponseCircuitDTO finalData = new ResponseCircuitDTO(
                 deviceId,
@@ -93,16 +99,33 @@ public class ServiceCircuit {
         return true;
     }
 
-    private float calculateAverage(ConcurrentHashMap<String, Deque<Double>> historyMap, String deviceId,
-            double newValue) {
-        Deque<Double> window = historyMap.computeIfAbsent(deviceId, k -> new ArrayDeque<>());
+    private enum Metric {
+        VOLTAGE, CURRENT, POWER, ENERGY
+    }
 
+    private static class DeviceHistory {
+        final Deque<Double> voltageHistory = new ArrayDeque<>();
+        final Deque<Double> currentHistory = new ArrayDeque<>();
+        final Deque<Double> powerHistory = new ArrayDeque<>();
+        final Deque<Double> energyHistory = new ArrayDeque<>();
+    }
+
+    private float calculateAverageForMetric(String deviceId, Metric metric, double newValue) {
+        DeviceHistory history = circuitHistoryMap.computeIfAbsent(deviceId, k -> new DeviceHistory());
+        Deque<Double> window;
+        switch (metric) {
+            case VOLTAGE -> window = history.voltageHistory;
+            case CURRENT -> window = history.currentHistory;
+            case POWER -> window = history.powerHistory;
+            case ENERGY -> window = history.energyHistory;
+            default -> window = history.voltageHistory;
+        }
         synchronized (window) {
             if (window.size() >= WINDOW_SIZE) {
                 window.pollFirst();
             }
             window.addLast(newValue);
-            log.info("Device {} new value: {}, history: {}", deviceId, newValue, window);
+            log.info("Device {} metric {} new value: {}, history: {}", deviceId, metric, newValue, window);
             return (float) window.stream().mapToDouble(Double::doubleValue).average().orElse(newValue);
         }
     }

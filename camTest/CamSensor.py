@@ -6,7 +6,7 @@ from datetime import datetime
 from ultralytics import YOLO
 
 DEVICE_ID = "CAM"
-BACKEND_URL = "http://192.168.3.253:9090/CamData"
+BACKEND_URL = "http://localhost:9090/camData/"
 POLL_INTERVAL = 3
 
 DANGER_POLY = np.array([
@@ -91,10 +91,11 @@ while True:
         payload = {
             "deviceId": DEVICE_ID,
             # "timestamp": datetime.now().isoformat(timespec="seconds"),
+            "timestamp":000,
             "danger": danger_now,
             "personCount": person_count,
             "dangerZone": DANGER_POLY.tolist(),
-            "objects": detected_objects
+            "objects": detected_objects,
         }
         send_to_backend(payload)
         last_send_time = now
