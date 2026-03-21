@@ -32,6 +32,8 @@ RWD
 http://localhost:9090/swagger-ui/index.html
 雖然現在 DTO 只傳字串，但因為有傳 logLevel，前端可以根據這個值來換顏色：ERROR $\rightarrow$ 紅色文字WARN $\rightarrow$ 橘色文字INFO $\rightarrow$ 藍色或黑色
 跟他說sensor all data
+主業右上角的東西要確認一下
+像是說(設備連線狀態 運轉狀態的確認)
 
 {
   "request": {

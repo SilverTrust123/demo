@@ -12,7 +12,7 @@ public class ServiceWatchDog {
     @Autowired
     private ServiceDeviceState deviceStatusService;
 
-    @Scheduled(fixedRate = 3000)
+    @Scheduled(fixedRate = 10000)
     public void checkAllDevices() {
         deviceStatusService.markOfflineIfTimeout();
     }
