@@ -66,6 +66,8 @@ public class TaskProcessor {
     private ServiceReportCoilMap serviceReportCoilMap;
     @Autowired
     private ServiceReportAirQuality serviceReportAirQuality;
+    @Autowired
+    private ServiceTodo serviceTodo;
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
@@ -302,6 +304,11 @@ public class TaskProcessor {
                                 break;
                             case "getAddressTable":
                                 result = serviceReportCoilMap.generatePLCCoilAddressAllocationTable();
+                                break;
+                            case "leaveMessage":
+                                RequestTodoDTO data_todo = (RequestTodoDTO) task.getData();
+                                result = serviceTodo.refreshTodo(data_todo.message());
+                                break;
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 serviceLog.record("WARN", "TaskProcessor", "Unknown task type: " + type);

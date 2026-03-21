@@ -11,7 +11,7 @@ public class User {
     @Id
     private String username;
 
-    private String password; // 這裡存的是加密後的亂碼
+    private String password;
 
     public User() {
 
