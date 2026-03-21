@@ -52,3 +52,10 @@ CREATE TABLE `users` (
     `password` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;	
+
+--交接事項
+USE ICMS;
+CREATE TABLE `todo` (
+    message VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`message`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
