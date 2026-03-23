@@ -1,4 +1,4 @@
-package com.example.demo.priorityQueueTask; // 記得改成妳的路徑
+package com.example.demo.priorityQueueTask;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
