@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.DTO.requestDTO.RequestTimesDTO;
 import com.example.demo.priorityQueueTask.QueueService;
 
 import org.slf4j.Logger;
@@ -113,6 +115,25 @@ public class ControllerReport {
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_PDF);
                     headers.setContentDispositionFormData("attachment", "AirParticulatesReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/airParticulates/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReportBetweenTimes(RequestTimesDTO request)
+            throws Exception {
+        log.info("Received and transfer request for air particulates report ");
+        return queueService
+                .addRequestToQueue(URGENT, request, "getAirParticulatresReportBetweenTimes")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "AirParticulatesReportBetweenTimes.pdf");
                     headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
                     return new ResponseEntity<>(

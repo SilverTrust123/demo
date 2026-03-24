@@ -304,6 +304,11 @@ public class TaskProcessor {
                             case "getAirParticulatresReport":
                                 result = serviceReportAirParticulates.generateAirQualityReport();
                                 break;
+                            case "getAirParticulatresReportBetweenTimes":
+                                RequestTimesDTO data_times = (RequestTimesDTO) task.getData();
+                                result = serviceReportAirParticulates
+                                        .generateAirQualityReportBetweenTimes(data_times.start(), data_times.end());
+                                break;
                             case "getAddressTable":
                                 result = serviceReportCoilMap.generatePLCCoilAddressAllocationTable();
                                 break;
