@@ -55,9 +55,10 @@ public class ServiceReportTemparatureAndHumidity {
         }
     }
 
-    public byte[] generateTemparatureAndHumidityReportBetweenTimes() {
+    public byte[] generateTemparatureAndHumidityReportBetweenTimes(int start, int end) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository.findAll();
+            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository
+                    .findTimestampBetweenOrderByTimestampDesc(start, end);
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);

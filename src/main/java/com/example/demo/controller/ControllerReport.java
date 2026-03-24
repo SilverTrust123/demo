@@ -66,7 +66,25 @@ public class ControllerReport {
                             headers,
                             HttpStatus.OK);
                 });
+    }
 
+    @GetMapping("/temperatureAndHumidity/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityReportBetweenTimes(
+            RequestTimesDTO request) throws Exception {
+        log.info("Received and transfer request for TemperatureAndHumidity bewteen timesreport ");
+        return queueService
+                .addRequestToQueue(URGENT, request, "getTemperatureAndHumidityReportBetweenTimes")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "temperatureAndHumidityReportBetweenTimes.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
     }
 
     @GetMapping("/circuit")
@@ -85,7 +103,25 @@ public class ControllerReport {
                             headers,
                             HttpStatus.OK);
                 });
+    }
 
+    @GetMapping("/circuit/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getCircuitReportBetweenTimes(RequestTimesDTO request)
+            throws Exception {
+        log.info("Received and transfer request for Circuit between times report ");
+        return queueService
+                .addRequestToQueue(URGENT, request, "getCircuitReportBetweenTimes")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "circuitReportBetweenTimes.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
     }
 
     @GetMapping("/airQuality")
@@ -97,6 +133,25 @@ public class ControllerReport {
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_PDF);
                     headers.setContentDispositionFormData("attachment", "AirQualityReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/airQuality/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirQualityReportBetweenTimes(RequestTimesDTO request)
+            throws Exception {
+        log.info("Received and transfer request for air quality between times report ");
+        return queueService
+                .addRequestToQueue(URGENT, request, "getAirQualityReportBetweenTimes")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "AirQualityReportBetweenTimes.pdf");
                     headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
                     return new ResponseEntity<>(
@@ -127,7 +182,7 @@ public class ControllerReport {
     @GetMapping("/airParticulates/betweenTimes")
     public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReportBetweenTimes(RequestTimesDTO request)
             throws Exception {
-        log.info("Received and transfer request for air particulates report ");
+        log.info("Received and transfer request for air particulates between times report ");
         return queueService
                 .addRequestToQueue(URGENT, request, "getAirParticulatresReportBetweenTimes")
                 .thenApply(pdfContent -> {

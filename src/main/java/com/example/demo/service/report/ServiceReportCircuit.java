@@ -60,9 +60,9 @@ public class ServiceReportCircuit {
         }
     }
 
-    public byte[] generateTemparatureAndHumidityReportBeweenTimes() {
+    public byte[] generateTemparatureAndHumidityReportBeweenTimes(int start, int end) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            List<Circuit> cirs = circuitRepository.findAll();
+            List<Circuit> cirs = circuitRepository.findByTimestampBetweenOrderByTimestampDesc(start, end);
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);

@@ -295,19 +295,36 @@ public class TaskProcessor {
                             case "getTemperatureAndHumidityReport":
                                 result = serviceReportTemparatureAndHumidity.generateTemparatureAndHumidityReport();
                                 break;
+                            case "getTemperatureAndHumidityReportBetweenTimes":
+                                RequestTimesDTO data_times_t = (RequestTimesDTO) task.getData();
+                                result = serviceReportTemparatureAndHumidity
+                                        .generateTemparatureAndHumidityReportBetweenTimes(data_times_t.start(),
+                                                data_times_t.end());
+                                break;
                             case "getCircuitReport":
                                 result = serviceReportCircuit.generateTemparatureAndHumidityReport();
                                 break;
+                            case "getCircuitReportBetweenTimes":
+                                RequestTimesDTO data_times_c = (RequestTimesDTO) task.getData();
+                                result = serviceReportCircuit.generateTemparatureAndHumidityReportBeweenTimes(
+                                        data_times_c.start(), data_times_c.end());
+                                break;
                             case "getAirQualityReport":
                                 result = serviceReportAirQuality.generateAirQualityReport();
+                                break;
+                            case "getAirQualityReportBetweenTimes":
+                                RequestTimesDTO data_times_aq = (RequestTimesDTO) task.getData();
+                                result = serviceReportAirQuality.generateAirQualityReportBetweenTimes(
+                                        data_times_aq.start(), data_times_aq.end());
                                 break;
                             case "getAirParticulatresReport":
                                 result = serviceReportAirParticulates.generateAirQualityReport();
                                 break;
                             case "getAirParticulatresReportBetweenTimes":
-                                RequestTimesDTO data_times = (RequestTimesDTO) task.getData();
+                                RequestTimesDTO data_times_ap = (RequestTimesDTO) task.getData();
                                 result = serviceReportAirParticulates
-                                        .generateAirQualityReportBetweenTimes(data_times.start(), data_times.end());
+                                        .generateAirQualityReportBetweenTimes(data_times_ap.start(),
+                                                data_times_ap.end());
                                 break;
                             case "getAddressTable":
                                 result = serviceReportCoilMap.generatePLCCoilAddressAllocationTable();
