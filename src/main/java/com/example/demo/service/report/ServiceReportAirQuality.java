@@ -54,4 +54,37 @@ public class ServiceReportAirQuality {
             throw new RuntimeException("PDF general fail: " + e.getMessage());
         }
     }
+
+    public byte[] generateAirQualityReportBetweenTimes(int start, int end) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            List<AirQuality> aqs = airQualityRepository.findByTimestampBetweenOrderByTimestampDesc(start, end);
+
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            document.add(new Paragraph("All AirQuality Data Report Between Times", fontTitle));
+            document.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(6);
+            table.setWidthPercentage(100);
+            table.addCell("Device ID");
+            table.addCell("Air Pollution");
+            table.addCell("timestamp");
+
+            for (AirQuality aq : aqs) {
+                table.addCell(String.valueOf(aq.getDeviceId()));
+                table.addCell(String.valueOf(aq.getAirPollution()));
+                table.addCell(String.valueOf(aq.getTimestamp()));
+            }
+
+            document.add(table);
+            document.close();
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("PDF general fail: " + e.getMessage());
+        }
+    }
 }

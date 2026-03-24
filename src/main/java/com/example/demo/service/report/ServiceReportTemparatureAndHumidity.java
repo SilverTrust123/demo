@@ -54,4 +54,37 @@ public class ServiceReportTemparatureAndHumidity {
             throw new RuntimeException("PDF general fail: " + e.getMessage());
         }
     }
+
+    public byte[] generateTemparatureAndHumidityReportBetweenTimes() {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository.findAll();
+
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            document.add(new Paragraph("All Temperature And Humidity History Data Report Between Times", fontTitle));
+            document.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(100);
+            table.addCell("Device ID");
+            table.addCell("Temperature");
+            table.addCell("Humidity");
+
+            for (TemperatureAndHumidity temp : temps) {
+                table.addCell(String.valueOf(temp.getDeviceId()));
+                table.addCell(String.valueOf(temp.getTemperature()));
+                table.addCell(String.valueOf(temp.getHumidity()));
+            }
+
+            document.add(table);
+            document.close();
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("PDF general fail: " + e.getMessage());
+        }
+    }
 }
