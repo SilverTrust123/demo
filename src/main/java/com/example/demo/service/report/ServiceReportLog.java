@@ -56,4 +56,39 @@ public class ServiceReportLog {
             throw new RuntimeException("PDF 產生失敗: " + e.getMessage());
         }
     }
+
+    public byte[] generateLogReportBetweenTimes(int start, int end) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            List<Log> logs = logRepository.findByTimestampBetweenOrderByTimestampDesc(start, end);
+
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, out);
+            document.open();
+
+            Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+            document.add(new Paragraph("System Log Report Between Times", fontTitle));
+            document.add(new Paragraph(" "));
+
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.addCell("ID");
+            table.addCell("Level");
+            table.addCell("Source");
+            table.addCell("Message");
+
+            for (Log log : logs) {
+                table.addCell(String.valueOf(log.getId()));
+                table.addCell(log.getLogLevel());
+                table.addCell(log.getSource());
+                table.addCell(log.getMessage());
+            }
+
+            document.add(table);
+            document.close();
+
+            return out.toByteArray();
+        } catch (Exception e) {
+            throw new RuntimeException("PDF 產生失敗: " + e.getMessage());
+        }
+    }
 }

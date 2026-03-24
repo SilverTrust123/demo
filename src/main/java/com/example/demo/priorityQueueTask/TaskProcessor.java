@@ -292,6 +292,11 @@ public class TaskProcessor {
                             case "getLogReport":
                                 result = serviceReportLog.generateLogReport();
                                 break;
+                            case "getLogReportBetweenTimes":
+                                RequestTimesDTO data_times_l = (RequestTimesDTO) task.getData();
+                                result = serviceReportLog.generateLogReportBetweenTimes(data_times_l.start(),
+                                        data_times_l.end());
+                                break;
                             case "getTemperatureAndHumidityReport":
                                 result = serviceReportTemparatureAndHumidity.generateTemparatureAndHumidityReport();
                                 break;

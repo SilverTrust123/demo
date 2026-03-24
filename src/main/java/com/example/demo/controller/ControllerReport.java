@@ -47,7 +47,25 @@ public class ControllerReport {
                             headers,
                             HttpStatus.OK);
                 });
+    }
 
+    @GetMapping("/log/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getLogReportBetweenTimes(RequestTimesDTO request)
+            throws Exception {
+        log.info("Received and transfer request for logs between times report ");
+        return queueService
+                .addRequestToQueue(URGENT, request, "getLogReportBetweenTimes")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "logReportBetweenTimes.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
     }
 
     @GetMapping("/temperatureAndHumidity")
