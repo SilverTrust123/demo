@@ -13,5 +13,8 @@ public interface CircuitRepository extends JpaRepository<Circuit, CircuitId> {
     List<Circuit> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
             String deviceId, int startTime, int endTime);
 
+    List<Circuit> findByTimestampBetweenOrderByTimestampDesc(
+            int startTime, int endTime);
+
     List<Circuit> findAllByOrderByTimestampDesc();
 }

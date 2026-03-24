@@ -12,5 +12,8 @@ public interface TemperatureAndHumidityRepository
         List<TemperatureAndHumidity> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
                         String deviceId, int startTime, int endTime);
 
+        List<TemperatureAndHumidity> findTimestampBetweenOrderByTimestampDesc(
+                        int startTime, int endTime);
+
         List<TemperatureAndHumidity> findAllByOrderByTimestampDesc();
 }

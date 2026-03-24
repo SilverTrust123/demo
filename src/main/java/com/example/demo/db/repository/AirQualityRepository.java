@@ -11,5 +11,8 @@ public interface AirQualityRepository extends JpaRepository<AirQuality, AirQuali
     List<AirQuality> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
             String deviceId, int startTime, int endTime);
 
+    List<AirQuality> findByTimestampBetweenOrderByTimestampDesc(
+            int startTime, int endTime);
+
     List<AirQuality> findAllByOrderByTimestampDesc();
 }
