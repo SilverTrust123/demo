@@ -15,12 +15,98 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.IOException;
 
 @Service
 public class ServiceReportTemparatureAndHumidity {
 
     @Autowired
     private TemperatureAndHumidityRepository temperatureAndHumidityRepository;
+
+    public byte[] generateTemperatureAndHumidityExcelReport() {
+        try (Workbook workbook = new XSSFWorkbook();
+                ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository.findAll();
+            Sheet sheet = workbook.createSheet("TempAndHumidityReport");
+
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            Row headerRow = sheet.createRow(0);
+            String[] columns = { "Device ID", "Temperature", "Humidity" };
+
+            for (int i = 0; i < columns.length; i++) {
+                org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+            int rowIdx = 1;
+            for (TemperatureAndHumidity temp : temps) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(temp.getDeviceId());
+                row.createCell(1).setCellValue(temp.getTemperature());
+                row.createCell(2).setCellValue(temp.getHumidity());
+            }
+
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return out.toByteArray();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Excel 報表生成失敗: " + e.getMessage());
+        }
+    }
+
+    public byte[] generateTemperatureAndHumidityExcelReportBetweenTimes(int start, int end) {
+        try (Workbook workbook = new XSSFWorkbook();
+                ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository
+                    .findByTimestampBetweenOrderByTimestampDesc(start, end);
+            Sheet sheet = workbook.createSheet("TempAndHumidityReport");
+
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            Row headerRow = sheet.createRow(0);
+            String[] columns = { "Device ID", "Temperature", "Humidity" };
+
+            for (int i = 0; i < columns.length; i++) {
+                org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+            int rowIdx = 1;
+            for (TemperatureAndHumidity temp : temps) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(temp.getDeviceId());
+                row.createCell(1).setCellValue(temp.getTemperature());
+                row.createCell(2).setCellValue(temp.getHumidity());
+            }
+
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return out.toByteArray();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Excel 報表生成失敗: " + e.getMessage());
+        }
+    }
 
     public byte[] generateTemparatureAndHumidityReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -58,7 +144,7 @@ public class ServiceReportTemparatureAndHumidity {
     public byte[] generateTemparatureAndHumidityReportBetweenTimes(int start, int end) {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository
-                    .findTimestampBetweenOrderByTimestampDesc(start, end);
+                    .findByTimestampBetweenOrderByTimestampDesc(start, end);
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);

@@ -31,7 +31,7 @@ public class ControllerReport {
     @Autowired
     private QueueService queueService;
 
-    @GetMapping("/log")
+    @GetMapping("/pdf/log")
     public CompletableFuture<ResponseEntity<byte[]>> getLogReport() throws Exception {
         log.info("Received and transfer request for logs report ");
         return queueService
@@ -49,7 +49,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/log/betweenTimes")
+    @GetMapping("/pdf/log/betweenTimes")
     public CompletableFuture<ResponseEntity<byte[]>> getLogReportBetweenTimes(RequestTimesDTO request)
             throws Exception {
         log.info("Received and transfer request for logs between times report ");
@@ -68,7 +68,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/temperatureAndHumidity")
+    @GetMapping("/pdf/temperatureAndHumidity")
     public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityReport() throws Exception {
         log.info("Received and transfer request for TemperatureAndHumidity report ");
         return queueService
@@ -86,7 +86,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/temperatureAndHumidity/betweenTimes")
+    @GetMapping("/pdf/temperatureAndHumidity/betweenTimes")
     public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityReportBetweenTimes(
             RequestTimesDTO request) throws Exception {
         log.info("Received and transfer request for TemperatureAndHumidity bewteen timesreport ");
@@ -105,7 +105,48 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/circuit")
+    @GetMapping("/excel/temperatureAndHumidity")
+    public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityExcelReport() throws Exception {
+        log.info("Received request for TemperatureAndHumidity Excel report");
+
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateTemperatureAndHumidityExcelReport")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment", "temperatureAndHumidityReport.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/excel/temperatureAndHumidity/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityExcelReportBetweenTimes(
+            RequestTimesDTO request)
+            throws Exception {
+        log.info("Received request for TemperatureAndHumidity Excel report");
+
+        return queueService
+                .addRequestToQueue(URGENT, request, "generateTemperatureAndHumidityExcelReportBetweenTimes")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment",
+                            "temperatureAndHumidityReportBetweenTimes.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/pdf/circuit")
     public CompletableFuture<ResponseEntity<byte[]>> getCircuitReport() throws Exception {
         log.info("Received and transfer request for Circuit report ");
         return queueService
@@ -123,7 +164,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/circuit/betweenTimes")
+    @GetMapping("/pdf/circuit/betweenTimes")
     public CompletableFuture<ResponseEntity<byte[]>> getCircuitReportBetweenTimes(RequestTimesDTO request)
             throws Exception {
         log.info("Received and transfer request for Circuit between times report ");
@@ -142,7 +183,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/airQuality")
+    @GetMapping("/pdf/airQuality")
     public CompletableFuture<ResponseEntity<byte[]>> getAirQualityReport() throws Exception {
         log.info("Received and transfer request for air quality report ");
         return queueService
@@ -160,7 +201,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/airQuality/betweenTimes")
+    @GetMapping("/pdf/airQuality/betweenTimes")
     public CompletableFuture<ResponseEntity<byte[]>> getAirQualityReportBetweenTimes(RequestTimesDTO request)
             throws Exception {
         log.info("Received and transfer request for air quality between times report ");
@@ -179,7 +220,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/airParticulates")
+    @GetMapping("/pdf/airParticulates")
     public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReport() throws Exception {
         log.info("Received and transfer request for air particulates report ");
         return queueService
@@ -197,7 +238,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/airParticulates/betweenTimes")
+    @GetMapping("/pdf/airParticulates/betweenTimes")
     public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReportBetweenTimes(RequestTimesDTO request)
             throws Exception {
         log.info("Received and transfer request for air particulates between times report ");
@@ -216,7 +257,7 @@ public class ControllerReport {
                 });
     }
 
-    @GetMapping("/addressTable")
+    @GetMapping("/pdf/addressTable")
     public CompletableFuture<ResponseEntity<byte[]>> getAddressTable() throws Exception {
         log.info("Received and transfer request for address table");
         return queueService

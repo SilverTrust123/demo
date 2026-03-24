@@ -5,8 +5,11 @@ import java.lang.management.ThreadInfo;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.example.demo.DTO.responseDTO.ResponseLoadDTO;
 
+@Service
 public class ServiceLoad {
     public ResponseLoadDTO getThreadStats() {
         ThreadInfo[] threads = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
