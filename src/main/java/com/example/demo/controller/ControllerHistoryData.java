@@ -53,5 +53,4 @@ public class ControllerHistoryData {
         log.info("Received and transfer air particulates data to logic");
         return queueService.addRequestToQueue(IMPORTANT, request, "getAirParticulatesHistory");
     }
-
 }

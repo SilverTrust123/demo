@@ -9,5 +9,8 @@ public interface AirParticulatesRepository extends JpaRepository<AirParticulates
     List<AirParticulates> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
             String deviceId, int startTime, int endTime);
 
+    List<AirParticulates> findByTimestampBetweenOrderByTimestampAsc(
+            int startTime, int endTime);
+
     List<AirParticulates> findAllByOrderByTimestampDesc();
 }

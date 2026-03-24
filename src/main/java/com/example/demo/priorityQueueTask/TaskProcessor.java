@@ -68,6 +68,8 @@ public class TaskProcessor {
     private ServiceReportAirQuality serviceReportAirQuality;
     @Autowired
     private ServiceTodo serviceTodo;
+    @Autowired
+    private ServiceLoad serviceLoad;
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
@@ -308,6 +310,9 @@ public class TaskProcessor {
                             case "leaveMessage":
                                 RequestTodoDTO data_todo = (RequestTodoDTO) task.getData();
                                 result = serviceTodo.refreshTodo(data_todo.message());
+                                break;
+                            case "loadStats":
+                                result = serviceLoad.getThreadStats();
                                 break;
                             default:
                                 log.warn("Unknown task type: {}", type);
