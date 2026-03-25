@@ -324,6 +324,14 @@ public class TaskProcessor {
                                 result = serviceReportCircuit.generateTemparatureAndHumidityReportBeweenTimes(
                                         data_times_c.start(), data_times_c.end());
                                 break;
+                            case "generateCircuitExcelReport":
+                                result = serviceReportCircuit.generateCircuitExcelReport();
+                                break;
+                            case "generateCircuitExcelReportBetweenTimes":
+                                RequestTimesDTO data_times_ec = (RequestTimesDTO) task.getData();
+                                result = serviceReportCircuit.generateCircuitExcelReportBetweenTimes(
+                                        data_times_ec.start(), data_times_ec.end());
+                                break;
                             case "getAirQualityReport":
                                 result = serviceReportAirQuality.generateAirQualityReport();
                                 break;

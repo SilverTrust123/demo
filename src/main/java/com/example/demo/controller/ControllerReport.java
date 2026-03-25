@@ -128,7 +128,7 @@ public class ControllerReport {
     public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityExcelReportBetweenTimes(
             RequestTimesDTO request)
             throws Exception {
-        log.info("Received request for TemperatureAndHumidity Excel report");
+        log.info("Received request for TemperatureAndHumidity between times Excel report");
 
         return queueService
                 .addRequestToQueue(URGENT, request, "generateTemperatureAndHumidityExcelReportBetweenTimes")
@@ -178,6 +178,45 @@ public class ControllerReport {
 
                     return new ResponseEntity<>(
                             (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/excel/circuit")
+    public CompletableFuture<ResponseEntity<byte[]>> getCircuitExcelReport() throws Exception {
+        log.info("Received request for circuit Excel report");
+
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateCircuitExcelReport")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment", "CircuitReport.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/excel/circuit/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getCircuitExcelReportBetweenTimes(RequestTimesDTO request)
+            throws Exception {
+        log.info("Received request for circuit Excel report between times");
+
+        return queueService
+                .addRequestToQueue(URGENT, request, "generateCircuitExcelReportBetweenTimes")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment", "CircuitReportBetweenTimes.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
                             headers,
                             HttpStatus.OK);
                 });
