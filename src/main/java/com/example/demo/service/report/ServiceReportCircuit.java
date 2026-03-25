@@ -28,6 +28,7 @@ public class ServiceReportCircuit {
     @Autowired
     private CircuitRepository circuitRepository;
 
+    // excel
     public byte[] generateCircuitExcelReport() {
         try (Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
