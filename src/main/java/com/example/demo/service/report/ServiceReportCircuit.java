@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,6 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-import org.apache.poi.ss.usermodel.*;
 // import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 
@@ -86,7 +87,7 @@ public class ServiceReportCircuit {
             headerCellStyle.setFont(headerFont);
 
             Row headerRow = sheet.createRow(0);
-            String[] columns = { "Device ID", "Temperature", "Humidity" };
+            String[] columns = { "Device ID", "Current", "Energy", "Power", "Voltage", "Timestamp" };
 
             for (int i = 0; i < columns.length; i++) {
                 org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
