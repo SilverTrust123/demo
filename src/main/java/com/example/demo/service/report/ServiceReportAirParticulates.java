@@ -1,10 +1,15 @@
 package com.example.demo.service.report;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.apache.poi.ss.usermodel.*;
 
 import com.example.demo.db.entity.AirParticulates;
 import com.example.demo.db.repository.*;
@@ -22,6 +27,7 @@ public class ServiceReportAirParticulates {
     @Autowired
     private AirParticulatesRepository airParticulatesRepository;
 
+    // pdf
     public byte[] generateAirQualityReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             List<AirParticulates> aps = airParticulatesRepository.findAll();
@@ -84,6 +90,90 @@ public class ServiceReportAirParticulates {
             return out.toByteArray();
         } catch (Exception e) {
             throw new RuntimeException("PDF general fail: " + e.getMessage());
+        }
+    }
+
+    // excel
+    public byte[] generateAirParticulatesExcelReport() {
+        try (Workbook workbook = new XSSFWorkbook();
+                ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            List<AirParticulates> aps = airParticulatesRepository.findAll();
+            Sheet sheet = workbook.createSheet("AirParticulatesExcelReport");
+
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            Row headerRow = sheet.createRow(0);
+            String[] columns = { "Device ID", "pm2_5", "timestamp" };
+
+            for (int i = 0; i < columns.length; i++) {
+                org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+            int rowIdx = 1;
+            for (AirParticulates ap : aps) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(ap.getDeviceId());
+                row.createCell(1).setCellValue(ap.getPm2_5());
+                row.createCell(2).setCellValue(ap.getTimestamp());
+            }
+
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return out.toByteArray();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Excel 報表生成失敗: " + e.getMessage());
+        }
+    }
+
+    public byte[] generateAirParticulatesExcelReportBetweenTimes(int start, int end) {
+        try (Workbook workbook = new XSSFWorkbook();
+                ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            List<AirParticulates> aps = airParticulatesRepository.findByTimestampBetweenOrderByTimestampDesc(start,
+                    end);
+            Sheet sheet = workbook.createSheet("AirParticulatesExcelReportBetweenTimes");
+
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            Row headerRow = sheet.createRow(0);
+            String[] columns = { "Device ID", "pm2_5", "timestamp" };
+
+            for (int i = 0; i < columns.length; i++) {
+                org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+            int rowIdx = 1;
+            for (AirParticulates ap : aps) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(ap.getDeviceId());
+                row.createCell(1).setCellValue(ap.getPm2_5());
+                row.createCell(2).setCellValue(ap.getTimestamp());
+            }
+
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return out.toByteArray();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Excel 報表生成失敗: " + e.getMessage());
         }
     }
 }

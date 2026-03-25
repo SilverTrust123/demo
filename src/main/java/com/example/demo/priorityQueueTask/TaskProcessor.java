@@ -357,6 +357,15 @@ public class TaskProcessor {
                                         .generateAirQualityReportBetweenTimes(data_times_ap.start(),
                                                 data_times_ap.end());
                                 break;
+                            case "generateAirParticulatresExcelReport":
+                                result = serviceReportAirParticulates.generateAirParticulatesExcelReport();
+                                break;
+                            case "generateAirParticulatresExcelReportBetweenTimes":
+                                RequestTimesDTO data_times_eap = (RequestTimesDTO) task.getData();
+                                result = serviceReportAirParticulates
+                                        .generateAirParticulatesExcelReportBetweenTimes(data_times_eap.start(),
+                                                data_times_eap.end());
+                                break;
                             case "getAddressTable":
                                 result = serviceReportCoilMap.generatePLCCoilAddressAllocationTable();
                                 break;

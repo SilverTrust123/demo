@@ -334,6 +334,45 @@ public class ControllerReport {
                 });
     }
 
+    @GetMapping("/excel/airParticulates/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatesExcelReportBetweenTimes(RequestTimesDTO request)
+            throws Exception {
+        log.info("Received request for air particulates Excel report between times");
+
+        return queueService
+                .addRequestToQueue(URGENT, request, "generateAirParticulatesExcelReportBetweenTimes")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment", "airParticulatesReportBetweenTimes.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/excel/airParticulates")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatesExcelReport() throws Exception {
+        log.info("Received request for air particulates Excel report");
+
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateAirParticulatesExcelReport")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment", "airParticulatesReport.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
     @GetMapping("/pdf/addressTable")
     public CompletableFuture<ResponseEntity<byte[]>> getAddressTable() throws Exception {
         log.info("Received and transfer request for address table");
