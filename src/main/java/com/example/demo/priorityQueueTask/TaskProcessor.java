@@ -340,6 +340,14 @@ public class TaskProcessor {
                                 result = serviceReportAirQuality.generateAirQualityReportBetweenTimes(
                                         data_times_aq.start(), data_times_aq.end());
                                 break;
+                            case "generateAirQualityExcelReportBetweenTimes":
+                                RequestTimesDTO data_times_eaq = (RequestTimesDTO) task.getData();
+                                result = serviceReportAirQuality.generateAirQualityExcelReportBetweenTimes(
+                                        data_times_eaq.start(), data_times_eaq.end());
+                                break;
+                            case "generateAirQualityExcelReport":
+                                result = serviceReportAirQuality.generateAirQualityExcelReport();
+                                break;
                             case "getAirParticulatresReport":
                                 result = serviceReportAirParticulates.generateAirQualityReport();
                                 break;

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.db.entity.AirQuality;
-import com.example.demo.db.entity.Circuit;
 import com.example.demo.db.repository.AirQualityRepository;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
@@ -101,7 +100,7 @@ public class ServiceReportAirQuality {
                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
             List<AirQuality> aqs = airQualityRepository.findAll();
-            Sheet sheet = workbook.createSheet("CircuitExcelReport");
+            Sheet sheet = workbook.createSheet("AirQualityExcelReport");
 
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
             headerFont.setBold(true);
@@ -109,7 +108,48 @@ public class ServiceReportAirQuality {
             headerCellStyle.setFont(headerFont);
 
             Row headerRow = sheet.createRow(0);
-            String[] columns = { "Device ID", "Temperature", "Humidity" };
+            String[] columns = { "Device ID", "AirPollution", "timestamp" };
+
+            for (int i = 0; i < columns.length; i++) {
+                org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerCellStyle);
+            }
+            int rowIdx = 1;
+            for (AirQuality aq : aqs) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(aq.getDeviceId());
+                row.createCell(1).setCellValue(aq.getAirPollution());
+                row.createCell(2).setCellValue(aq.getTimestamp());
+            }
+
+            for (int i = 0; i < columns.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return out.toByteArray();
+
+        } catch (IOException e) {
+            throw new RuntimeException("Excel 報表生成失敗: " + e.getMessage());
+        }
+    }
+
+    public byte[] generateAirQualityExcelReportBetweenTimes(int start, int end) {
+        try (Workbook workbook = new XSSFWorkbook();
+                ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+
+            List<AirQuality> aqs = airQualityRepository.findByTimestampBetweenOrderByTimestampDesc(start, end);
+            Sheet sheet = workbook.createSheet("AirQualityExcelReportBetweenTimes");
+
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            CellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+
+            Row headerRow = sheet.createRow(0);
+            String[] columns = { "Device ID", "AirPollution", "timestamp" };
 
             for (int i = 0; i < columns.length; i++) {
                 org.apache.poi.ss.usermodel.Cell cell = headerRow.createCell(i);

@@ -259,6 +259,44 @@ public class ControllerReport {
                 });
     }
 
+    @GetMapping("/excel/airQuality")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirQualityExcelReport() throws Exception {
+        log.info("Received request for air quality Excel report");
+
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateAirQualityExcelReport")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment", "airQualityReport.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
+    @GetMapping("/excel/airQuality/betweenTimes")
+    public CompletableFuture<ResponseEntity<byte[]>> getAirQualityExcelReportBetweenTimes() throws Exception {
+        log.info("Received request for air quality Excel report between times");
+
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateAirQualityExcelReportBetweenTimes")
+                .thenApply(excelContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType
+                            .parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+                    headers.setContentDispositionFormData("attachment", "airQualityReportBetweenTimes.xlsx");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+                    return new ResponseEntity<>(
+                            (byte[]) excelContent,
+                            headers,
+                            HttpStatus.OK);
+                });
+    }
+
     @GetMapping("/pdf/airParticulates")
     public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReport() throws Exception {
         log.info("Received and transfer request for air particulates report ");
