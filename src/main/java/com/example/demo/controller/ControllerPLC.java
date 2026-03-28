@@ -42,72 +42,82 @@ public class ControllerPLC {
     // 回傳：NoDevice / Error / 真偽值
     // @RequestParam(required = false) String param
     @GetMapping("/MPointState")
-    public CompletableFuture<Object> MpointState(@RequestBody RequestMPointStateDTO param) {
+    public String MpointState(@RequestBody RequestMPointStateDTO param) {
         log.info("transfer received read m point request {} ", param);
-        return queueService.addRequestToQueue(IMPORTANT, param, "MpointState");
+        queueService.addRequestToQueue(IMPORTANT, param, "MpointState");
+        return new String("ok");
     }
 
     // -----------
     // 詢問現在參數：讀取 D 點數值
     // 回傳：NoDevice / Error / 實際數值
     @GetMapping("/DPointData")
-    public CompletableFuture<Object> DPointData(@RequestBody RequestDPointStateDTO param) {
+    public String DPointData(@RequestBody RequestDPointStateDTO param) {
         log.info("transfer received read d point request {} ", param);
-        return queueService.addRequestToQueue(IMPORTANT, param, "DPointData");
+        queueService.addRequestToQueue(IMPORTANT, param, "DPointData");
+        return new String("ok");
     }
 
     @GetMapping("/AllDPointData")
-    public CompletableFuture<Object> AllDPointData() throws Exception {
+    public String AllDPointData() throws Exception {
         log.info("transfer received read all DPoint request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllDPointData");
+        queueService.addRequestToQueue(IMPORTANT, null, "AllDPointData");
+        return new String("ok");
     }
 
     @GetMapping("/AllMPointData")
-    public CompletableFuture<Object> AllMPointData() throws Exception {
+    public String AllMPointData() throws Exception {
         log.info("transfer received read all MPoint request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllMPointData");
+        queueService.addRequestToQueue(IMPORTANT, null, "AllMPointData");
+        return new String("ok");
     }
 
     @GetMapping("/state")
-    public CompletableFuture<Object> plcState() {
+    public String plcState() {
         log.info("transfer received plc state request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "plcState");
+        queueService.addRequestToQueue(IMPORTANT, null, "plcState");
+        return new String("ok");
     }
 
     // ----------------
     @PostMapping("/writeMPoint")
-    public CompletableFuture<Object> writeMPoint(@RequestBody RequestWriteMPointDTO payload) {
+    public String writeMPoint(@RequestBody RequestWriteMPointDTO payload) {
         String param = (String) payload.param();
         Boolean value = (Boolean) payload.value();
         log.info("transfer received write MPoint request with param {} and value {}", param, value);
-        return queueService.addRequestToQueue(URGENT, payload, "writeMPoint");
+        queueService.addRequestToQueue(URGENT, payload, "writeMPoint");
+        return new String("ok");
     }
 
     // ---------------------------------
     @PostMapping("/writeDPoint")
-    public CompletableFuture<Object> writeDPoint(@RequestBody RequestWriteDPointDTO payload) {
+    public String writeDPoint(@RequestBody RequestWriteDPointDTO payload) {
         String param = (String) payload.param();
         Integer value = (Integer) payload.value();
         log.info("transfer received write DPoint request with param {} and value {}", param, value);
-        return queueService.addRequestToQueue(URGENT, payload, "writeDPoint");
+        queueService.addRequestToQueue(URGENT, payload, "writeDPoint");
+        return new String("ok");
     }
 
     @GetMapping("getCountMetal")
-    public CompletableFuture<Object> getCountMetal() {
+    public String getCountMetal() {
         log.info("transfer received get count metal request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getCountMetal");
+        queueService.addRequestToQueue(IMPORTANT, null, "getCountMetal");
+        return new String("ok");
     }
 
     @GetMapping("getCountNonMetal")
-    public CompletableFuture<Object> getCountNonMetal() {
+    public String getCountNonMetal() {
         log.info("transfer received get count non metal request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getCountNonMetal");
+        queueService.addRequestToQueue(IMPORTANT, null, "getCountNonMetal");
+        return new String("ok");
     }
 
     @GetMapping("test")
     public String test() {
         log.info("test");
-        return new String("secess");
+        queueService.addRequestToQueue(IMPORTANT, null, "test");
+        return new String("ok");
     }
 
 }

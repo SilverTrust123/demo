@@ -25,6 +25,7 @@ public class ServiceReportTemparatureAndHumidity {
     @Autowired
     private TemperatureAndHumidityRepository temperatureAndHumidityRepository;
 
+    // excel
     public byte[] generateTemperatureAndHumidityExcelReport() {
         try (Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -108,6 +109,7 @@ public class ServiceReportTemparatureAndHumidity {
         }
     }
 
+    // pdf
     public byte[] generateTemparatureAndHumidityReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository.findAll();

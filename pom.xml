@@ -39,13 +39,13 @@
             <version>2.3.0</version>
         </dependency>
 
-        <!-- <dependency>
+        <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
             <version>1.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/commons-logging-1.2.jar</systemPath>
-        </dependency> -->
+        </dependency>
         <dependency>
             <groupId>com.github.librepdf</groupId>
             <artifactId>openpdf</artifactId>

@@ -156,6 +156,10 @@ public class ServicePLC {
         }
     }
 
+    public String test() {
+        return new String("secess");
+    }
+
     // public Map<String, MPoint> getMPointMap() {
     // return plc.getMPointMap();
     // }

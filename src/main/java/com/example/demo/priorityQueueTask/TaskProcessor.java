@@ -376,6 +376,9 @@ public class TaskProcessor {
                             case "loadStats":
                                 result = serviceLoad.getThreadStats();
                                 break;
+                            case "test":
+                                result = servicePLC.test();
+                                break;
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 serviceLog.record("WARN", "TaskProcessor", "Unknown task type: " + type);
