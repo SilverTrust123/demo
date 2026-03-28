@@ -13,6 +13,7 @@ public class PointList {
     // private final DPoint STATE = new DPoint(200, "狀態");
     // private final DPoint COUNT_METAL = new DPoint(1000, "金屬件數");
     // private final DPoint COUNT_NON_METAL = new DPoint(1001, "非金屬件數");
+
     // private final DPoint T14 = new DPoint(14, "東西來等多久");
     // private final DPoint T0 = new DPoint(0, "等判斷");
     // private final DPoint T30 = new DPoint(30, "龍門等多久開始向下");
@@ -66,15 +67,17 @@ public class PointList {
     private final Map<String, DPoint> DPointMap = new HashMap<>();
 
     public PointList() {
-        // 間加M點
+        // 添加M點
         MPointMap.put("RTESTART", RTESTART);
         MPointMap.put("RESET_ALL_TIMERELAY", RESET_ALL_TIMERELAY);
         MPointMap.put("10", test1);
         MPointMap.put("0", test2);
         // 添加D點
+        // 這裡的可以寫
         DPointMap.put("STATE", STATE);
         DPointMap.put("COUNT_METAL", COUNT_METAL);
         DPointMap.put("COUNT_NON_METAL", COUNT_NON_METAL);
+        // 下面的D點才能寫
         DPointMap.put("T14", T14);
         DPointMap.put("T0", T0);
         DPointMap.put("T30", T30);
