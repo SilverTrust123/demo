@@ -32,4 +32,10 @@ public class ControllerLoad {
         log.info("receive and transfer the Load Stats request ");
         return queueService.addRequestToQueue(IMPORTANT, null, "loadStats");
     }
+
+    @GetMapping("/allLoadStats")
+    public CompletableFuture<Object> getAllLoadStats() throws Exception {
+        log.info("receive and transfer the all Load Stats request ");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getAllLoadStats");
+    }
 }

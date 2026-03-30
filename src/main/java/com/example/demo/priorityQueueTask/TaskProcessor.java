@@ -382,6 +382,9 @@ public class TaskProcessor {
                             case "getMessage":
                                 result = serviceTodo.getMessage();
                                 break;
+                            case "getAllLoadStats":
+                                result = serviceLoad.getAllLoad();
+                                break;
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 serviceLog.record("WARN", "TaskProcessor", "Unknown task type: " + type);
