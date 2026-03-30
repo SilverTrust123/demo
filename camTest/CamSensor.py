@@ -17,7 +17,7 @@ DANGER_POLY = np.array([
 ])
 
 model = YOLO("yolov8n.pt")
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 last_send_time = 0
 
 if not cap.isOpened():

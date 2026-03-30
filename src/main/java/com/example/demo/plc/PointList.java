@@ -73,7 +73,7 @@ public class PointList {
         MPointMap.put("10", test1);
         MPointMap.put("0", test2);
         // 添加D點
-        // 這裡的可以寫
+        // 這裡的不能寫
         DPointMap.put("STATE", STATE);
         DPointMap.put("COUNT_METAL", COUNT_METAL);
         DPointMap.put("COUNT_NON_METAL", COUNT_NON_METAL);

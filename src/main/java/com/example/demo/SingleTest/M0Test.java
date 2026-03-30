@@ -132,7 +132,7 @@ import com.serotonin.modbus4j.ModbusFactory;
 import com.serotonin.modbus4j.ModbusMaster;
 import com.serotonin.modbus4j.ip.IpParameters;
 import com.serotonin.modbus4j.msg.WriteCoilRequest;
-import com.serotonin.modbus4j.msg.WriteCoilResponse;
+// import com.serotonin.modbus4j.msg.WriteCoilResponse;
 
 public class M0Test {
 

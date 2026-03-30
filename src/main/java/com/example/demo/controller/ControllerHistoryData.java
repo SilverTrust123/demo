@@ -5,7 +5,6 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.DTO.requestDTO.history.*;
 import org.slf4j.Logger;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/history")
@@ -27,27 +27,27 @@ public class ControllerHistoryData {
     @Autowired
     private QueueService queueService;
 
-    @GetMapping("/temparatureAndHumidityHistory")
+    @PostMapping("/temparatureAndHumidityHistory")
     public CompletableFuture<Object> getTemparatureAndHumidityHistory(
             @RequestBody RequestHistoryTemparatureAndHumidityDTO request) throws Exception {
         log.info("Received and transfer request for getTemparatureAndHumidity ");
         return queueService.addRequestToQueue(IMPORTANT, request, "getTemparatureAndHumidityHistory");
     }
 
-    @GetMapping("/circuitHistory")
+    @PostMapping("/circuitHistory")
     public CompletableFuture<Object> getCircuitHistory(@RequestBody RequestHistoryCircuitDTO request) throws Exception {
         log.info("Received and transfer circuit data to logic");
         return queueService.addRequestToQueue(IMPORTANT, request, "getCircuitHistory");
     }
 
-    @GetMapping("/airQualityHistory")
+    @PostMapping("/airQualityHistory")
     public CompletableFuture<Object> getAirQualityHistory(@RequestBody RequestHistoryAirQualityDTO request)
             throws Exception {
         log.info("Received and transfer air quality data to logic");
         return queueService.addRequestToQueue(IMPORTANT, request, "getAirQualityHistory");
     }
 
-    @GetMapping("/airParticulatesHistory")
+    @PostMapping("/airParticulatesHistory")
     public CompletableFuture<Object> getAirParticulatesHistory(@RequestBody RequestHistoryAirParticulatesDTO request)
             throws Exception {
         log.info("Received and transfer air particulates data to logic");
