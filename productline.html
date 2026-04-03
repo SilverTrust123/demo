@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專題</title>
+
+    <link rel="stylesheet" href="productline.css">
+    <link rel="stylesheet" href="common.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- ===== Header ===== -->
+    <header class="top-section">
+        <div class="header-main-row">
+            <h1 class="brand-logo">生產線</h1>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-btn">HomePage</a>
+                <div class="nav-divider"></div>
+                <a href="productline.html" class="nav-btn active-tab">ProductLine</a>
+                <div class="nav-divider"></div>
+                <a href="history.html" class="nav-btn">HistoryData</a>
+                <div class="nav-divider"></div>
+                <a href="monitor.html" class="nav-btn">Secure Monitor</a>
+                <div class="nav-divider"></div>
+                <a href="control.html" class="nav-btn">Control</a>
+            </nav>
+        </div>
+
+        <div class="header-divider"></div>
+    </header>
+
+    <!-- ===== Main Content ===== -->
+    <main class="content-wrapper">
+
+        <!-- ===== 左側機台 ===== -->
+        <section class="machine-section">
+            <div class="image-placeholder">
+
+                <img src="picture/allMachine.png" class="machine-image" alt="機械設備">
+
+                <!-- 燈號 1：輸送機 1 -->
+                <div class="diamond indicator-light light-blue light-1"></div>
+
+                <!-- 燈號 2：龍門機械臂 -->
+                <div class="diamond indicator-light orange light-2"></div>
+
+                <!-- 燈號 3：輸送機 2 -->
+                <div class="diamond indicator-light yellow light-3"></div>
+
+                <!-- 燈號 4：旋轉缸機械臂 -->
+                <div class="diamond indicator-light green light-4"></div>
+                <div class="diamond indicator-light green light-5"></div>
+
+            </div>
+        </section>
+
+        <!-- ===== 右側看板 ===== -->
+        <section class="board-section">
+            <div class="board-container">
+                <img src="picture/board.png" class="board-image" alt="看板">
+
+                <div class="board-content">
+    <h2 id="state-id">S0</h2> <p id="state-text">等待初始化...</p> </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+<script src="js/global.js"></script>
+<script src="js/productline.js"></script>
+</body>
+</html>

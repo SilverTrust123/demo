@@ -1,0 +1,282 @@
+/* ===== 全域 ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+/* ===== 主容器 ===== */
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Header ===== */
+.brand-logo {
+    font-family: "Microsoft JhengHei", sans-serif; /* 改用較硬的黑體 */
+    font-size: 64px; /* 稍微縮小一點點更精緻 */
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 2px; /* 圖二的字距似乎稍微開一點 */
+    padding: 10px;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 陰影變淡、變細 */
+    margin-left:20px;
+}
+
+
+.header-main-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ✨ 這會讓標題在左，導覽列在最右 */
+    padding: 0 60px; /* 增加左右內距，避免太貼邊緣 */
+}
+
+.header-divider {
+    width: 98%;
+    height: 2px;
+    background: #808384;
+    margin: 10px auto;
+}
+
+/* ===== 導覽 ===== */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 6px;
+    padding: 10px;
+    gap: 0; 
+    margin-left: auto; /* ✨ 自動推擠左側空間，將自己推向最右方 */
+    margin-right: 50px; /* 距離右側邊界留一點空隙 */
+}
+
+.nav-btn {
+    text-decoration: none; /* 移除超連結底線 */
+    background: transparent;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px; /* 稍微加大一點 */
+    font-weight: 500;
+    padding: 8px 50px;
+    transition: all 0.3s;
+}
+.nav-divider {
+    width: 1px;
+    height: 20px; /* 限制高度 */
+    background: rgba(255, 255, 255, 0.3); /* 使用半透明白 */
+    margin: 0 5px;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.active-tab {
+    background: #333333 !important; 
+    color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.header-divider {
+    width: 96%;           /* ✨ 增加寬度，讓它更接近圖二的兩端長度 */
+    height: 3px;          /* 稍微加粗，更有分割感 */
+    background: #1a2a30;  /* 改為更深的深青色/黑色 */
+    margin: 5px auto 15px auto; /* 減少上方間距，靠近標題 */
+    opacity: 0.8;
+}
+
+/* ===== 中央白框 ===== */
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    background: rgba(255, 255, 255, 0.6);
+    /* 將原本的 60px 縮小為 20px (或根據喜好調整) */
+    margin: 10px 60px 15px 60px; 
+    max-height: calc(100vh - 140px); 
+    overflow: hidden;
+    border-radius: 0px; /* 確保有圓角比較好看 */
+}
+
+
+/* ===== 左側機台 ===== */
+/* 左側機台區塊 */
+.machine-section {
+    flex: 0.9; /* 稍微調降比例 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: -10px; /* 縮小內距讓圖片更大 */
+}
+
+.image-placeholder {
+    position: relative;
+    width: 100%; /* 撐滿 section */
+    height: 100%;
+    max-width: 100%; /* 從 95% 改為 100% */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.machine-image {
+    width: 100%;
+    height: 100%; /* 讓它嘗試填滿高度 */
+    object-fit: contain; /* 保持比例，但會儘可能放大 */
+}
+
+
+/* ===== 燈號通用 ===== */
+.indicator-light {
+    position: absolute;
+    z-index: 10;
+}
+
+/* 菱形 */
+.diamond {
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    background: rgba(255,255,255,.4);
+    border: 1px solid rgba(255,255,255,.6);
+}
+
+.diamond::after {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background: inherit;
+    opacity: .2;
+    display: block;
+    margin: auto;
+}
+
+/* 亮燈 */
+.diamond.active {
+    background: #00ff15;
+}
+
+.diamond.active::after {
+    opacity: 1;
+    box-shadow: 0 0 15px #00ff15;
+}
+
+/* ===== 各燈定位（重點） ===== */
+/* 輸送機 1 */
+.light-1 {
+    top: 62%;
+    left: 55%;
+}
+
+/* 龍門機械臂 */
+.light-2 {
+    top: 20%;
+    left: 42%;
+}
+
+/* 輸送機 2 */
+.light-3 {
+    top: 62%;
+    left: 28%;
+}
+
+/* 旋轉缸 */
+.light-4 {
+    top: 75%;
+    left: 45%;
+}
+.light-5 {
+    top: 42%;
+    left: 82%;
+}
+
+/* ===== 右側看板 ===== */
+.board-section {
+    flex: 0.9; /* 讓看板佔比增加，內容更寬 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px; /* 縮小內距 */
+}
+
+/* 修改看板容器，確保比例正確 */
+.board-container {
+    position: relative;
+    height: 90%;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-image {
+    width: 170%; /* 回歸 100% 避免超出容器 */
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 文字內容區域：精確對準藍色圖框內部 */
+.board-content {
+    position: absolute;
+    top: 40%; /* 根據視覺微調置中 */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* 核心修正：寬度不要超過 100%，否則會跑出藍色框 */
+    width: 80%; 
+    height: 70%;
+    
+    background: transparent; /* 移除原本的半透明背景，讓它只顯示在圖框內 */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.status-container {
+    width: 100%;
+    text-align: left;
+}
+
+.board-content h2 {
+    font-size: 28px;
+    color: #1a2a30;
+    border-bottom: 2px solid #1a2a30;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.board-content p {
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+    white-space: nowrap; /* 防止長文字折行 */
+}
+
+/* 正在執行的步驟樣式 */
+.active-text {
+    color: #d32f2f !important;
+    font-weight: 900;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+}

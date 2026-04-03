@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品資訊｜敏志畜牧場</title>
+    <style>
+        :root {
+            --main-green: #4CAF50;
+            --dark-green: #2E7D32;
+            --bg-light: #f4f7f6;
+            --text-gray: #666;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; }
+        body { background-color: var(--bg-light); color: #333; line-height: 1.6; }
+
+        /* 導覽列 */
+        nav { background: #fff; border-bottom: 2px solid var(--main-green); padding: 15px 10%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo { color: var(--main-green); font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 20px; }
+        nav ul li a { text-decoration: none; color: var(--text-gray); font-weight: 500; transition: 0.3s; }
+        nav ul li a:hover { color: var(--main-green); }
+
+        /* 頁頭標題 */
+        .page-header { text-align: center; padding: 60px 10% 40px; }
+        .page-header h1 { color: var(--dark-green); font-size: 2.2rem; margin-bottom: 10px; position: relative; display: inline-block; }
+        .page-header h1::after { content: ''; width: 50%; height: 3px; background: var(--main-green); position: absolute; bottom: -5px; left: 25%; }
+
+        /* 產品網格佈局 */
+        .product-container { max-width: 1200px; margin: 0 auto; padding: 0 10% 60px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        
+        /* 產品卡片 */
+        .product-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.06); transition: transform 0.3s ease; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-10px); }
+        
+        /* 修正圖片顯示問題 */
+        .product-image { width: 100%; height: 280px; overflow: hidden; background: #eee; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .product-info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-info h2 { font-size: 1.4rem; color: var(--dark-green); margin-bottom: 12px; }
+        .product-info p { color: var(--text-gray); font-size: 1rem; margin-bottom: 25px; min-height: 4.8em; }
+        
+        /* 按鈕樣式 */
+        .details-btn { display: inline-block; background: var(--main-green); color: #fff; text-align: center; padding: 12px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s; margin-top: auto; }
+        .details-btn:hover { background: var(--dark-green); box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
+
+        footer { background: #333; color: #fff; text-align: center; padding: 30px; font-size: 0.9rem; }
+
+        @media (max-width: 768px) { nav { padding: 15px 5%; } .product-container { padding: 0 5% 40px; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo">敏志畜牧場</a>
+    <ul>
+        <li><a href="index.html">農場介紹</a></li>
+        <li><a href="Products.html">產品資訊</a></li>
+        <li><a href="contact.html">聯絡我們</a></li>
+    </ul>
+</nav>
+
+<header class="page-header">
+    <h1>嚴選產品</h1>
+    <p style="color: #888; margin-top: 10px;">來自雲林的堅持，給您最安心的品質</p>
+</header>
+
+<main class="product-container">
+    <article class="product-card">
+        <div class="product-image">
+            <img src="egg.png" alt="放牧雞蛋" onerror="this.src='https://via.placeholder.com/400x300?text=圖片讀取失敗';">
+        </div>
+        <div class="product-info">
+            <h2>放牧雞蛋</h2>
+            <p>雞隻採自然放牧飼養，擁有充足的日照與活動空間，所產下的雞蛋蛋黃飽滿、風味自然純粹。</p>
+            <a href="https://www.totalhealth.tw/foods-detail.aspx?id=2234" class="details-btn" target="_blank">查看產品詳細資訊</a>
+        </div>
+    </article>
+
+    <article class="product-card">
+        <div class="product-image">
+            <img src="優質洗選冷藏蛋.jpg" alt="優質洗選冷藏蛋" onerror="this.src='https://via.placeholder.com/400x300?text=圖片讀取失敗';">
+        </div>
+        <div class="product-info">
+            <h2>洗選冷藏蛋</h2>
+            <p>嚴格經過現代化清洗、自動分級篩選，並全程採用低溫冷藏保存配送，完美符合現代家庭對便利與食安的需求。</p>
+            <a href="https://www.totalhealth.tw/foods-detail.aspx?id=2000" class="details-btn" target="_blank">查看產品詳細資訊</a>
+        </div>
+    </article>
+</main>
+
+<footer>© 敏志畜牧場 Min-Zhi Farm - 友善農耕的守護者</footer>
+
+</body>
+</html>

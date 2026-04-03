@@ -1,0 +1,250 @@
+/* ===== 核心內容區塊 (左右分割) ===== */
+.content-wrapper {
+    display: flex;
+    background: rgba(255, 255, 255, 0.5); /* 淡淡的半透明底 */
+    margin: 0 60px 20px 60px;
+    border-radius: 8px;
+    padding: 30px;
+    min-height: 600px; /* 確保有足夠高度展現背景圖 */
+    gap: 40px;
+    align-items: stretch;
+}
+
+/* --- 左側控制區 --- */
+.control-section {
+    flex: 0 1 650px;
+    display: flex;
+    gap: clamp(20px, 4vw, 50px);
+    justify-content: center; /* ✨ 新增：讓選單與機台區塊整體在左側空間居中 */
+    align-items: center;    /* ✨ 新增：若高度有餘裕，也讓它垂直居中 */
+    min-width: 320px;
+}
+
+/* 側邊灰色選單欄 */
+.machine-menu {
+    width: 85px;
+    background: #5a5a5a;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 0;
+    gap: 60px;
+}
+
+.menu-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.menu-item img {
+    width: 75%;
+    object-fit: contain;
+}
+
+.menu-item.active {
+    outline: 3px solid #4aa3ff; /* 選中狀態的藍框 */
+    background: white;
+}
+
+/* 機台顯示面板 */
+.machine-panel {
+    flex: 1;
+    display: flex;
+    max-width: clamp(300px, 40vw, 650px);
+    flex-direction: column;
+    align-items: flex-start; /* 確保標題與圖片對齊 */
+}
+
+.machine-title {
+    background: #3a3a3a;
+    color: white;
+    font-size: clamp(20px, 3vw, 45px);
+    font-weight: bold;
+    padding: 10px 0;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* 左側機台圖片容器 */
+.machine-image {
+    position: relative; /* 確立定位基準 */
+    width: 100%;
+    max-width: 650px;
+    border: 4px solid #666;
+    background: #fff;
+    overflow: hidden; /* 確保疊加層超出部分被裁切 */
+}
+
+/* 確保底層圖片撐開容器 */
+.machine-image > img:first-child {
+    width: 100%;
+    display: block;
+}
+
+/* ✨ 修正圖片位置的關鍵 CSS */
+.metal-overlay {
+    position: absolute; /* 抽離排版流，獨立定位 */
+    top: 50%;
+    left: 50%;
+    width: 14%;
+    height: 17%;
+    object-fit: cover;  /* 讓圖片填滿容器且不變形 */
+    z-index: 2;         /* 確保疊加在底層圖片上方 */
+    pointer-events: none; /* 如果之後圖片上方有按鈕，需讓滑鼠可以穿過點擊 */
+}
+
+/* --- 右側控制看板 (螢幕區) --- */
+.control-board {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-bg {
+    width: 100%;
+    height: 100%;
+}
+
+.board-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.board-content {
+    position: absolute;
+    top: 50%;    /* 根據 monitor.png 的螢幕位置調整 */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;  /* 配合背景圖螢幕大小 */
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    z-index: 1;
+}
+.metal-overlay-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* 強制填滿容器 */
+    z-index: -1;      /* 確保圖片在文字後方 */
+    opacity: 0.9;     /* 稍微透明以呈現科技感 */
+    border-radius: 5px;
+}
+
+/* 控制列排版 */
+.control-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:12px;
+}
+
+/* ✨ 右側藍色標籤與白色數值框統一寬度 */
+.control-label {
+    background: #2067d2;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: clamp(12px, 5vw, 24px);
+    font-weight: bold;
+    width: 320px; /* ✨ 統一左側藍框寬度 */
+    text-align: center;
+    box-shadow: 0 4px 0 #154a96;
+}
+
+.control-adjust {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.control-adjust button {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    background: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.1s;
+}
+
+.control-adjust button:active {
+    transform: scale(0.9);
+}
+
+.time-box {
+    background: white;
+    width: 150px; /* ✨ 統一白色數值框寬度 */
+    padding: 10px 0;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 32px;
+    color: #f08519;
+    border: 1px solid #ddd;
+}
+
+.arrow-btn {
+    position: absolute;
+    /* ✨ 關鍵定位：使用 cqw 單位定位在螢幕的右下角 */
+    bottom: -2.5cqw;  /* 距離螢幕底部，隨螢幕縮放 */
+    right: -2.5cqw;   /* 距離螢幕右側，隨螢幕縮放 */
+    
+    /* 大小：設定圖示的大小 */
+    width: 6cqw;   /* 隨螢幕縮放，例如 4cqw 到 8cqw 之間 */
+    height: 6cqw;
+    
+    cursor: pointer;
+    z-index: 10;     /* 確保在所有控制項目之上，可以點擊 */
+    transition: transform 0.2s ease, filter 0.2s ease; /* 新增滑過動畫 */
+}
+
+.arrow-btn img {
+    width: 50%;
+    height: 50%;
+    object-fit: contain; /* 保持圖片比例不變形 */
+    filter: brightness(1); /* 預設亮度 */
+}
+
+.arrow-btn:hover {
+    filter: brightness(1.2) drop-shadow(0 0 5px rgba(74, 163, 255, 0.5));
+}
+
+.arrow-btn:hover img {
+    /* 如果圖檔不夠亮，可以用濾鏡讓它滑過時變更亮藍色 */
+    filter: brightness(1.2) drop-shadow(0 0 3px #4aa3ff); 
+}
+/* 確保分頁容器內的控制列永遠是垂直排列 */
+.func-group {
+    display: flex;
+    flex-direction: column; /* ✨ 關鍵：強制垂直排列 */
+    gap: 0.5cqw;           /* 控制列之間的間距 */
+    width: 100%;
+    align-items: center;    /* 讓內容在容器內水平置中 */
+}
+

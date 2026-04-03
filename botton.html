@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Token 授權測試工具</title>
+    <style>
+        body { font-family: sans-serif; padding: 30px; background: #f4f7f6; }
+        .test-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 600px; margin: auto; }
+        .status-box { margin-top: 20px; padding: 15px; border-radius: 5px; font-family: monospace; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        button { padding: 10px 20px; cursor: pointer; background: #1a5a7a; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #14465f; }
+    </style>
+</head>
+<body>
+
+<div class="test-card">
+    <h2>Token</h2>
+    
+    <button id="run-test">API測試</button>
+
+    <div id="result-box" class="status-box" style="display: none;">
+        <strong>回應狀態：</strong> <span id="res-status"></span><br>
+        <strong>後端內容：</strong> <pre id="res-body"></pre>
+    </div>
+</div>
+
+<script src="js/global.js"></script>
+<script>
+    document.getElementById('run-test').onclick = async () => {
+        const resultBox = document.getElementById('result-box');
+        const statusSpan = document.getElementById('res-status');
+        const bodyPre = document.getElementById('res-body');
+
+        resultBox.style.display = 'block';
+        bodyPre.innerText = "請求發送中...";
+
+        try {
+            const response = await window.fetchWithAuth('/plc/test', { method: 'GET' });
+
+            statusSpan.innerText = `${response.status} ${response.statusText}`;
+
+            const text = await response.text();
+            bodyPre.innerText = text;
+
+            if (response.ok && text.includes("success")) {
+                resultBox.className = "status-box success";
+                console.log("成功！Token 已正常帶出。");
+            } else {
+                resultBox.className = "status-box error";
+                console.warn("失敗：收到回應但內容非 success，或是 Token 無效。");
+            }
+        } catch (err) {
+            statusSpan.innerText = "網路錯誤";
+            bodyPre.innerText = err.message;
+            resultBox.className = "status-box error";
+        }
+    };
+</script>
+
+</body>
+</html>

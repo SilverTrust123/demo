@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專題</title>
+
+    <link rel="stylesheet" href="control.css">
+    <link rel="stylesheet" href="common.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- ===== Header ===== -->
+    <header class="top-section">
+        <div class="header-main-row">
+            <h1 class="brand-logo">操作介面</h1>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-btn">HomePage</a>
+                <div class="nav-divider"></div>
+                <a href="productline.html" class="nav-btn">ProductLine</a>
+                <div class="nav-divider"></div>
+                <a href="history.html" class="nav-btn">HistoryData</a>
+                <div class="nav-divider"></div>
+                <a href="monitor.html" class="nav-btn">Secure Monitor</a>
+                <div class="nav-divider"></div>
+                <a href="control.html" class="nav-btn active-tab">Control</a>
+            </nav>
+        </div>
+
+        <div class="header-divider"></div>
+    </header>
+
+<main class="content-wrapper">
+
+    <!-- ===== 左側設備控制區 ===== -->
+    <section class="control-section">
+
+        <div class="machine-menu">
+    <a href="control.html" class="menu-item active">
+        <img src="picture/transfer.png">
+    </a>
+    <a href="control2.html" class="menu-item">
+        <img src="picture/dragondoor.png">
+    </a>
+    <a href="control3.html" class="menu-item">
+        <img src="picture/transfer2.png">
+    </a>
+    <a href="control4.html" class="menu-item">
+        <img src="picture/rotate.png">
+    </a>
+    <a href="control5.html" class="menu-item">
+        <img src="picture/nonmetal.png">
+    </a>
+    <a href="reset.html" class="menu-item">
+        <img src="picture/reset.png">
+    </a>
+</div>
+
+        <!-- 輸送機區塊 -->
+        <div class="machine-panel">
+
+            <div class="machine-title">輸送機2</div>
+
+            <div class="machine-image">
+                <img src="picture/machine1-1.png">
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ===== 右側控制看板 ===== -->
+    <section class="control-board">
+
+        <div class="board-bg">
+            <img src="picture/monitor.png">
+        </div>
+
+        <div class="board-content">
+
+            <div class="control-row">
+                <div class="control-label">確認工件時間</div>
+                <div class="control-adjust">
+                    <button>-</button>
+                    <div class="time-box">1.0 sec</div>
+                    <button>+</button>
+                </div>
+        </div>
+        <div class="control-row">
+                <div class="control-label">輸送帶停止時間</div>
+                <div class="control-adjust">
+                    <button>-</button>
+                    <div class="time-box">1.0 sec</div>
+                    <button>+</button>
+                </div>
+            </div>
+    </section>
+
+</main>
+</div>
+<script src="js/global.js"></script>
+<script src="js/control.js"></script>
+</body>
+</html>

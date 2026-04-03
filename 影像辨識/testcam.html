@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>監測</title>
+    <style>
+        body { 
+            background: #121212; 
+            color: white; 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        .info-card {
+            background: #1e1e1e;
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #333;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .count-display {
+            font-size: 80px;
+            font-weight: bold;
+            color: #00ff88;
+            margin: 20px 0;
+        }
+        .status-text { font-size: 20px; color: #aaa; }
+        .danger-alert { color: #ff4d4d; animation: blink 1s infinite; }
+        
+        @keyframes blink { 50% { opacity: 0.5; } }
+    </style>
+</head>
+<body>
+
+    <div class="info-card">
+        <div class="status-text">當前偵測人數</div>
+        <div id="personCount" class="count-display">0</div>
+        <div id="systemStatus" class="status-text">連線中...</div>
+        <div id="updateTime" style="font-size: 12px; color: #555; margin-top: 20px;">--</div>
+    </div>
+
+    <script src="testcam.js"></script>
+</body>
+</html>

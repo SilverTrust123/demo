@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>農場介紹｜敏志畜牧場</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --dark: #2E7D32;
+            --accent: #FF9800;
+            --bg: #FFF9C4; /* 溫暖雞蛋黃背景 */
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; }
+        body { background: var(--bg); color: #444; overflow-x: hidden; }
+
+        /* 導覽列美化 */
+        nav { background: #fff; padding: 20px 10%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; border-radius: 0 0 30px 30px; }
+        .logo { font-size: 1.8rem; font-weight: 900; color: var(--dark); text-decoration: none; }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { text-decoration: none; color: #555; font-weight: bold; transition: 0.3s; padding: 8px 15px; border-radius: 20px; }
+        nav ul li a:hover { background: var(--primary); color: #fff; }
+
+        /* 花俏橫幅 */
+        .hero { display: flex; align-items: center; justify-content: space-around; padding: 80px 10%; flex-wrap: wrap; background: radial-gradient(circle at top right, #fff, transparent); }
+        
+        /* 縮小圖片並改為圓形比例 */
+        .hero-img-container { position: relative; width: 350px; height: 350px; animation: float 4s ease-in-out infinite; }
+        .hero-img-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 10px solid #fff; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .hero-img-container::after { content: '🥚'; position: absolute; bottom: 20px; right: 20px; font-size: 3rem; background: #fff; border-radius: 50%; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        .hero-text { max-width: 500px; }
+        .hero-text h1 { font-size: 3rem; color: var(--dark); margin-bottom: 20px; text-shadow: 2px 2px 0px #fff; }
+        .hero-text p { font-size: 1.2rem; line-height: 1.8; margin-bottom: 30px; }
+        .cta-btn { background: var(--accent); color: #fff; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1rem; box-shadow: 0 8px 0 #E65100; transition: 0.2s; display: inline-block; }
+        .cta-btn:hover { transform: translateY(3px); box-shadow: 0 5px 0 #E65100; }
+
+        /* 內容卡片 */
+        .features { display: flex; gap: 20px; padding: 60px 10%; justify-content: center; flex-wrap: wrap; }
+        .feat-card { background: #fff; padding: 30px; border-radius: 25px; width: 300px; text-align: center; transition: 0.3s; border-bottom: 5px solid var(--primary); }
+        .feat-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .feat-card h3 { color: var(--dark); margin-bottom: 15px; font-size: 1.4rem; }
+
+        /* 動畫效果 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        footer { background: var(--dark); color: #fff; text-align: center; padding: 40px; margin-top: 40px; border-radius: 50px 50px 0 0; }
+
+        @media (max-width: 768px) { .hero { text-align: center; } .hero-img-container { margin-bottom: 40px; width: 280px; height: 280px; } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="index.html" class="logo">🌿 敏志畜牧場</a>
+    <ul>
+        <li><a href="index.html">農場介紹</a></li>
+        <li><a href="products.html">產品資訊</a></li>
+        <li><a href="contact.html">聯絡我們</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-img-container">
+        <img src="chi.jpg" alt="敏志畜牧場環境">
+    </div>
+    <div class="hero-text">
+        <h1>快樂的雞<br>才有好蛋！</h1>
+        <p>我們在雲林二崙，打造了一個充滿陽光與笑聲的五星級雞舍。讓每隻雞都能自由走動、沙浴、上棲架。</p>
+        <a href="products.html" class="cta-btn">看好蛋去 →</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feat-card">
+        <h3> 友善放牧</h3>
+        <p>保有活動空間與自然日照，尊重雞隻天性。</p>
+    </div>
+    <div class="feat-card">
+        <h3> 優質飼料</h3>
+        <p>植物性飼料管理，絕不使用生長激素。</p>
+    </div>
+    <div class="feat-card">
+        <h3> 嚴格把關</h3>
+        <p>每日健康管理，產地直送最鮮嫩的品質。</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 敏志畜牧場 Min-Zhi Farm<br>雲林縣二崙鄉永興路 86 號</p>
+</footer>
+
+</body>
+</html>

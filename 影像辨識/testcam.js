@@ -8,6 +8,7 @@ async function fetchPersonCount() {
         const data = await response.json();
         console.log("偵錯用 - 完整資料內容:", data); 
 
+        // 先檢查是不是陣列，有資料再抓第一筆
         const first = Array.isArray(data) && data.length > 0 ? data[0] : null;
 
         const count = first?.personCount ?? 0;

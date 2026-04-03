@@ -1,0 +1,280 @@
+/* ===== 全域 ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+
+    background-image: url('./assets/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* ===== 主容器 ===== */
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom:2vh;
+}
+
+/* ===== Header ===== */
+.brand-logo {
+    font-family: "Microsoft JhengHei", sans-serif; /* 改用較硬的黑體 */
+    font-size: 64px; /* 稍微縮小一點點更精緻 */
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 2px; /* 圖二的字距似乎稍微開一點 */
+    padding: 10px;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 陰影變淡、變細 */
+    margin-left:20px;
+}
+
+
+.header-main-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ✨ 這會讓標題在左，導覽列在最右 */
+    padding: 0 60px; /* 增加左右內距，避免太貼邊緣 */
+}
+
+.header-divider {
+    width: 98%;
+    height: 2px;
+    background: #808384;
+    margin: 10px auto;
+}
+
+/* ===== 導覽 ===== */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 6px;
+    padding: 10px;
+    gap: 0; 
+    margin-left: auto; /* ✨ 自動推擠左側空間，將自己推向最右方 */
+    margin-right: 50px; /* 距離右側邊界留一點空隙 */
+}
+
+.nav-btn {
+    text-decoration: none; /* 移除超連結底線 */
+    background: transparent;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px; /* 稍微加大一點 */
+    font-weight: 500;
+    padding: 8px 50px;
+    transition: all 0.3s;
+}
+.nav-divider {
+    width: 1px;
+    height: 20px; /* 限制高度 */
+    background: rgba(255, 255, 255, 0.3); /* 使用半透明白 */
+    margin: 0 5px;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.active-tab {
+    background: #333333 !important; 
+    color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.header-divider {
+    width: 96%;           /* ✨ 增加寬度，讓它更接近圖二的兩端長度 */
+    height: 3px;          /* 稍微加粗，更有分割感 */
+    background: #1a2a30;  /* 改為更深的深青色/黑色 */
+    margin: 5px auto 15px auto; /* 減少上方間距，靠近標題 */
+    opacity: 0.8;
+}
+
+/*狀態列*/
+.status-summary-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+
+.summary-item {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+
+/*控制間距*/
+.summary-item p {
+    margin: 0;
+    line-height: 1; 
+}
+
+.summary-label {
+    font-size: 28px;
+    color: #444;
+    margin-bottom: -2px;
+}
+
+.summary-label2 {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 0px;
+}
+
+.summary-val {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 4px;
+}
+
+
+/*顏色*/
+.v-green { color: #d8f97f; text-shadow: 0 0 5px rgba(0,255,0,0.2); }
+.v-red { color: #ff3b3b; }
+.v-orange { color: #ff944d; }
+.v-blue { color: #5bcfff; }
+.v-yellow { color: #fff176; }
+
+/* =============================
+   中央儀表區
+============================= */
+.middle-section {
+    min-height:32vh;
+    flex:0 0 auto;
+   background: rgba(255,255,255,0.55);
+    padding: 10px 10px 20px 20px;
+    margin-right:30px;
+    margin-top: 10px;     /* ✨ 與上方區塊拉開 */
+    margin-bottom: 3px;  /* ✨ 與下方白框拉開 */
+    margin-left:30px;
+    
+}
+
+.gauges-flex-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.gauge-card {
+    width: 23%;
+    text-align: center;
+}
+
+.gauge-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.gauge-svg-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+svg {
+    width: 100%;
+    height: 18vh;
+    max-height: 160px;
+    min-height: 160px;
+}
+
+.gauge-base-ring {
+    fill: none;
+    stroke: #d1d6d8;
+    stroke-width: 10;
+    stroke-dasharray: 4 2;
+}
+
+.gauge-active-ring {
+    fill: none;
+    stroke-width: 10;
+    stroke-dasharray: 4 2;
+    stroke-dashoffset: 151;
+}
+
+.gauge-value {
+    position: absolute;
+    bottom: 18%;
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.g-temp-text { color:#c0392b; }
+.g-temp-stroke { stroke:#c0392b; }
+
+.g-humi-text { color:#d4a017; }
+.g-humi-stroke { stroke:#d4a017; }
+
+.g-co2-text { color:#b5b36a; }
+.g-co2-stroke { stroke:#b5b36a; }
+
+.g-pm-text { color:#d86fd8; }
+.g-pm-stroke { stroke:#d86fd8; }
+
+/*底部設備區*/
+.bottom-section {
+    min-height:32vh;
+    flex:0 0 auto;
+    background: rgba(255,255,255,0.55);
+    border-top: 3px solid #6e8f94;
+    padding: 10px 40px;
+    margin-left:30px;
+    margin-right:30px;
+    margin-bottom:0px;
+}
+
+.device-status-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.device-item {
+    width: 18%;
+    text-align: center;
+}
+
+.device-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.device-thumb {
+    width: 100%;
+    aspect-ratio: 16/10;
+    border-radius: 999px; 
+    
+    border: 4px solid white;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 5px 12px rgba(0,0,0,.2);
+    
+    overflow: hidden; 
+}
+
+.status-lamp {
+    font-size: 30px;
+    margin-top: 8px;
+}
+
+.lamp-ok { color: #00d26a; }
+.lamp-fail { color: #ff3b3b; }

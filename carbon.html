@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>碳足跡</title>
+    <link rel="stylesheet" href="todayexpect.css">
+    <link rel="stylesheet" href="common.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="main-container">
+    <header class="top-section">
+        <div class="header-main-row">
+            <h1 class="brand-logo">碳足跡</h1>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-btn">HomePage</a>
+                <div class="nav-divider"></div>
+                <div class="nav-item-dropdown">
+                    <a href="productline.html" class="nav-btn">ProductLine</a>
+                    <div class="dropdown-content">
+                        <a href="control.html" class="dropdown-link">
+                            <span class="link-text">ProductLine Control</span>
+                            <span class="link-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-divider"></div>
+                <div class="nav-item-dropdown">
+                    <a href="history.html" class="nav-btn">HistoryData</a>
+                    <div class="dropdown-content">
+                        <a href="sensorhistory.html" class="dropdown-link">
+                            <span class="link-text">Sensor history</span>
+                            <span class="link-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-divider"></div>
+                <div class="nav-item-dropdown">
+                    <a href="log.html" class="nav-btn active-tab">Log Report</a>
+                    <div class="dropdown-content">
+                        <a href="report.html" class="dropdown-link">
+                            <span class="link-text">Log Report</span>
+                            <span class="link-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-divider"></div>
+                <a href="control.html" class="nav-btn">Control</a>  
+            </nav>
+        </div>
+        <div class="header-divider"></div>
+    </header>
+
+    <main class="content-wrapper">
+        <div class="predict-container">
+            <div class="formula-box">
+                <span class="formula-title">預測今日碳足跡：</span>
+                <span class="formula-text">公式</span>
+                <span class="formula-equal">=</span>
+                <span class="formula-result">  *  今日工時</span>
+            </div>
+
+            <div class="chart-header">
+                <span class="blue-dot">●</span>
+                <span class="chart-title">預測產出量與實際產出量比較圖</span>
+            </div>
+
+            <div class="chart-area">
+                <canvas id="predictionChart"></canvas>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="js/global.js"></script>
+<script src="js/todayexpect.js"></script>
+</body>
+</html>

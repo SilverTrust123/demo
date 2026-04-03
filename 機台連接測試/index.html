@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLC 控制面板</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 { color: #333; margin-bottom: 1.5rem; }
+        .btn-group { display: flex; gap: 20px; }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+        button:active { transform: scale(0.95); }
+        .btn-start { background-color: #28a745; color: white; }
+        .btn-stop { background-color: #dc3545; color: white; }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .error { color: #721c24; background: #f8d7da; }
+        .success { color: #155724; background: #d4edda; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>PLC 設備控制</h2>
+    <div class="btn-group">
+        <button class="btn-start" onclick="controlPLC(true)">啟動 (ON)</button>
+        <button class="btn-stop" onclick="controlPLC(false)">關閉 (OFF)</button>
+    </div>
+    <div id="status">等待指令...</div>
+</div>
+
+<script>
+// http://192.168.3.110:9090/plc/writeMPoint
+// RTESTART 重開
+// RESET_ALL_TIMERELAY 時間參數重制
+
+// http://192.168.3.110:9090/plc/writeDPoint
+// STATE
+// COUNT_METAL
+// COUNT_NON_METAL
+// 上面只能取得不能寫入
+
+// T14 東西來等多久
+// T0 等判斷
+// T30 龍門等多久開始向下
+// T3 龍門確保向下等多久
+// T4 龍門夾到等多久
+// T31 龍門到左邊停多久
+// T5 龍門向下停多久
+// T6 龍門放開停多久
+// T15 龍門向上停多久
+// T7 輸送帶2上面的東西停多久才繼續
+// T8 旋轉機械臂向下停多久
+// T9 旋轉機械臂抽真空之後等多久
+// T32 旋轉機械臂迴轉過去停多久
+// T10 旋轉機械臂向下停多久
+// T11 旋轉機械臂放真空等多久
+// T40 滑台機械臂向下停多久
+// T12 滑台機械臂夾到之後等多久
+// T13 滑台機械臂放開之後等多久
+
+    const API_URL = 'http://192.168.3.110:9090/plc/writeMPoint';
+    async function controlPLC(isOn) {
+        const statusDiv = document.getElementById('status');
+        const payload = {
+            "param": "10",   // 字串 String
+            "value": isOn    // 布林 Boolean
+        };
+
+        try {
+            statusDiv.innerText = "傳送中...";
+            statusDiv.className = "";
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                statusDiv.innerText = `發送成功: ${isOn ? '啟動' : '關閉'}`;
+                statusDiv.className = "success";
+            } else {
+                statusDiv.innerText = `伺服器錯誤: ${result.reply || '未知錯誤'}`;
+                statusDiv.className = "error";
+                console.error("後端回傳錯誤:", result);
+            }
+        } catch (error) {
+            statusDiv.innerText = "無法連線至後端，請檢查網路或 API 位址";
+            statusDiv.className = "error";
+            console.error("Fetch 失敗:", error);
+        }
+    }
+</script>
+
+</body>
+</html>
