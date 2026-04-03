@@ -33,7 +33,7 @@ while True:
                 else:
                     color = (0,255,0) 
 
-                cv2.rectangle(frame, (x1, y1), (x2, y2), color, 3)
+                cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
 
     cv2.polylines(frame, [DANGER_POLY], True, (0,0,255), 2)
 

@@ -14,7 +14,6 @@ import com.example.demo.DTO.requestDTO.RequestTodoDTO;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/todo")
