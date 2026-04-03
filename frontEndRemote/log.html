@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歷史查詢 - 機台監控</title>
+    <link rel="stylesheet" href="log.css">
+    <link rel="stylesheet" href="common.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="main-container">
+    <header class="top-section">
+        <div class="header-main-row">
+            <h1 class="brand-logo">Log歷史</h1>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-btn">HomePage</a>
+                <div class="nav-divider"></div>
+                <div class="nav-item-dropdown">
+                    <a href="productline.html" class="nav-btn">ProductLine</a>
+                    <div class="dropdown-content">
+                        <a href="control.html" class="dropdown-link">
+                            <span class="link-text">ProductLine Control</span>
+                            <span class="link-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nav-divider"></div>
+                <a href="history.html" class="nav-btn">HistoryData</a>
+                <div class="nav-divider"></div>
+                <a href="report.html" class="nav-btn active-tab">Log report</a>
+                <div class="nav-divider"></div>
+                <a href="control.html" class="nav-btn">Control</a>
+            </nav>
+        </div>
+        <div class="header-divider"></div>
+    </header>
+<main class="content-wrapper">
+    <div class="filter-controls">
+        <button type="button" class="log-btn active" id="btn-all">All</button>
+        <button type="button" class="log-btn" id="btn-warn">Warn</button>
+        <button type="button" class="log-btn" id="btn-error">Error</button>
+        <button type="button" class="log-btn locked" id="btn-info">Information</button>
+
+        <div class="time-picker-group">
+            <span class="time-label">查詢區間：</span>
+            <input type="datetime-local" id="filter-start" class="time-input">
+            <span class="time-separator">至</span>
+            <input type="datetime-local" id="filter-end" class="time-input">
+            <button type="button" class="search-submit-btn" id="btn-search-time">
+                執行查詢
+            </button>
+        </div>
+    </div>
+
+    <div class="log-display-area">
+        <div class="log-label">系統日誌內容：</div>
+        <ul id="log-list" class="log-list-style">
+            <li>正在載入日誌資料...</li>
+        </ul>
+    </div>
+</main>
+</div>
+<script src="js/global.js"></script>
+<script src="js/log.js"></script>
+</body>
+</html>

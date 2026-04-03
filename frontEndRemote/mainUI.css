@@ -1,0 +1,152 @@
+/* 全域佈局 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #e9eeef; /* 圖一的底色偏灰藍 */
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 導覽列樣式簡化 */
+.top-nav-section {
+    background: #fff;
+    padding: 10px 20px;
+    border-bottom: 2px solid #ccc;
+}
+.header-main-row { display: flex; align-items: center; justify-content: space-between; }
+.nav-menu { display: flex; gap: 15px; }
+
+/* =========================================
+   核心網格：定義 6 個區域
+   ========================================= */
+.main-grid-container {
+    display: grid;
+    flex: 1;
+    padding: 10px;
+    gap: 12px; /* 區塊間距 */
+    
+    /* 定義三行，寬度比例為 1 : 1.2 : 0.8 */
+    grid-template-columns: 1fr 1.2fr 0.8fr;
+    grid-template-rows: auto auto 1.5fr;
+    
+    grid-template-areas: 
+        "lt rt rt"
+        "lb mid-b pwr"
+        "btm btm btm";
+}
+
+/* 將獨立的 DIV 綁定到網格位置 */
+.area-lt { grid-area: lt; }
+.area-lb { grid-area: lb; }
+.area-rt { grid-area: rt; }
+.area-mid-b { grid-area: mid-b; }
+.area-power { grid-area: pwr; }
+.area-bottom { grid-area: btm; }
+
+/* 圖一關鍵樣式：獨立區塊的粗邊框 */
+.panel-card {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 儀表排版 */
+.gauge-pair { display: flex; justify-content: space-around; width: 100%; }
+.gauge-box { flex: 1; text-align: center; }
+.gauge-title { font-size: 18px; font-weight: bold; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.status-icon { width: 18px; height: 18px; }
+
+.gauge-svg-wrapper {
+    position: relative;    
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; 
+    width: 100%;
+    min-height: 100px;  
+}
+svg { width: 100%; height: 120px; }
+.gauge-base-ring { fill: none; stroke: #d1d6d8; stroke-width: 10; stroke-dasharray: 4 2; }
+.gauge-active-ring { fill: none; stroke-width: 10; stroke-dasharray: 4 2; }
+.gauge-value {
+    position: absolute;    /* 必須：脫離文件流，才能浮在 SVG 上方 */
+    bottom: 15%;           /* 調整文字在圓弧中的高低位置 */
+    left: 50%;
+    transform: translateX(-50%); /* 關鍵：絕對水平置中 */
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    line-height: 1;
+    font-size: 25px;
+}
+
+/* 中上數據文字區 */
+.status-data-grid {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    align-items: center;
+    text-align: center;
+    font-size: 30px;
+}
+.data-column { flex: 1; }
+.data-label { font-size: 25px; color: #444; font-weight: bold; margin: 5px 0; }
+.data-val { font-size: 25px; font-weight: bold; margin-bottom: 10px; }
+
+/* 底部設備區 */
+.device-flex-row { display: flex; justify-content: space-between; width: 100%; padding: 10px; }
+.device-item { width: 18%; text-align: center; }
+.dev-name { font-weight: bold; font-size: 20px; margin-bottom: 8px; }
+.dev-thumb { 
+    width: 100%; 
+    aspect-ratio: 16/10; 
+    border-radius: 40px; /* 橢圓形狀 */
+    border: 3px solid #fff; 
+    background-size: cover; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+}
+.lamp { font-size: 35px; margin-top: 5px; }
+/* 基礎燈號樣式 */
+.status-lamp {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 紅燈：斷線 */
+.lamp-red {
+    background-color: #ff4d4d;
+    box-shadow: 0 0 5px #ff4d4d;
+}
+
+/* 綠燈：連線正常 */
+.lamp-green {
+    background-color: #2ecc71;
+    box-shadow: 0 0 8px #2ecc71;
+}
+
+/* 顏色定義 */
+.v-green { color: #2ecc71; }
+.v-red { color: #e74c3c; }
+.v-orange { color: #f39c12; }
+.v-blue { color: #3498db; }
+.v-yellow { color: #f1c40f; }
+.g-temp-stroke { stroke: #c0392b; }
+.g-humi-stroke { stroke: #d4a017; }
+.g-co2-stroke { stroke: #1abc9c; }
+.g-pm-stroke { stroke: #9b59b6; }
+.g-power-stroke { stroke: #2980b9; }
+.lamp-ok { color: #2ecc71; }
+.lamp-fail { color: #e74c3c; }

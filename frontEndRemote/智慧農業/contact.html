@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>聯絡我們｜敏志畜牧場</title>
+  <style>
+    :root {
+      --main-green: #4CAF50;
+      --dark-green: #2E7D32;
+      --soft-green: #f1f8f1;
+      --text-main: #333;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif; }
+    body { background-color: #fff; line-height: 1.6; color: var(--text-main); }
+    
+    /* 導覽列 */
+    nav { background: #fff; border-bottom: 2px solid var(--main-green); padding: 15px 10%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .logo { color: var(--main-green); font-size: 1.5rem; font-weight: bold; }
+    nav ul { display: flex; list-style: none; }
+    nav ul li { margin-left: 20px; }
+    nav ul li a { text-decoration: none; color: #666; font-weight: 500; transition: 0.3s; }
+    nav ul li a:hover { color: var(--main-green); }
+
+    /* 頁首區塊 */
+    .contact-hero { text-align: center; padding: 60px 10%; background: var(--soft-green); }
+    .contact-hero h1 { color: var(--dark-green); font-size: 2.5rem; margin-bottom: 15px; }
+    .contact-hero p { color: #666; font-size: 1.1rem; }
+
+    /* 聯絡資訊卡片 */
+    .info-container { max-width: 900px; margin: -40px auto 40px; padding: 0 20px; position: relative; z-index: 10; }
+    .info-card { background: #fff; border-radius: 20px; padding: 50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee; }
+    
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px; }
+    .info-item { text-align: left; }
+    .info-item .icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+    .info-item strong { display: block; color: var(--dark-green); font-size: 1.2rem; margin-bottom: 8px; }
+    .info-item p { color: #555; white-space: pre-line; }
+
+    /* Google 地圖嵌入 */
+    .map-wrapper { width: 100%; height: 400px; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+    iframe { width: 100%; height: 100%; border: 0; }
+    
+    footer { background: #333; color: #fff; text-align: center; padding: 40px 10%; margin-top: 60px; font-size: 0.9rem; }
+
+    @media (max-width: 768px) {
+      .contact-hero h1 { font-size: 2rem; }
+      .info-card { padding: 30px; }
+      nav { padding: 15px 5%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">🌿 敏志畜牧場</div>
+    <ul>
+      <li><a href="index.html">農場介紹</a></li>
+      <li><a href="products.html">產品資訊</a></li>
+      <li><a href="contact.html">聯絡我們</a></li>
+    </ul>
+  </nav>
+
+  <header class="contact-hero">
+    <h1>聯絡我們</h1>
+    <p>若您有任何產品相關問題或大量訂購需求，歡迎透過以下方式聯絡敏志畜牧場。</p>
+  </header>
+
+  <main class="info-container">
+    <div class="info-card">
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="icon"></span>
+          <strong>客服／訂購專線</strong>
+          <p>04-7238595 分機 #7184</p>
+        </div>
+        
+        <div class="info-item">
+          <span class="icon"></span>
+          <strong>聯絡地址</strong>
+          <p>649104 雲林縣二崙鄉<br>永興路 86 號</p>
+        </div>
+        
+        <div class="info-item">
+          <span class="icon"></span>
+          <strong>營業時間</strong>
+          <p>週一至週五：09:00 – 17:30
+             週六：09:00 – 14:00
+             週日：休息</p>
+        </div>
+      </div>
+
+      <div class="map-wrapper">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3654.551230485642!2d120.38015797604627!3d23.770506188265017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346eb1276231dced%3A0x18a13aacc6af70c7!2z5pWP5b-X55畜54mn5aC0!5e0!3m2!1szh-TW!2stw!4v1700000000000!5m2!1szh-TW!2stw" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 敏志畜牧場 Min-Zhi Farm - 友善農耕的守護者</p>
+  </footer>
+
+</body>
+</html>

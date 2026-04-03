@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>溫溼度即時監控</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h2 { color: #333; margin-bottom: 1.5rem; }
+        .data-card {
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+        }
+        .temp { background-color: #ff6b6b; }
+        .humi { background-color: #4da3ff; }
+        .value { font-size: 2.5rem; font-weight: bold; }
+        .unit { font-size: 1.2rem; }
+        .status { margin-top: 1rem; font-size: 0.8rem; color: #888; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>環境監測站</h2>
+    
+    <div class="data-card temp">
+        <div>溫度</div>
+        <div class="value" id="temp-val">--</div>
+        <span class="unit">°C</span>
+    </div>
+
+    <div class="data-card humi">
+        <div>濕度</div>
+        <div class="value" id="humi-val">--</div>
+        <span class="unit">%</span>
+    </div>
+
+    <div class="status" id="last-update">等待資料中...</div>
+</div>
+
+<script>
+    const API_URL = 'http://192.168.3.253:9090//TemparatureAndHumidityData';
+    
+    async function fetchData() {
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error('網路回應不正常');
+            
+            const data = await response.json();
+            
+            // 假設 JSON 格式為 { "temperature": 25.5, "humidity": 60 }
+            // 請根據你後端實際的 Key 名稱修改下方代碼
+            document.getElementById('temp-val').innerText = data.temperature ?? '--';
+            document.getElementById('humi-val').innerText = data.humidity ?? '--';
+            
+            const now = new Date();
+            document.getElementById('last-update').innerText = `最後更新: ${now.toLocaleTimeString()}`;
+            
+        } catch (error) {
+            console.error('抓取失敗:', error);
+            document.getElementById('last-update').innerText = '連線失敗，請檢查後端狀態';
+        }
+    }
+
+    // 每 3 秒輪詢一次 (3000 毫秒)
+    setInterval(fetchData, 3000);
+
+    // 頁面載入後先執行一次
+    fetchData();
+</script>
+
+</body>
+</html>

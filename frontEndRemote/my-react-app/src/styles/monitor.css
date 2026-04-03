@@ -1,0 +1,172 @@
+/* ===== 全域 ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    overflow: hidden;
+}
+
+/* ===== 主容器 ===== */
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== Header ===== */
+.brand-logo {
+    font-family: "Microsoft JhengHei", sans-serif; /* 改用較硬的黑體 */
+    font-size: 64px; /* 稍微縮小一點點更精緻 */
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 2px; /* 圖二的字距似乎稍微開一點 */
+    padding: 10px;  
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 陰影變淡、變細 */
+    margin-left:20px;
+}
+
+
+.header-main-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ✨ 這會讓標題在左，導覽列在最右 */
+    padding: 0 60px; /* 增加左右內距，避免太貼邊緣 */
+}
+
+.header-divider {
+    width: 98%;
+    height: 2px;
+    background: #808384;
+    margin: 10px auto;
+}
+
+/* ===== 導覽 ===== */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 6px;
+    padding: 10px;
+    gap: 0; 
+    margin-left: auto; /* ✨ 自動推擠左側空間，將自己推向最右方 */
+    margin-right: 50px; /* 距離右側邊界留一點空隙 */
+}
+
+.nav-btn {
+    text-decoration: none; /* 移除超連結底線 */
+    background: transparent;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px; /* 稍微加大一點 */
+    font-weight: 500;
+    padding: 8px 50px;
+    transition: all 0.3s;
+}
+.nav-divider {
+    width: 1px;
+    height: 20px; /* 限制高度 */
+    background: rgba(255, 255, 255, 0.3); /* 使用半透明白 */
+    margin: 0 5px;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.active-tab {
+    background: #333333 !important; 
+    color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.header-divider {
+    width: 96%;           /* ✨ 增加寬度，讓它更接近圖二的兩端長度 */
+    height: 3px;          /* 稍微加粗，更有分割感 */
+    background: #1a2a30;  /* 改為更深的深青色/黑色 */
+    margin: 5px auto 15px auto; /* 減少上方間距，靠近標題 */
+    opacity: 0.8;
+}
+
+/* ===== 中央白框 ===== */
+/* ===== 中央白框容器 ===== */
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    background: rgba(255, 255, 255, 0.6);
+    margin: 10px 60px 15px 60px; 
+    max-height: calc(100vh - 140px); 
+    overflow: hidden;
+    border-radius: 10px; /* 稍微加一點點圓角增加質感 */
+}
+
+/* 修改重點：將 justify-content 改為 flex-end */
+.board-section {
+    flex: 1; 
+    display: flex;
+    justify-content: flex-end; /* ✨ 關鍵：將看板推向最右側 */
+    align-items: center;      /* 垂直置中 */
+    padding: 30px 60px;        /* 增加右側內距，讓圖片不要死貼著邊緣 */
+}
+
+.board-container {
+    position: relative;
+    height: 95%;
+    width: auto;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-image {
+    width: 100%;              /* 寬度填滿容器即可 */
+    height: 100%;             /* 高度填滿容器即可 */
+    object-fit: contain;      /* 確保圖片不變形地縮放 */
+}
+
+/* ✨ 文字疊加層樣式 */
+.board-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 確保不會擋住滑鼠點擊圖片 */
+}
+
+/* ✨ 定位「人數」文字塊 */
+.overlay-item {
+    position: absolute;
+    top: 15%;    /* 調整垂直位置 (0%是頂部, 100%是底部) */
+    left: 20%;   /* 調整水平位置 (0%是左側, 100%是右側) */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.overlay-item .label {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.overlay-item .value {
+    font-size: 48px;
+    font-weight: 900;
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+}

@@ -1,0 +1,372 @@
+/* ===== 深色模式變數控制 (新增) ===== */
+:root {
+    --bg-image: url('picture/background.png');
+    --sidebar-bg: #f0f2f5;
+    --text-color: #333;
+    --dropdown-bg: rgba(240, 242, 245, 0.95);
+}
+
+[data-theme='dark'] {
+    --bg-image: url('picture/darkground.png'); /* 若有深色圖可換成 background_dark.png */
+    --sidebar-bg: #2c2c2c;
+    --text-color: #ffffff;
+    --dropdown-bg: rgba(40, 40, 40, 0.95);
+}
+
+/* ===== 全域 ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+
+    background-image: var(--bg-image); /* 改用變數 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: background-image 0.3s ease;
+}
+
+/* ===== 主容器 ===== */
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-bottom:2vh;
+}
+
+/* ===== Header ===== */
+.brand-logo {
+    font-family: "Microsoft JhengHei", sans-serif; /* 改用較硬的黑體 */
+    font-size: 60px; /* 稍微縮小一點點更精緻 */
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 2px; /* 圖二的字距似乎稍微開一點 */
+    padding: 10px;  
+    text-shadow: 6px 6px 6px rgba(0, 0, 0, 0.5); /* 陰影變淡、變細 */
+    margin-left:20px;
+}
+
+
+.header-main-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ✨ 這會讓標題在左，導覽列在最右 */
+    padding: 0 50px; /* 增加左右內距，避免太貼邊緣 */
+}
+/* ===== 導覽 ===== */
+/* 頁面進入動畫：由下往上浮現並變亮 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 頁面離開動畫：向右滑出並變暗 */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
+
+/* 套用至 body 或主容器 */
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.4s ease-in forwards;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    padding: 10px 0 10px 10px;
+    gap: 0; 
+    margin-left: auto; /* ✨ 自動推擠左側空間，將自己推向最右方 */
+    margin-right: 30px; /* 距離右側邊界留一點空隙 */
+}
+
+
+
+.nav-menu a:last-child {
+    padding-right: 30px; /* 視情況縮小這個數值，直到您滿意為止 */
+}
+
+.nav-btn {
+    text-decoration: none; /* 移除超連結底線 */
+    background: transparent;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px; /* 稍微加大一點 */
+    font-weight: 500;
+    padding: 8px 50px;
+    transition: all 0.3s;
+}
+
+.nav-divider {
+    width: 1px;
+    height: 20px; /* 限制高度 */
+    background: rgba(255, 255, 255, 0.3); /* 使用半透明白 */
+    margin: 0 5px;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-settings-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px; /* 寬度稍微縮小，不像文字按鈕那麼寬 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%; /* 確保與導覽列等高 */
+}
+
+.nav-settings-btn img {
+    width: 80px;  /* 調整設定圖示的大小 */
+    height: 80px;
+    object-fit: contain;
+    filter: brightness(1); /* 預設亮度 */
+    transition: transform 0.4s ease;
+}
+
+/* 滑動到按鈕上的效果 */
+.nav-settings-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* 齒輪轉動小動畫 */
+.nav-settings-btn:hover img {
+    transform: rotate(90deg);
+    filter: brightness(1.2);
+}
+
+/* 調整導覽列最後一個項目的間距，確保設定按鈕才是最後一個 */
+.nav-menu a:last-child {
+    padding-right: 20px; 
+}
+.active-tab {
+    background: #333333 !important; 
+    color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.header-divider {
+    width: 96%;           /* ✨ 增加寬度，讓它更接近圖二的兩端長度 */
+    height: 1px;          /* 稍微加粗，更有分割感 */
+    background: #808384;  /* 改為更深的深青色/黑色 */
+    margin: 5px auto 15px auto; /* 減少上方間距，靠近標題 */
+    opacity: 0.8;
+}
+
+/* ===== 右側工具列選單 (Side Sidebar) ===== */
+.settings-sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px; /* 初始隱藏在右側外面 */
+    width: 250px;
+    height: 100%;
+    background-color: var(--sidebar-bg); /* 改用變數 */
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 10001; /* 確保在最上層 */
+    transition: right 0.3s ease, background-color 0.3s ease; /* 滑動動畫 */
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+/* 當 active 類別加入時，滑入畫面 */
+.settings-sidebar.active {
+    right: 0;
+}
+
+/* 工具列標題區塊 */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 25px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.sidebar-header img {
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
+}
+
+.sidebar-header h2 {
+    font-size: 24px;
+    color: var(--text-color); /* 改用變數 */
+    font-family: "Microsoft JhengHei", sans-serif;
+    margin: 0;
+}
+
+/* 選單項目 */
+.sidebar-menu-item {
+    padding: 15px 40px;
+    font-size: 18px;
+    color: var(--text-color); /* 改用變數 */
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: "Microsoft JhengHei", sans-serif;
+}
+
+.sidebar-menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 背景遮罩 (當選單開啟時，讓背景變暗) */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    z-index: 10000;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+/* ===== 質感下拉選單 ===== */
+.nav-item-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%); /* 居中對齊按鈕 */
+    background: var(--dropdown-bg); /* 改用變數 */
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    border: 1px solid #ddd;
+    z-index: 1000;
+    margin-top: 10px; /* 與導覽列留一點間距 */
+    overflow: hidden;
+}
+
+/* 下拉選單的小箭頭裝飾 */
+.dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: var(--sidebar-bg); /* 跟隨背景色變數 */
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+.dropdown-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    color: var(--text-color); /* 改用變數 */
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.dropdown-link:last-child {
+    border-bottom: none;
+}
+
+/* 滑鼠滑過效果 */
+.dropdown-link:hover {
+    background-color: #007bff; /* 工業標準藍 */
+    color: white !important;
+}
+
+.link-arrow {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+}
+
+.dropdown-link:hover .link-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* 顯示動畫 */
+.nav-item-dropdown:hover .dropdown-content {
+    display: block;
+    animation: dropdownSlide 0.3s ease-out;
+}
+
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+/* 3. 報錯彈窗樣式 (global.js 產生的 HTML 會套用這裡) */
+.error-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-modal {
+    width: 500px;
+    background: #b19494; /* 報錯背景色 */
+    border: 3px solid #333;
+    text-align: center;
+}
+
+.hazard-stripe {
+    height: 15px;
+    background: repeating-linear-gradient(45deg, #f9d71c, #f9d71c 10px, #000 10px, #000 20px);
+}
+
+.warning-icon {
+    width: 70px; height: 60px;
+    background: #d00000;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    margin: 20px auto;
+    color: white; font-weight: bold; font-size: 40px;
+}

@@ -1,0 +1,123 @@
+/* ============================================================
+   1. 基礎佈局與中央白框 (Base Layout)
+   ============================================================ */
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center; /* 水平置中內容 */
+    align-items: flex-start; /* 內容靠上 */
+    background: rgba(255, 255, 255, 0.7); /* 半透明白框 */
+    margin: 10px 60px 15px 60px; 
+    padding: 40px;
+    max-height: calc(100vh - 140px); 
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================
+   2. 報表頁面專屬樣式 (Report Page UI)
+   ============================================================ */
+.report-controls {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1000px;
+    gap: 20px;
+}
+
+/* 深藍色膠囊標籤 */
+.report-label-box {
+    background-color: #0b4a6b;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* 下拉選單容器 */
+.report-select-container {
+    flex-grow: 1;
+}
+
+.styled-select {
+    width: 100%;
+    padding: 12px 20px;
+    border: 2px solid #0b4a6b;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    text-align: center;
+    background-color: white;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.styled-select:focus {
+    border-color: #3498db;
+}
+
+/* 下載按鈕 */
+.styled-download-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 35px;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-left: auto;
+}
+
+.styled-download-btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+   3. 導覽列下拉選單 (ProductLine Dropdown)
+   ============================================================ */
+.nav-item-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(240, 242, 245, 0.98);
+    min-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    border: 1px solid #ddd;
+    z-index: 1000;
+    margin-top: 10px;
+}
+
+.dropdown-link {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.dropdown-link:hover {
+    background-color: #007bff;
+    color: white !important;
+}
+
+.nav-item-dropdown:hover .dropdown-content {
+    display: block;
+}
