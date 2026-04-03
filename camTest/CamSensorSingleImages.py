@@ -79,7 +79,7 @@ for filename in image_files:
                 cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
                 cv2.circle(frame, (footX, footY), 5, (255, 0, 0), -1)
 
-    cv2.polylines(frame, [DANGER_POLY], True, (0, 0, 255), 2)
+    cv2.polylines(frame, [DANGER_POLY], True, (255, 0, 255), 2)
 
     cv2.putText(
         frame,
