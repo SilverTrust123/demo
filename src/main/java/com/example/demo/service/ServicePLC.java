@@ -16,6 +16,7 @@ import com.example.demo.DTO.responseDTO.PLCResponseDTO.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 @Service
 public class ServicePLC {
@@ -40,6 +41,15 @@ public class ServicePLC {
             log.error("cant connect to plc, error code {}", e.getMessage());
             serviceLog.record("ERROR", "ServicePLC", "cant connect to plc, error code" + e.getMessage());
             System.err.println("PLC 連線失敗 code: " + e.getMessage());
+        }
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        if (plc != null) {
+            plc.close();
+            log.info("PLC connection closed");
+            System.out.println("PLC 連線已關閉");
         }
     }
 
