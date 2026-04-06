@@ -59,3 +59,10 @@ CREATE TABLE `todo` (
     message VARCHAR(255) NOT NULL,
     PRIMARY KEY (`message`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+USE ICMS;
+CREATE TABLE `device_response_log` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `device_list_data` JSON NOT NULL, 
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

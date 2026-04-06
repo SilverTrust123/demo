@@ -33,8 +33,8 @@ public class PointList {
     // private final DPoint T12 = new DPoint(12, "滑台機械臂夾到之後等多久");
     // private final DPoint T13 = new DPoint(13, "滑台機械臂放開之後等多久");.
 
-    private final MPoint RTESTART = new MPoint(90, "Restart");
-    private final MPoint RESET_ALL_TIMERELAY = new MPoint(91, "Reset All Time Relays");
+    private final MPoint RTESTART = new MPoint(8282, "Restart");
+    private final MPoint RESET_ALL_TIMERELAY = new MPoint(8283, "Reset All Time Relays");
     private final MPoint test1 = new MPoint(8213, "Reset All Time Relays");
     private final MPoint test2 = new MPoint(8192, "Reset All Time Relays");
 
