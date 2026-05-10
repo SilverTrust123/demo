@@ -7,15 +7,15 @@ from datetime import datetime
 from ultralytics import YOLO
 
 DEVICE_ID = "CAM"
-IMAGE_FOLDER = "images"
+IMAGE_FOLDER = "./images_20260508"
 BACKEND_URL = "http://192.168.3.253:9090/CamData"
 
 POLL_INTERVAL = 1  
 DANGER_POLY = np.array([
-    [100, 100],
-    [1200, 100],
+    [0, 1200],
     [1200, 1200],
-    [100, 1200]
+    [1200, 600],
+    [0, 600]
 ])
 
 model = YOLO("yolov8n.pt")
