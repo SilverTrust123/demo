@@ -109,8 +109,8 @@ https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/m
 
 ### 循環圖
 
-![執行循序圖](<doc\數位雙生控制與 Modbus TCP 執行循序圖.png>)
+![執行循序圖](<doc/數位雙生控制與 Modbus TCP 執行循序圖.png>)
 
 ### 後端分層圖
 
-![後端分層圖](<doc\messageImage_1771861743691.jpg>)
+![後端分層圖](<doc/messageImage_1771861743691.jpg>)
