@@ -4,7 +4,7 @@
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-Backend-6DB33F?logo=spring-boot&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&logoColor=white)
 ![IoT](https://img.shields.io/badge/IoT-PLC_Control-blue?logo=arduino&logoColor=white)
-![Update](https://badgen.net/github/last-commit/micromatch/micromatch/https://github.com/SilverTrust123/demo?style=flat&logo=github)
+![Update](https://badgen.net/github/last-commit/micromatch/micromatch/SilverTrust123/demo?style=flat&logo=github)
 ![GitLab Top Language](https://img.shields.io/gitlab/languages//https://github.com/SilverTrust123/demo?style=flat&logo=github)
 
 
