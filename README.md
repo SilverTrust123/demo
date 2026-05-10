@@ -4,7 +4,7 @@
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-Backend-6DB33F?logo=spring-boot&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&logoColor=white)
 ![IoT](https://img.shields.io/badge/IoT-PLC_Control-blue?logo=arduino&logoColor=white)
-![Update](https://img.shields.io/github/last-commit/SilverTrust123/demo?style=flat&logo=github)
+![Update](https://img.shields.io/github/last-commit/https://github.com/SilverTrust123/demo?style=flat&logo=github)
 
 ## 簡介:
 Industrial Control & Monitoring System (ICMS) 是一套基於 Spring Boot 所打造的工業級後端整合平台，專注於整合 PLC 控制、多元感測器資料收集、影像辨識與即時監控，提供穩定、高效且可擴展的中控系統解決方案。本系統採用 分層式系統架構（Controller → Service → Device Layer），將系統功能模組化，實現高內聚、低耦合的設計原則，提升系統可維護性與擴展彈性。系統可即時收集溫濕度、空氣品質、粉塵濃度與電路狀態等多項感測資料，並透過 PLC 模組進行設備控制與狀態回饋，同時整合攝影機物件辨識模組，實現全方位設備監控與環境感知。透過集中化管理平台，使用者可即時監控設備運作狀態、查詢歷史資料、進行設備控制與系統設定，適用於 智慧工廠、工業自動化、環境監測與內網型監控系統 等應用場景，為工業系統提供穩定可靠的後端核心架構。
