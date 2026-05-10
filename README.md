@@ -1,4 +1,7 @@
 # Industrial Control & Monitoring System (ICMS) 
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
 
 ## 簡介:
 
@@ -104,8 +107,8 @@ https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/m
 
 ### 循環圖
 
-![執行循序圖](<數位雙生控制與 Modbus TCP 執行循序圖.png>)
+![執行循序圖](<doc\數位雙生控制與 Modbus TCP 執行循序圖.png>)
 
 ### 後端分層圖
 
-![後端分層圖](<messageImage_1771861743691.jpg>)
+![後端分層圖](<doc\messageImage_1771861743691.jpg>)
