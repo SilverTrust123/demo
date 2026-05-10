@@ -1,5 +1,5 @@
 # Industrial Control & Monitoring System (ICMS) 
-![Java](https://img.shields.io/badge/Java-Language-ED8B00?logo=openjdk&logoColor=white)
+[![Java](https://img.shields.io/badge/Java-Language-ED8B00?logo=openjdk&logoColor=white)](https://github.com/mercerheather476/turbo-garbanzo/blob/main/README.md)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-Backend-6DB33F?logo=spring-boot&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&logoColor=white)
 ![IoT](https://img.shields.io/badge/IoT-PLC_Control-blue?logo=arduino&logoColor=white)
