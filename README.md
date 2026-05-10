@@ -5,7 +5,7 @@
 ![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&logoColor=white)
 ![IoT](https://img.shields.io/badge/IoT-PLC_Control-blue?logo=arduino&logoColor=white)
 ![Update](https://img.shields.io/github/last-update/https://github.com/SilverTrust123/demo?style=flat&logo=github)
-![GitLab Top Language](https://img.shields.io/gitlab/languages/:project)
+![GitLab Top Language](https://img.shields.io/gitlab/languages//https://github.com/SilverTrust123/demo?style=flat&logo=github)
 
 
 ## 簡介:
