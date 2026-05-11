@@ -1,4 +1,7 @@
 # Industrial Control & Monitoring System (ICMS) 
+<p align="center">
+  <img src="doc/banner.png"/>
+</p>
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?logo=github)](https://github.com/SilverTrust123)
 [![GitHub Repo releses](https://img.shields.io/badge/GitHubRepo-LeatestReleases-6f42c1?logo=semantic-release&logoColor=white)](https://github.com/SilverTrust123/demo/archive/refs/tags/V3.1.2.zip)
 ![Java](https://img.shields.io/badge/Java-Language-ED8B00?logo=openjdk&logoColor=white)
