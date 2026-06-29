@@ -3,7 +3,7 @@ package com.example.demo.db.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-// 這只是用來定義「鑰匙」組合的
+// 用來定義鑰匙組合的
 public class TemperatureAndHumidityId implements Serializable {
     private String deviceId;
     private int timestamp;
@@ -16,7 +16,7 @@ public class TemperatureAndHumidityId implements Serializable {
         this.timestamp = timestamp;
     }
 
-    // 複合主鍵必須實作 equals 和 hashCode，JPA 才能比對鑰匙
+    // 複合主鍵必須實作equals和hashCode JPA 才能比對鑰匙
     @Override
     public boolean equals(Object o) {
         if (this == o)
