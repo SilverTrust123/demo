@@ -1,0 +1,8 @@
+@echo off
+:: 抓env到windows env
+for /f "usebackq tokens=1,* delims==" %%a in (".env") do (
+    set "%%a=%%b"
+)
+:: 抓到在確保抓到再開server
+java -jar demo-0.0.1-SNAPSHOT.jar
+pause
