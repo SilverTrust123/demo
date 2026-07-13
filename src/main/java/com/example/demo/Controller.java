@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 public class Controller {
     private static final Logger log = LoggerFactory.getLogger(Controller.class);
 
-    @GetMapping("/")
+    // 變動還沒跟動市長說
+    // 後面可以改變成一般的 ("/")因為沒有要把前後端擺一起
+    @GetMapping("/check")
     public String checkConnect() {
         log.info("receive frontend check the backend");
         return "backend running";
