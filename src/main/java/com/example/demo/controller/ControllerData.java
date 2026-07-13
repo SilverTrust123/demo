@@ -33,8 +33,12 @@ public class ControllerData {
 
     @GetMapping("/allDataAndDeviceState")
     public CompletableFuture<Object> AllDataAndDeviceState() {
+        long req = System.currentTimeMillis();
         log.info("Received and transfer request for all data and device state");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceState");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceState").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("all data and device status request done in " + (done - req));
+        });
     }
 
     @GetMapping("/allDataAndDeviceStateWithoutPLC")
