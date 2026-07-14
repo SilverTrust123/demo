@@ -33,11 +33,16 @@ public class PointList {
     // private final DPoint T12 = new DPoint(12, "滑台機械臂夾到之後等多久");
     // private final DPoint T13 = new DPoint(13, "滑台機械臂放開之後等多久");.
 
+    private final MPoint EStop = new MPoint(8311, "Emergency Stop");
+    // 上面是M119 Estop 用的
     private final MPoint RTESTART = new MPoint(8282, "Restart");
+    // 上面是M90
     private final MPoint RESET_ALL_TIMERELAY = new MPoint(8283, "Reset All Time Relays");
+    // 上面是M91
     private final MPoint test1 = new MPoint(8213, "Reset All Time Relays");
+    // 上面是M21 用來測試的 之後正式版刪掉
     private final MPoint test2 = new MPoint(8192, "Reset All Time Relays");
-
+    // 上面是M0 用來測試的 之後正式版刪掉
     private final DPoint STATE = new DPoint(200, "Status");
     private final DPoint COUNT_METAL = new DPoint(1000, "Metal Count");
     private final DPoint COUNT_NON_METAL = new DPoint(1001, "Non-metal Count");
@@ -68,6 +73,7 @@ public class PointList {
 
     public PointList() {
         // 添加M點
+        MPointMap.put("EStop", EStop);
         MPointMap.put("RTESTART", RTESTART);
         MPointMap.put("RESET_ALL_TIMERELAY", RESET_ALL_TIMERELAY);
         MPointMap.put("10", test1);

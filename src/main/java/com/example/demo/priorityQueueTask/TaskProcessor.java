@@ -176,6 +176,9 @@ public class TaskProcessor {
                             case "getCountNonMetal":
                                 result = servicePLC.getCountNonMetal();
                                 break;
+                            case "EStop":
+                                result = servicePLC.EStop();
+                                break;
                             case "ALLData":
                                 result = serviceData.AllData();
                                 break;

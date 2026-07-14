@@ -121,4 +121,14 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, null, "test");
     }
 
+    @GetMapping("EStop")
+    public CompletableFuture<Object> EStop() {
+        long curr = System.currentTimeMillis();
+        log.info("received n transfer Emergency stop process");
+        return queueService.addRequestToQueue(URGENT, null, "EStop").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("EStop process done in " + (done - curr));
+        });
+    }
+
 }

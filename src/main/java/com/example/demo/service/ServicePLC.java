@@ -242,4 +242,17 @@ public class ServicePLC {
         return plcConnected;
     }
 
+    public ResponsePointState EStop() {
+        try {
+            plc.writeM(plc.getMPoint("EStop"), true);
+            log.info("production line shot down");
+            return new ResponsePointState("process stop");
+
+        } catch (Exception e) {
+            log.error("Shot down Error", e.getMessage());
+            e.printStackTrace();
+            return new ResponsePointState("Shot down Error: " + e.getMessage());
+        }
+    }
+
 }
