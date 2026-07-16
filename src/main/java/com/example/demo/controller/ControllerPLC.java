@@ -117,8 +117,12 @@ public class ControllerPLC {
 
     @GetMapping("test")
     public CompletableFuture<Object> test() {
+        long curr = System.currentTimeMillis();
         log.info("test");
-        return queueService.addRequestToQueue(IMPORTANT, null, "test");
+        return queueService.addRequestToQueue(IMPORTANT, null, "test").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("test request done in " + (done - curr));
+        });
     }
 
     @GetMapping("EStop")
