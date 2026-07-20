@@ -37,7 +37,7 @@ public class ControllerPLC {
         log.info("PLC Connected: {}", plcConnected);
         return queueService.addRequestToQueue(NORMAL, null, "PLCConnect").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
-            log.info("Request PLCConnect been hjandle in " + (curr - done));
+            log.info("Request PLCConnect been hjandle in " + (done - curr));
         });
     }
 
@@ -47,8 +47,12 @@ public class ControllerPLC {
     // @RequestParam(required = false) String param
     @GetMapping("/MPointState")
     public CompletableFuture<Object> MpointState(@RequestBody RequestMPointStateDTO param) {
+        long curr = System.currentTimeMillis();
         log.info("transfer received read m point request {} ", param);
-        return queueService.addRequestToQueue(IMPORTANT, param, "MpointState");
+        return queueService.addRequestToQueue(IMPORTANT, param, "MpointState").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("request MpointState been danle in " + (done - curr));
+        });
     }
 
     // -----------
@@ -56,35 +60,53 @@ public class ControllerPLC {
     // 回傳：NoDevice / Error / 實際數值
     @GetMapping("/DPointData")
     public CompletableFuture<Object> DPointData(@RequestBody RequestDPointStateDTO param) {
+        long curr = System.currentTimeMillis();
         log.info("transfer received read d point request {} ", param);
-        return queueService.addRequestToQueue(IMPORTANT, param, "DPointData");
+        return queueService.addRequestToQueue(IMPORTANT, param, "DPointData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("request Dpoint Data been complete in " + (done - curr));
+        });
     }
 
     @GetMapping("/AllDPointData")
     public CompletableFuture<Object> AllDPointData() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("transfer received read all DPoint request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllDPointData");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllDPointData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("request ALLDpoint complate in " + (done - curr));
+        });
     }
 
     @GetMapping("/AllMPointData")
     public CompletableFuture<Object> AllMPointData() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("transfer received read all MPoint request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllMPointData");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllMPointData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("Request ALL m point completate in " + (done - curr));
+        });
     }
 
     @GetMapping("/state")
     public CompletableFuture<Object> plcState() {
+        long curr = System.currentTimeMillis();
         log.info("transfer received plc state request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "plcState");
+        return queueService.addRequestToQueue(IMPORTANT, null, "plcState").whenComplete((res, exp) -> {
+            log.info("request plc state compleate in " + (System.currentTimeMillis() - curr));
+        });
     }
 
     // ----------------
     @PostMapping("/writeMPoint")
     public String writeMPoint(@RequestBody RequestWriteMPointDTO payload) {
+        long curr = System.currentTimeMillis();
         String param = (String) payload.param();
         Boolean value = (Boolean) payload.value();
         log.info("transfer received write MPoint request with param {} and value {}", param, value);
-        queueService.addRequestToQueue(URGENT, payload, "writeMPoint");
+        queueService.addRequestToQueue(URGENT, payload, "writeMPoint").whenComplete((res, exp) -> {
+            log.info("request compleate write m point in " + (System.currentTimeMillis() - curr));
+        });
         return new String("ok");
     }
     // @PostMapping("/writeMPoint")
@@ -100,23 +122,32 @@ public class ControllerPLC {
     // ---------------------------------
     @PostMapping("/writeDPoint")
     public String writeDPoint(@RequestBody RequestWriteDPointDTO payload) {
+        long curr = System.currentTimeMillis();
         String param = (String) payload.param();
         Integer value = (Integer) payload.value();
         log.info("transfer received write DPoint request with param {} and value {}", param, value);
-        queueService.addRequestToQueue(URGENT, payload, "writeDPoint");
+        queueService.addRequestToQueue(URGENT, payload, "writeDPoint").whenComplete((res, exp) -> {
+            log.info("request write D point complate in " + (System.currentTimeMillis() - curr));
+        });
         return new String("ok");
     }
 
     @GetMapping("getCountMetal")
     public CompletableFuture<Object> getCountMetal() {
+        long curr = System.currentTimeMillis();
         log.info("transfer received get count metal request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getCountMetal");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getCountMetal").whenComplete((res, exp) -> {
+            log.info("request get count metal complate in " + (System.currentTimeMillis() - curr));
+        });
     }
 
     @GetMapping("getCountNonMetal")
     public CompletableFuture<Object> getCountNonMetal() {
+        long curr = System.currentTimeMillis();
         log.info("transfer received get count non metal request");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getCountNonMetal");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getCountNonMetal").whenComplete((res, exp) -> {
+            log.info("request get count non meatal work pices comopleate in " + (System.currentTimeMillis() - curr));
+        });
     }
 
     @GetMapping("test")
