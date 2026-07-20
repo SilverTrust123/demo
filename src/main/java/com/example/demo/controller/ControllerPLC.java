@@ -33,8 +33,12 @@ public class ControllerPLC {
 
     @GetMapping("/PLCConnect")
     public CompletableFuture<Object> PLCConnect() {
+        long curr = System.currentTimeMillis();
         log.info("PLC Connected: {}", plcConnected);
-        return queueService.addRequestToQueue(NORMAL, null, "PLCConnect");
+        return queueService.addRequestToQueue(NORMAL, null, "PLCConnect").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("Request PLCConnect been hjandle in " + (curr - done));
+        });
     }
 
     // -----------
