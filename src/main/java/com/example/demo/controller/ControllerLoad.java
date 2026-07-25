@@ -29,13 +29,21 @@ public class ControllerLoad {
 
     @GetMapping("/loadStats")
     public CompletableFuture<Object> getLoadStats() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("receive and transfer the Load Stats request ");
-        return queueService.addRequestToQueue(IMPORTANT, null, "loadStats");
+        return queueService.addRequestToQueue(IMPORTANT, null, "loadStats").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get load state done in " + (done - curr));
+        });
     }
 
     @GetMapping("/allLoadStats")
     public CompletableFuture<Object> getAllLoadStats() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("receive and transfer the all Load Stats request ");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getAllLoadStats");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getAllLoadStats").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get all load status done in " + (done - curr));
+        });
     }
 }

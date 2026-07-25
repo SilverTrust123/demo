@@ -33,6 +33,7 @@ public class ControllerReport {
 
         @GetMapping("/pdf/log")
         public CompletableFuture<ResponseEntity<byte[]>> getLogReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for logs report ");
                 return queueService
                                 .addRequestToQueue(URGENT, null, "getLogReport")
@@ -46,12 +47,16 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get log report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/log/betweenTimes")
         public CompletableFuture<ResponseEntity<byte[]>> getLogReportBetweenTimes(RequestTimesDTO request)
                         throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for logs between times report ");
                 return queueService
                                 .addRequestToQueue(URGENT, request, "getLogReportBetweenTimes")
@@ -66,11 +71,15 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get log report between times done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/temperatureAndHumidity")
         public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for TemperatureAndHumidity report ");
                 return queueService
                                 .addRequestToQueue(URGENT, null, "getTemperatureAndHumidityReport")
@@ -85,12 +94,16 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get temperature and humidity report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/temperatureAndHumidity/betweenTimes")
         public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityReportBetweenTimes(
                         RequestTimesDTO request) throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for TemperatureAndHumidity bewteen timesreport ");
                 return queueService
                                 .addRequestToQueue(URGENT, request, "getTemperatureAndHumidityReportBetweenTimes")
@@ -105,11 +118,16 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get temperature and humidity report between times done in "
+                                                        + (done - curr));
                                 });
         }
 
         @GetMapping("/excel/temperatureAndHumidity")
         public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityExcelReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for TemperatureAndHumidity Excel report");
 
                 return queueService
@@ -125,6 +143,9 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get temperature and humidity excel report done in " + (done - curr));
                                 });
         }
 
@@ -132,6 +153,7 @@ public class ControllerReport {
         public CompletableFuture<ResponseEntity<byte[]>> getTemperatureAndHumidityExcelReportBetweenTimes(
                         RequestTimesDTO request)
                         throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for TemperatureAndHumidity between times Excel report");
 
                 return queueService
@@ -148,11 +170,16 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get temperature and humidity excel report between times done in "
+                                                        + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/circuit")
         public CompletableFuture<ResponseEntity<byte[]>> getCircuitReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for Circuit report ");
                 return queueService
                                 .addRequestToQueue(URGENT, null, "getCircuitReport")
@@ -166,12 +193,16 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get circuit report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/circuit/betweenTimes")
         public CompletableFuture<ResponseEntity<byte[]>> getCircuitReportBetweenTimes(RequestTimesDTO request)
                         throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for Circuit between times report ");
                 return queueService
                                 .addRequestToQueue(URGENT, request, "getCircuitReportBetweenTimes")
@@ -186,11 +217,15 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get circuit report between times done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/excel/circuit")
         public CompletableFuture<ResponseEntity<byte[]>> getCircuitExcelReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for circuit Excel report");
 
                 return queueService
@@ -205,12 +240,16 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get circuit excel report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/excel/circuit/betweenTimes")
         public CompletableFuture<ResponseEntity<byte[]>> getCircuitExcelReportBetweenTimes(RequestTimesDTO request)
                         throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for circuit Excel report between times");
 
                 return queueService
@@ -226,11 +265,15 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get circuit excel report between times done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/airQuality")
         public CompletableFuture<ResponseEntity<byte[]>> getAirQualityReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for air quality report ");
                 return queueService
                                 .addRequestToQueue(URGENT, null, "getAirQualityReport")
@@ -244,12 +287,16 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air quality report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/airQuality/betweenTimes")
         public CompletableFuture<ResponseEntity<byte[]>> getAirQualityReportBetweenTimes(RequestTimesDTO request)
                         throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for air quality between times report ");
                 return queueService
                                 .addRequestToQueue(URGENT, request, "getAirQualityReportBetweenTimes")
@@ -264,11 +311,15 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air quality report between times done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/excel/airQuality")
         public CompletableFuture<ResponseEntity<byte[]>> getAirQualityExcelReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for air quality Excel report");
 
                 return queueService
@@ -283,11 +334,15 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air quality excel report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/excel/airQuality/betweenTimes")
         public CompletableFuture<ResponseEntity<byte[]>> getAirQualityExcelReportBetweenTimes() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for air quality Excel report between times");
 
                 return queueService
@@ -303,11 +358,15 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air quality excel report between times done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/airParticulates")
         public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for air particulates report ");
                 return queueService
                                 .addRequestToQueue(URGENT, null, "getAirParticulatresReport")
@@ -322,12 +381,16 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air particulates report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/airParticulates/betweenTimes")
         public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatresReportBetweenTimes(RequestTimesDTO request)
                         throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for air particulates between times report ");
                 return queueService
                                 .addRequestToQueue(URGENT, request, "getAirParticulatresReportBetweenTimes")
@@ -342,6 +405,9 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air particulates report between times done in " + (done - curr));
                                 });
         }
 
@@ -349,6 +415,7 @@ public class ControllerReport {
         public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatesExcelReportBetweenTimes(
                         RequestTimesDTO request)
                         throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for air particulates Excel report between times");
 
                 return queueService
@@ -364,11 +431,16 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air particulates excel report between times done in "
+                                                        + (done - curr));
                                 });
         }
 
         @GetMapping("/excel/airParticulates")
         public CompletableFuture<ResponseEntity<byte[]>> getAirParticulatesExcelReport() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received request for air particulates Excel report");
 
                 return queueService
@@ -384,11 +456,15 @@ public class ControllerReport {
                                                         (byte[]) excelContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get air particulates excel report done in " + (done - curr));
                                 });
         }
 
         @GetMapping("/pdf/addressTable")
         public CompletableFuture<ResponseEntity<byte[]>> getAddressTable() throws Exception {
+                long curr = System.currentTimeMillis();
                 log.info("Received and transfer request for address table");
                 return queueService
                                 .addRequestToQueue(URGENT, null, "getAddressTable")
@@ -402,6 +478,9 @@ public class ControllerReport {
                                                         (byte[]) pdfContent,
                                                         headers,
                                                         HttpStatus.OK);
+                                }).whenComplete((res, exp) -> {
+                                        long done = System.currentTimeMillis();
+                                        log.info("get address table done in " + (done - curr));
                                 });
         }
 }

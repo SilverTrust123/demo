@@ -30,27 +30,45 @@ public class ControllerHistoryData {
     @PostMapping("/temparatureAndHumidityHistory")
     public CompletableFuture<Object> getTemparatureAndHumidityHistory(
             @RequestBody RequestHistoryTemparatureAndHumidityDTO request) throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for getTemparatureAndHumidity ");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getTemparatureAndHumidityHistory");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getTemparatureAndHumidityHistory")
+                .whenComplete((res, exp) -> {
+                    long done = System.currentTimeMillis();
+                    log.info("get temperature and humidity history done in " + (done - curr));
+                });
     }
 
     @PostMapping("/circuitHistory")
     public CompletableFuture<Object> getCircuitHistory(@RequestBody RequestHistoryCircuitDTO request) throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer circuit data to logic");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getCircuitHistory");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getCircuitHistory").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get circuit history done in " + (done - curr));
+        });
     }
 
     @PostMapping("/airQualityHistory")
     public CompletableFuture<Object> getAirQualityHistory(@RequestBody RequestHistoryAirQualityDTO request)
             throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer air quality data to logic");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getAirQualityHistory");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getAirQualityHistory").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get air quality history done in " + (done - curr));
+        });
     }
 
     @PostMapping("/airParticulatesHistory")
     public CompletableFuture<Object> getAirParticulatesHistory(@RequestBody RequestHistoryAirParticulatesDTO request)
             throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer air particulates data to logic");
-        return queueService.addRequestToQueue(IMPORTANT, request, "getAirParticulatesHistory");
+        return queueService.addRequestToQueue(IMPORTANT, request, "getAirParticulatesHistory")
+                .whenComplete((res, exp) -> {
+                    long done = System.currentTimeMillis();
+                    log.info("get air particulates history done in " + (done - curr));
+                });
     }
 }

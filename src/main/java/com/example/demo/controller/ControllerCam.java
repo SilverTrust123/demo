@@ -31,19 +31,31 @@ public class ControllerCam {
 
     @PostMapping("/")
     public CompletableFuture<Object> receiveCamData(@RequestBody RequestCamDTO data) {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer cam data");
-        return queueService.addRequestToQueue(URGENT, data, "receiveCamData");
+        return queueService.addRequestToQueue(URGENT, data, "receiveCamData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("receive cam data done in " + (done - curr));
+        });
     }
 
     @GetMapping("/{deviceId}")
     public CompletableFuture<Object> getCamData(@PathVariable String deviceId) {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for cam data of device");
-        return queueService.addRequestToQueue(IMPORTANT, deviceId, "getCamData");
+        return queueService.addRequestToQueue(IMPORTANT, deviceId, "getCamData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get cam data by id done in " + (done - curr));
+        });
     }
 
     @GetMapping("/")
     public CompletableFuture<Object> getAllCamData() {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for all cam data");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getAllCamData");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getAllCamData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get all cam data done in" + (done - curr));
+        });
     }
 }

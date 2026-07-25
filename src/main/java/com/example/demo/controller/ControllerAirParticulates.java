@@ -32,19 +32,31 @@ public class ControllerAirParticulates {
 
     @PostMapping("/")
     public CompletableFuture<Object> recriveAirPartical(@RequestBody RequestAirParticulatesDTO data) {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer air particulates data");
-        return queueService.addRequestToQueue(NORMAL, data, "recriveAirPartical");
+        return queueService.addRequestToQueue(NORMAL, data, "recriveAirPartical").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("rerceive airparticles data done in " + (done - curr));
+        });
     }
 
     @GetMapping("/{deviceId}")
     public CompletableFuture<Object> getAirParticalData(@PathVariable String deviceId) {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for air particulates data of device");
-        return queueService.addRequestToQueue(IMPORTANT, deviceId, "getAirParticalData");
+        return queueService.addRequestToQueue(IMPORTANT, deviceId, "getAirParticalData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get aitparticle by device id done in " + (done - curr));
+        });
     }
 
     @GetMapping("/")
     public CompletableFuture<Object> getAllAirParticalData() {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for all air particulates data");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getAllAirParticalData");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getAllAirParticalData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get ALL airparticle data request done in " + (done - curr));
+        });
     }
 }

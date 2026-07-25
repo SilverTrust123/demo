@@ -27,7 +27,11 @@ public class ControllerDeviceState {
 
     @GetMapping("/")
     public CompletableFuture<Object> AllDeviceState() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for AllDeviceState ");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllDeviceState");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllDeviceState").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("all device state done in " + (done - curr));
+        });
     }
 }

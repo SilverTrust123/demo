@@ -30,26 +30,43 @@ public class ControllerLog {
 
     @GetMapping("/all")
     public CompletableFuture<Object> getAllLogs() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for All logs ");
-        return queueService.addRequestToQueue(URGENT, null, "getAllLogs");
+        return queueService.addRequestToQueue(URGENT, null, "getAllLogs").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get all logs done in " + (done - curr));
+
+        });
     }
 
     @GetMapping("/error")
     public CompletableFuture<Object> getErrorLogs() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for All error logs ");
-        return queueService.addRequestToQueue(URGENT, null, "getErrorLogs");
+        return queueService.addRequestToQueue(URGENT, null, "getErrorLogs").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get error logs done in " + (done - curr));
+        });
     }
 
     @GetMapping("/warn")
     public CompletableFuture<Object> getWarnLogs() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for All warn logs ");
-        return queueService.addRequestToQueue(URGENT, null, "getWarnLogs");
+        return queueService.addRequestToQueue(URGENT, null, "getWarnLogs").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get warn logs done in " + (done - curr));
+        });
     }
 
     @GetMapping("/byTime")
     public CompletableFuture<Object> getLogByTime(@RequestBody RequestLogDTO request) throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for getLogByTime");
-        return queueService.addRequestToQueue(URGENT, request, "getLogByTime");
+        return queueService.addRequestToQueue(URGENT, request, "getLogByTime").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get log by time done in " + (done - curr));
+        });
     }
 
 }

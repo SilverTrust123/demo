@@ -27,8 +27,12 @@ public class ControllerData {
 
     @GetMapping("/")
     public CompletableFuture<Object> AllData() throws Exception {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for all data ");
-        return queueService.addRequestToQueue(IMPORTANT, null, "ALLData");
+        return queueService.addRequestToQueue(IMPORTANT, null, "ALLData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get all data done in " + (done - curr));
+        });
     }
 
     @GetMapping("/allDataAndDeviceState")
@@ -43,13 +47,22 @@ public class ControllerData {
 
     @GetMapping("/allDataAndDeviceStateWithoutPLC")
     public CompletableFuture<Object> AllDataAndDeviceStateWithoutPLC() {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for all data and device state without plc ");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceStateWithoutPLC");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceStateWithoutPLC")
+                .whenComplete((res, exp) -> {
+                    long done = System.currentTimeMillis();
+                    log.info("all data and device status without PLC done in " + (done - curr));
+                });
     }
 
     @GetMapping("/allSenosrData")
     public CompletableFuture<Object> AllSensorData() {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for all sensor data ");
-        return queueService.addRequestToQueue(IMPORTANT, null, "AllSensorData");
+        return queueService.addRequestToQueue(IMPORTANT, null, "AllSensorData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("all sensor data done in " + (done - curr));
+        });
     }
 }

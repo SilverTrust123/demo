@@ -32,21 +32,33 @@ public class ControllerCircuit {
 
     @PostMapping("/")
     public CompletableFuture<Object> receiveCircuitData(@RequestBody RequestCircuitDTO data) {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer circuit data");
-        return queueService.addRequestToQueue(NORMAL, data, "receiveCircuitData");
+        return queueService.addRequestToQueue(NORMAL, data, "receiveCircuitData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("receive circuit data done in " + (done - curr));
+        });
     }
 
     // 船空的回去就是找不到東西 或是太舊了
     @GetMapping("/{deviceId}")
     public CompletableFuture<Object> getCircuitData(@PathVariable String deviceId) {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for circuit data of device");
-        return queueService.addRequestToQueue(IMPORTANT, deviceId, "getCircuitData");
+        return queueService.addRequestToQueue(IMPORTANT, deviceId, "getCircuitData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get circuit data by id done in " + (done - curr));
+        });
     }
 
     // 這個本來最多就一個 如果船空的回去就是太舊了
     @GetMapping("")
     public CompletableFuture<Object> getAllCircuitData() {
+        long curr = System.currentTimeMillis();
         log.info("Received and transfer request for all circuit data");
-        return queueService.addRequestToQueue(IMPORTANT, null, "getAllCircuitData");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getAllCircuitData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get circuit data done in " + (done - curr));
+        });
     }
 }

@@ -30,14 +30,22 @@ public class ControllerTodo {
 
     @PostMapping("/")
     public CompletableFuture<Object> leaveMessage(@RequestBody RequestTodoDTO message) {
+        long curr = System.currentTimeMillis();
         log.info("Receive and transfer request for leave Message");
-        return queueService.addRequestToQueue(NORMAL, message, "leaveMessage");
+        return queueService.addRequestToQueue(NORMAL, message, "leaveMessage").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("leave message done in " + (done - curr));
+        });
     }
 
     @GetMapping("/getMessage")
     public CompletableFuture<Object> getMessage() {
+        long curr = System.currentTimeMillis();
         log.info("Receive and transfer request for get Message");
-        return queueService.addRequestToQueue(NORMAL, null, "getMessage");
+        return queueService.addRequestToQueue(NORMAL, null, "getMessage").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get message done in " + (done - curr));
+        });
     }
 
 }
