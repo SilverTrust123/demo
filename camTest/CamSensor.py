@@ -4,7 +4,14 @@ import time
 import requests
 from datetime import datetime
 from ultralytics import YOLO
+import sys
+import os
 
+def get_resource_path(relative_path):
+    """ 取得打包後臨時資料夾的路徑或是開發時的相對路徑 """
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 DEVICE_ID = "CAM"
 BACKEND_URL = "http://localhost:9090/camData/"
 POLL_INTERVAL = 3
