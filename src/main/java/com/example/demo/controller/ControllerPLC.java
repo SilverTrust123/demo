@@ -170,4 +170,14 @@ public class ControllerPLC {
         });
     }
 
+    @GetMapping("EndEStop")
+    public CompletableFuture<Object> EndEStop() {
+        long curr = System.currentTimeMillis();
+        log.info("received n transfer ending Emergency stop process");
+        return queueService.addRequestToQueue(URGENT, null, "EndEStop").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("EndEStop process done in " + (done - curr));
+        });
+    }
+
 }

@@ -35,6 +35,8 @@ public class PointList {
 
     private final MPoint EStop = new MPoint(8311, "Emergency Stop");
     // 上面是M119 Estop 用的
+    private final MPoint EndEStop = new MPoint(8312, "End Emergency Stop");
+    // 上面是M120 EndEstop 用的
     private final MPoint RTESTART = new MPoint(8282, "Restart");
     // 上面是M90
     private final MPoint RESET_ALL_TIMERELAY = new MPoint(8283, "Reset All Time Relays");
@@ -74,6 +76,7 @@ public class PointList {
     public PointList() {
         // 添加M點
         MPointMap.put("EStop", EStop);
+        MPointMap.put("EndEStop", EndEStop);
         MPointMap.put("RTESTART", RTESTART);
         MPointMap.put("RESET_ALL_TIMERELAY", RESET_ALL_TIMERELAY);
         MPointMap.put("10", test1);

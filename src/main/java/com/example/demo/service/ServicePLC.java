@@ -255,4 +255,17 @@ public class ServicePLC {
         }
     }
 
+    public ResponsePointState EndEStop() {
+        try {
+            plc.writeM(plc.getMPoint("EndEStop"), true);
+            log.info("production line ending shot down");
+            return new ResponsePointState("process stop end");
+
+        } catch (Exception e) {
+            log.error("ending Shot down Error", e.getMessage());
+            e.printStackTrace();
+            return new ResponsePointState("ending Shot down Error: " + e.getMessage());
+        }
+    }
+
 }

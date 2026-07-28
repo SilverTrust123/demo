@@ -388,6 +388,9 @@ public class TaskProcessor {
                             case "getAllLoadStats":
                                 result = serviceLoad.getAllLoad();
                                 break;
+                            case "EndEStop":
+                                result = servicePLC.EndEStop();
+                                break;
                             default:
                                 log.warn("Unknown task type: {}", type);
                                 serviceLog.record("WARN", "TaskProcessor", "Unknown task type: " + type);
