@@ -93,6 +93,7 @@ public class TaskProcessor {
 
     @PostConstruct
     public void startWorking() {
+        // executor = Executors.newCachedThreadPool();
         executor = Executors.newFixedThreadPool(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
