@@ -21,6 +21,6 @@ public interface TemperatureAndHumidityRepository
 
         @Transactional
         @Modifying(clearAutomatically = true, flushAutomatically = true)
-        @Query("DELETE FROM LTemperatureAndHumidity")
+        @Query("DELETE FROM TemperatureAndHumidity")
         void deleteAllTemperatureAndHumidity();
 }
