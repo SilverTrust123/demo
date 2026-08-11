@@ -67,4 +67,15 @@ public class ControllerTemparatureAndHumidity {
                     log.info("get all temperature and humidity data done in " + (done - curr));
                 });
     }
+
+    @GetMapping("/truncateAllTemparatureAndHumidityData")
+    public CompletableFuture<Object> truncateAllTemparatureAndHumidityData() {
+        long curr = System.currentTimeMillis();
+        log.info("Received and transfer request for truncate all temperature and humidity data");
+        return queueService.addRequestToQueue(IMPORTANT, null, "truncateAllTemparatureAndHumidityData")
+                .whenComplete((res, exp) -> {
+                    long done = System.currentTimeMillis();
+                    log.info("get truncate all temperature and humidity data done in " + (done - curr));
+                });
+    }
 }

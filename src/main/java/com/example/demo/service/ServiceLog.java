@@ -74,6 +74,7 @@ public class ServiceLog {
 
         public String truncateAllLog() {
                 logRepo.deleteAllLogs();
+                log.info("secces truncate the log");
                 return new String("secceses");
         }
 }

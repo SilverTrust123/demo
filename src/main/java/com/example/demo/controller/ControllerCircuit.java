@@ -52,13 +52,23 @@ public class ControllerCircuit {
     }
 
     // 這個本來最多就一個 如果船空的回去就是太舊了
-    @GetMapping("")
+    @GetMapping("/")
     public CompletableFuture<Object> getAllCircuitData() {
         long curr = System.currentTimeMillis();
         log.info("Received and transfer request for all circuit data");
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllCircuitData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get circuit data done in " + (done - curr));
+        });
+    }
+
+    @GetMapping("/truncateAllCircuitData")
+    public CompletableFuture<Object> truncateAllCircuitData() {
+        long curr = System.currentTimeMillis();
+        log.info("Received and transfer request for truncate all circuit data");
+        return queueService.addRequestToQueue(IMPORTANT, null, "truncateAllCircuitData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get truncate circuit data done in " + (done - curr));
         });
     }
 }

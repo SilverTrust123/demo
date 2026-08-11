@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.demo.DTO.requestDTO.RequestTemperatureAndHumidityDTO;
 import com.example.demo.DTO.responseDTO.ResponseTemperatureAndHumidityDTO;
+import com.example.demo.db.repository.TemperatureAndHumidityRepository;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -21,6 +22,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class ServiceTemparatureAndHumidity {
     @Autowired
     private ServiceLog serviceLog;
+    @Autowired
+    private TemperatureAndHumidityRepository tempRepo;
 
     private Map<String, ResponseTemperatureAndHumidityDTO> temperatureAndHumidityDataMap = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Deque<Double>> tempHistoryMap = new ConcurrentHashMap<>();
@@ -72,6 +75,12 @@ public class ServiceTemparatureAndHumidity {
                 .toList();
         log.info("received all temperature and humidity data request detail {} ", ans);
         return ans;
+    }
+
+    public String truncateTemperatureAndHumidity() {
+        tempRepo.deleteAllTemperatureAndHumidity();
+        log.info("secess truncate the temp n hudm data ");
+        return new String("secces");
     }
 
     private boolean isTimeValid(ResponseTemperatureAndHumidityDTO data) {

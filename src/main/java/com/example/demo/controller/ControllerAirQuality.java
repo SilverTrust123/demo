@@ -58,4 +58,14 @@ public class ControllerAirQuality {
             log.info("get all air quality done in " + (done - curr));
         });
     }
+
+    @GetMapping("/truncateAllAirQualityData")
+    public CompletableFuture<Object> truncateAllAirQualityData() {
+        long curr = System.currentTimeMillis();
+        log.info("Received and transfer request for truncate all air quality data");
+        return queueService.addRequestToQueue(IMPORTANT, null, "truncateAllAirQualityData").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get truncate all air quality done in " + (done - curr));
+        });
+    }
 }

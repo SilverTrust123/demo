@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.DTO.requestDTO.RequestCircuitDTO;
 import com.example.demo.DTO.responseDTO.ResponseCircuitDTO;
+import com.example.demo.db.repository.CircuitRepository;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -26,6 +27,8 @@ public class ServiceCircuit {
 
     @Autowired
     private ServiceLog serviceLog;
+    @Autowired
+    private CircuitRepository cirRepo;
 
     public String receiveCircuitData(RequestCircuitDTO request) {
         if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
@@ -80,6 +83,12 @@ public class ServiceCircuit {
                 .toList();
         log.info("received all circuit data request detail {} ", ans);
         return ans;
+    }
+
+    public String truncateAllCircuitData() {
+        cirRepo.deleteAllCircuit();
+        log.info("circuit data been truncated secces");
+        return new String("secces");
     }
 
     private boolean isTimeValid(ResponseCircuitDTO data) {

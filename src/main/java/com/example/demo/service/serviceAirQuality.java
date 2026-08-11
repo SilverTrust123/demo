@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.requestDTO.RequestAirQualityDTO;
 import com.example.demo.DTO.responseDTO.ResponseAirQualityDTO;
+import com.example.demo.db.repository.AirQualityRepository;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -25,6 +26,8 @@ public class ServiceAirQuality {
     private static final Logger log = LoggerFactory.getLogger(ServiceAirQuality.class);
     @Autowired
     private ServiceLog serviceLog;
+    @Autowired
+    private AirQualityRepository aqRepo;
 
     public String recriveAirQuality(RequestAirQualityDTO request) {
         if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
@@ -62,6 +65,12 @@ public class ServiceAirQuality {
                 .toList();
         log.info("received all air quality data request detail {} ", ans);
         return ans;
+    }
+
+    public String truncateAllAirQualityData() {
+        aqRepo.deleteAllAirQuality();
+        log.info("secess truncate the all airn quality data ");
+        return new String("secces");
     }
 
     private boolean isTimeValid(ResponseAirQualityDTO data) {

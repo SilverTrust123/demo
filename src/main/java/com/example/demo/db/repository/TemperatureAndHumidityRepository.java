@@ -3,6 +3,10 @@ package com.example.demo.db.repository;
 import com.example.demo.db.entity.TemperatureAndHumidity;
 import com.example.demo.db.entity.TemperatureAndHumidityId;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 public interface TemperatureAndHumidityRepository
@@ -14,4 +18,9 @@ public interface TemperatureAndHumidityRepository
                         int startTime, int endTime);
 
         List<TemperatureAndHumidity> findAllByOrderByTimestampDesc();
+
+        @Transactional
+        @Modifying(clearAutomatically = true, flushAutomatically = true)
+        @Query("DELETE FROM LTemperatureAndHumidity")
+        void deleteAllTemperatureAndHumidity();
 }

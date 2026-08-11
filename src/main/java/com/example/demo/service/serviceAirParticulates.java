@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.requestDTO.RequestAirParticulatesDTO;
 import com.example.demo.DTO.responseDTO.*;
-
+import com.example.demo.db.repository.AirParticulatesRepository;
 import io.github.cdimascio.dotenv.Dotenv;
 
 @Service
@@ -26,6 +26,9 @@ public class ServiceAirParticulates {
     private static final Logger log = LoggerFactory.getLogger(ServiceAirParticulates.class);
     @Autowired
     private ServiceLog serviceLog;
+
+    @Autowired
+    private AirParticulatesRepository apRepo;
 
     public String recriveAirPartical(RequestAirParticulatesDTO request) {
         if (request.getDeviceId() == null || request.getDeviceId().isEmpty()) {
@@ -63,6 +66,12 @@ public class ServiceAirParticulates {
                 .toList();
         log.info("received all air particulates data request detail {} ", ans);
         return ans;
+    }
+
+    public String truncateAllAirParticalutesData() {
+        apRepo.deleteAllAirParticulates();
+        log.info("air particulates data have beeen truncate");
+        return new String("secces");
     }
 
     private float calculateAverage(ConcurrentHashMap<String, Deque<Double>> historyMap, String deviceId,

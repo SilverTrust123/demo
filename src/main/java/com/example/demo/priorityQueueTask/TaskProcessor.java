@@ -129,7 +129,9 @@ public class TaskProcessor {
                                 result = serviceTemparatureAndHumidity
                                         .getAllTemparatureAndHumidityData();
                                 break;
-
+                            case "truncateAllTemparatureAndHumidityData":
+                                result = serviceTemparatureAndHumidity.truncateTemperatureAndHumidity();
+                                break;
                             case "PLCConnect":
                                 result = servicePLC.isPlcConnected();
                                 break;
@@ -208,7 +210,9 @@ public class TaskProcessor {
                             case "getAllCircuitData":
                                 result = serviceCircuit.getAllCircuitData();
                                 break;
-
+                            case "truncateAllCircuitData":
+                                result = serviceCircuit.truncateAllCircuitData();
+                                break;
                             case "receiveCamData":
                                 RequestCamDTO data_cam = (RequestCamDTO) task.getData();
                                 serviceDeviceState.updateHeartbeat(data_cam.getDeviceId());
@@ -238,7 +242,9 @@ public class TaskProcessor {
                             case "getAllAirQualityData":
                                 result = serviceAirQuality.getAllAirQualityData();
                                 break;
-
+                            case "truncateAllAirQualityData":
+                                result = serviceAirQuality.truncateAllAirQualityData();
+                                break;
                             case "recriveAirPartical":
                                 RequestAirParticulatesDTO data_air_par = (RequestAirParticulatesDTO) task.getData();
                                 serviceDeviceState.updateHeartbeat(data_air_par.getDeviceId());
@@ -252,6 +258,9 @@ public class TaskProcessor {
 
                             case "getAllAirParticalData":
                                 result = serviceAirParticulates.getAllAirParticalData();
+                                break;
+                            case "truncateAllAirParticulatesData":
+                                result = serviceAirParticulates.truncateAllAirParticalutesData();
                                 break;
                             case "getTemparatureAndHumidityHistory":
                                 RequestHistoryTemparatureAndHumidityDTO data_TemperatureAndHumidity = (RequestHistoryTemparatureAndHumidityDTO) task
