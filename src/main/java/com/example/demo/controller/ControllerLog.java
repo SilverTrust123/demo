@@ -69,4 +69,14 @@ public class ControllerLog {
         });
     }
 
+    @GetMapping("/truncateAllLog")
+    public CompletableFuture<Object> truncateAllLog() throws Exception {
+        long curr = System.currentTimeMillis();
+        log.info("Received and transfer request for truncateAllLog");
+        return queueService.addRequestToQueue(URGENT, null, "truncateAllLog").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("truncate All Log done in " + (done - curr));
+        });
+    }
+
 }

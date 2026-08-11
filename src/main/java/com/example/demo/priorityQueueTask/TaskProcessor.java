@@ -164,7 +164,6 @@ public class TaskProcessor {
                                 Boolean valueM = (Boolean) dataMapM.value();
                                 result = servicePLC.writeMPoint(paramM, valueM);
                                 break;
-
                             case "writeDPoint":
                                 RequestWriteDPointDTO dataMapD = (RequestWriteDPointDTO) task.getData();
                                 String paramD = (String) dataMapD.param();
@@ -292,6 +291,9 @@ public class TaskProcessor {
                             case "getLogByTime":
                                 RequestLogDTO data_Log = (RequestLogDTO) task.getData();
                                 result = serviceLog.getLogsByTime(data_Log.start(), data_Log.end());
+                                break;
+                            case "truncateAllLog":
+                                result = serviceLog.truncateAllLog();
                                 break;
                             case "getLogReport":
                                 result = serviceReportLog.generateLogReport();
