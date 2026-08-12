@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 import com.example.demo.DTO.requestDTO.RequestTodoDTO;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,8 @@ public class ControllerTodo {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @PostMapping("/")
     public CompletableFuture<Object> leaveMessage(@RequestBody RequestTodoDTO message) {
@@ -35,6 +38,7 @@ public class ControllerTodo {
         return queueService.addRequestToQueue(NORMAL, message, "leaveMessage").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("leave message done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -45,6 +49,7 @@ public class ControllerTodo {
         return queueService.addRequestToQueue(NORMAL, null, "getMessage").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get message done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 

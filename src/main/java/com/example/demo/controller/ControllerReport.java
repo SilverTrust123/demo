@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.requestDTO.RequestTimesDTO;
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 
 import org.slf4j.Logger;
 
@@ -30,6 +31,8 @@ public class ControllerReport {
         private int URGENT;
         @Autowired
         private QueueService queueService;
+        @Autowired
+        private ServiceDelayTime DT;
 
         @GetMapping("/pdf/log")
         public CompletableFuture<ResponseEntity<byte[]>> getLogReport() throws Exception {
@@ -50,6 +53,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get log report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -74,6 +78,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get log report between times done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -97,6 +102,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get temperature and humidity report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -122,6 +128,7 @@ public class ControllerReport {
                                         long done = System.currentTimeMillis();
                                         log.info("get temperature and humidity report between times done in "
                                                         + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -146,6 +153,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get temperature and humidity excel report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -174,6 +182,7 @@ public class ControllerReport {
                                         long done = System.currentTimeMillis();
                                         log.info("get temperature and humidity excel report between times done in "
                                                         + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -196,6 +205,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get circuit report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -220,6 +230,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get circuit report between times done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -243,6 +254,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get circuit excel report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -268,6 +280,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get circuit excel report between times done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -290,6 +303,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get air quality report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -314,6 +328,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get air quality report between times done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -337,6 +352,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get air quality excel report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -361,6 +377,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get air quality excel report between times done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -384,6 +401,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get air particulates report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -408,6 +426,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get air particulates report between times done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -435,6 +454,7 @@ public class ControllerReport {
                                         long done = System.currentTimeMillis();
                                         log.info("get air particulates excel report between times done in "
                                                         + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -459,6 +479,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get air particulates excel report done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 
@@ -481,6 +502,7 @@ public class ControllerReport {
                                 }).whenComplete((res, exp) -> {
                                         long done = System.currentTimeMillis();
                                         log.info("get address table done in " + (done - curr));
+                                        DT.logInLastestProcessTime((int) (done - curr));
                                 });
         }
 }

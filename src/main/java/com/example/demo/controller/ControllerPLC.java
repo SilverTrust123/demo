@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 import com.example.demo.DTO.requestDTO.PLCRequestDTO.*;
 
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ public class ControllerPLC {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @GetMapping("/PLCConnect")
     public CompletableFuture<Object> PLCConnect() {
@@ -38,6 +41,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(NORMAL, null, "PLCConnect").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("Request PLCConnect been hjandle in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -52,6 +56,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, param, "MpointState").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("request MpointState been danle in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -65,6 +70,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, param, "DPointData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("request Dpoint Data been complete in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -75,6 +81,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, null, "AllDPointData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("request ALLDpoint complate in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -85,6 +92,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, null, "AllMPointData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("Request ALL m point completate in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -94,6 +102,7 @@ public class ControllerPLC {
         log.info("transfer received plc state request");
         return queueService.addRequestToQueue(IMPORTANT, null, "plcState").whenComplete((res, exp) -> {
             log.info("request plc state compleate in " + (System.currentTimeMillis() - curr));
+            DT.logInLastestProcessTime((int) (System.currentTimeMillis() - curr));
         });
     }
 
@@ -106,6 +115,7 @@ public class ControllerPLC {
         log.info("transfer received write MPoint request with param {} and value {}", param, value);
         queueService.addRequestToQueue(URGENT, payload, "writeMPoint").whenComplete((res, exp) -> {
             log.info("request compleate write m point in " + (System.currentTimeMillis() - curr));
+            DT.logInLastestProcessTime((int) (System.currentTimeMillis() - curr));
         });
         return new String("ok");
     }
@@ -128,6 +138,7 @@ public class ControllerPLC {
         log.info("transfer received write DPoint request with param {} and value {}", param, value);
         queueService.addRequestToQueue(URGENT, payload, "writeDPoint").whenComplete((res, exp) -> {
             log.info("request write D point complate in " + (System.currentTimeMillis() - curr));
+            DT.logInLastestProcessTime((int) (System.currentTimeMillis() - curr));
         });
         return new String("ok");
     }
@@ -138,6 +149,7 @@ public class ControllerPLC {
         log.info("transfer received get count metal request");
         return queueService.addRequestToQueue(IMPORTANT, null, "getCountMetal").whenComplete((res, exp) -> {
             log.info("request get count metal complate in " + (System.currentTimeMillis() - curr));
+            DT.logInLastestProcessTime((int) (System.currentTimeMillis() - curr));
         });
     }
 
@@ -147,6 +159,7 @@ public class ControllerPLC {
         log.info("transfer received get count non metal request");
         return queueService.addRequestToQueue(IMPORTANT, null, "getCountNonMetal").whenComplete((res, exp) -> {
             log.info("request get count non meatal work pices comopleate in " + (System.currentTimeMillis() - curr));
+            DT.logInLastestProcessTime((int) (System.currentTimeMillis() - curr));
         });
     }
 
@@ -157,6 +170,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(IMPORTANT, null, "test").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("test request done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -167,6 +181,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(URGENT, null, "EStop").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("EStop process done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -177,6 +192,7 @@ public class ControllerPLC {
         return queueService.addRequestToQueue(URGENT, null, "EndEStop").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("EndEStop process done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 

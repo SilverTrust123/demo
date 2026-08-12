@@ -193,6 +193,12 @@ public class TaskProcessor {
                             case "AllDataAndDeviceState":
                                 result = serviceData.AllDataAndDeviceState();
                                 break;
+                            case "allFilterLoadStats":
+                                result = serviceLoad.getAllFilterLoad();
+                                break;
+                            case "getThreadFilterStats":
+                                result = serviceLoad.getThreadFilterStats();
+                                break;
                             case "AllDataAndDeviceStateWithoutPLC":
                                 result = serviceData.AllDataAndDeviceStateWithoutPLC();
                                 break;

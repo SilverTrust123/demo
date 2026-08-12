@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
+
 import org.slf4j.Logger;
 
 @RestController
@@ -24,6 +26,8 @@ public class ControllerData {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @GetMapping("/")
     public CompletableFuture<Object> AllData() throws Exception {
@@ -32,6 +36,7 @@ public class ControllerData {
         return queueService.addRequestToQueue(IMPORTANT, null, "ALLData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get all data done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -42,6 +47,7 @@ public class ControllerData {
         return queueService.addRequestToQueue(IMPORTANT, null, "AllDataAndDeviceState").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("all data and device status request done in " + (done - req));
+            DT.logInLastestProcessTime((int) (done - req));
         });
     }
 
@@ -53,6 +59,7 @@ public class ControllerData {
                 .whenComplete((res, exp) -> {
                     long done = System.currentTimeMillis();
                     log.info("all data and device status without PLC done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
                 });
     }
 
@@ -63,6 +70,7 @@ public class ControllerData {
         return queueService.addRequestToQueue(IMPORTANT, null, "AllSensorData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("all sensor data done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 }

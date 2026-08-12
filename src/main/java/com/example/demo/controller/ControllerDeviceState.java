@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
+
 import org.slf4j.Logger;
 
 @RestController
@@ -24,6 +26,8 @@ public class ControllerDeviceState {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @GetMapping("/")
     public CompletableFuture<Object> AllDeviceState() throws Exception {
@@ -32,6 +36,7 @@ public class ControllerDeviceState {
         return queueService.addRequestToQueue(IMPORTANT, null, "AllDeviceState").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("all device state done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 }

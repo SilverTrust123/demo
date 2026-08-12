@@ -46,4 +46,24 @@ public class ControllerLoad {
             log.info("get all load status done in " + (done - curr));
         });
     }
+
+    @GetMapping("/allFilterLoadStats")
+    public CompletableFuture<Object> allFilterLoadStats() throws Exception {
+        long curr = System.currentTimeMillis();
+        log.info("receive and transfer the all filter  Load Stats request ");
+        return queueService.addRequestToQueue(IMPORTANT, null, "allFilterLoadStats").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("get all filter load status done in " + (done - curr));
+        });
+    }
+
+    @GetMapping("/getThreadFilterStats")
+    public CompletableFuture<Object> getThreadFilterStats() throws Exception {
+        long curr = System.currentTimeMillis();
+        log.info("receive and transfer the getThreadFilterStats request ");
+        return queueService.addRequestToQueue(IMPORTANT, null, "getThreadFilterStats").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("getThreadFilterStats done in " + (done - curr));
+        });
+    }
 }

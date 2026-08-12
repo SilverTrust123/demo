@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.requestDTO.RequestAirQualityDTO;
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 
 @RestController
 @RequestMapping("/airQualityData")
@@ -28,6 +29,8 @@ public class ControllerAirQuality {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @PostMapping("/")
     public CompletableFuture<Object> recriveAirQuality(@RequestBody RequestAirQualityDTO data) {
@@ -36,6 +39,7 @@ public class ControllerAirQuality {
         return queueService.addRequestToQueue(NORMAL, data, "recriveAirQuality").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("receive air quality data done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -46,6 +50,7 @@ public class ControllerAirQuality {
         return queueService.addRequestToQueue(IMPORTANT, deviceId, "getAirQualityData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get air quality data rerquest by id done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -56,6 +61,7 @@ public class ControllerAirQuality {
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllAirQualityData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get all air quality done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -66,6 +72,7 @@ public class ControllerAirQuality {
         return queueService.addRequestToQueue(IMPORTANT, null, "truncateAllAirQualityData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get truncate all air quality done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 }

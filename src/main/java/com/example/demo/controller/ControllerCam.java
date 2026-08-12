@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.requestDTO.RequestCamDTO;
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
+
 import org.slf4j.Logger;
 
 @RestController
@@ -28,6 +30,8 @@ public class ControllerCam {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @PostMapping("/")
     public CompletableFuture<Object> receiveCamData(@RequestBody RequestCamDTO data) {
@@ -36,6 +40,7 @@ public class ControllerCam {
         return queueService.addRequestToQueue(URGENT, data, "receiveCamData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("receive cam data done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -46,6 +51,7 @@ public class ControllerCam {
         return queueService.addRequestToQueue(IMPORTANT, deviceId, "getCamData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get cam data by id done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -56,6 +62,7 @@ public class ControllerCam {
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllCamData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get all cam data done in" + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 }

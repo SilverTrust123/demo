@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 import com.example.demo.DTO.requestDTO.RequestCircuitDTO;
 
 import java.util.concurrent.CompletableFuture;
@@ -29,6 +30,8 @@ public class ControllerCircuit {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @PostMapping("/")
     public CompletableFuture<Object> receiveCircuitData(@RequestBody RequestCircuitDTO data) {
@@ -37,6 +40,7 @@ public class ControllerCircuit {
         return queueService.addRequestToQueue(NORMAL, data, "receiveCircuitData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("receive circuit data done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -48,6 +52,7 @@ public class ControllerCircuit {
         return queueService.addRequestToQueue(IMPORTANT, deviceId, "getCircuitData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get circuit data by id done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -59,6 +64,7 @@ public class ControllerCircuit {
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllCircuitData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get circuit data done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -69,6 +75,7 @@ public class ControllerCircuit {
         return queueService.addRequestToQueue(IMPORTANT, null, "truncateAllCircuitData").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get truncate circuit data done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 }

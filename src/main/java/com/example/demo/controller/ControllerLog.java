@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.DTO.requestDTO.RequestLogDTO;
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 
 import org.slf4j.Logger;
 
@@ -27,6 +28,8 @@ public class ControllerLog {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @GetMapping("/all")
     public CompletableFuture<Object> getAllLogs() throws Exception {
@@ -35,7 +38,7 @@ public class ControllerLog {
         return queueService.addRequestToQueue(URGENT, null, "getAllLogs").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get all logs done in " + (done - curr));
-
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -46,6 +49,7 @@ public class ControllerLog {
         return queueService.addRequestToQueue(URGENT, null, "getErrorLogs").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get error logs done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -56,6 +60,7 @@ public class ControllerLog {
         return queueService.addRequestToQueue(URGENT, null, "getWarnLogs").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get warn logs done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -66,6 +71,7 @@ public class ControllerLog {
         return queueService.addRequestToQueue(URGENT, request, "getLogByTime").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get log by time done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -76,6 +82,7 @@ public class ControllerLog {
         return queueService.addRequestToQueue(URGENT, null, "truncateAllLog").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("truncate All Log done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 

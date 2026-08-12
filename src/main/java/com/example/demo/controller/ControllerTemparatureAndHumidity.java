@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.DTO.requestDTO.RequestTemperatureAndHumidityDTO;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 
 import org.slf4j.Logger;
 
@@ -31,6 +32,8 @@ public class ControllerTemparatureAndHumidity {
 
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @PostMapping("/")
     public CompletableFuture<Object> receiveTemparatureAndHumidityData(
@@ -41,6 +44,7 @@ public class ControllerTemparatureAndHumidity {
                 .whenComplete((res, exp) -> {
                     long done = System.currentTimeMillis();
                     log.info("receive temperature and humidity data done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
                 });
     }
 
@@ -53,6 +57,7 @@ public class ControllerTemparatureAndHumidity {
                 .whenComplete((res, exp) -> {
                     long done = System.currentTimeMillis();
                     log.info("get temperature and humidity data by id done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
                 });
     }
 
@@ -65,6 +70,7 @@ public class ControllerTemparatureAndHumidity {
                 .whenComplete((res, exp) -> {
                     long done = System.currentTimeMillis();
                     log.info("get all temperature and humidity data done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
                 });
     }
 
@@ -76,6 +82,7 @@ public class ControllerTemparatureAndHumidity {
                 .whenComplete((res, exp) -> {
                     long done = System.currentTimeMillis();
                     log.info("get truncate all temperature and humidity data done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
                 });
     }
 }

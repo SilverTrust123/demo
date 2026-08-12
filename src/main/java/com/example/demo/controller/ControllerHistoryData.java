@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 import com.example.demo.DTO.requestDTO.history.*;
 import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,8 @@ public class ControllerHistoryData {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @PostMapping("/temparatureAndHumidityHistory")
     public CompletableFuture<Object> getTemparatureAndHumidityHistory(
@@ -36,6 +39,7 @@ public class ControllerHistoryData {
                 .whenComplete((res, exp) -> {
                     long done = System.currentTimeMillis();
                     log.info("get temperature and humidity history done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
                 });
     }
 
@@ -46,6 +50,7 @@ public class ControllerHistoryData {
         return queueService.addRequestToQueue(IMPORTANT, request, "getCircuitHistory").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get circuit history done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -57,6 +62,7 @@ public class ControllerHistoryData {
         return queueService.addRequestToQueue(IMPORTANT, request, "getAirQualityHistory").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get air quality history done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -69,6 +75,7 @@ public class ControllerHistoryData {
                 .whenComplete((res, exp) -> {
                     long done = System.currentTimeMillis();
                     log.info("get air particulates history done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
                 });
     }
 }
