@@ -31,7 +31,7 @@ public class PointList {
     // private final DPoint T11 = new DPoint(11, "選轉機械臂放真空等多久");
     // private final DPoint T40 = new DPoint(40, "滑台機械臂向下停多久");
     // private final DPoint T12 = new DPoint(12, "滑台機械臂夾到之後等多久");
-    // private final DPoint T13 = new DPoint(13, "滑台機械臂放開之後等多久");.
+    // private final DPoint T13 = new DPoint(13, "滑台機械臂放開之後等多久");
 
     private final MPoint EStop = new MPoint(8311, "Emergency Stop");
     // 上面是M119 Estop 用的

@@ -20,18 +20,21 @@ public class ServiceLoad {
     public ResponseLoadDTO getThreadStats() {
         ThreadInfo[] threads = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
 
-        int working = 0;
-        int sleeping = 0;
         int blocked = 0;
+        int runnable = 0;
+        int waiting = 0;
+        int timed_waiting = 0;
 
         for (ThreadInfo t : threads) {
             switch (t.getThreadState()) {
                 case RUNNABLE:
-                    working++;
+                    runnable++;
                     break;
                 case WAITING:
+                    waiting++;
+                    break;
                 case TIMED_WAITING:
-                    sleeping++;
+                    timed_waiting++;
                     break;
                 case BLOCKED:
                     blocked++;
@@ -42,9 +45,10 @@ public class ServiceLoad {
         }
 
         Map<String, Integer> result = new HashMap<>();
-        result.put("working", working);
-        result.put("sleeping", sleeping);
+        result.put("timed_waiting", timed_waiting);
+        result.put("waiting", waiting);
         result.put("blocked", blocked);
+        result.put("runnable", runnable);
         return new ResponseLoadDTO(
                 result);
     }
@@ -52,18 +56,21 @@ public class ServiceLoad {
     public ResponseAllLoadDTO getAllLoad() {
         ThreadInfo[] threads = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
 
-        int working = 0;
-        int sleeping = 0;
         int blocked = 0;
+        int runnable = 0;
+        int waiting = 0;
+        int timed_waiting = 0;
 
         for (ThreadInfo t : threads) {
             switch (t.getThreadState()) {
                 case RUNNABLE:
-                    working++;
+                    runnable++;
                     break;
                 case WAITING:
+                    waiting++;
+                    break;
                 case TIMED_WAITING:
-                    sleeping++;
+                    timed_waiting++;
                     break;
                 case BLOCKED:
                     blocked++;
@@ -74,9 +81,10 @@ public class ServiceLoad {
         }
 
         Map<String, Integer> result = new HashMap<>();
-        result.put("working", working);
-        result.put("sleeping", sleeping);
+        result.put("timed_waiting", timed_waiting);
+        result.put("waiting", waiting);
         result.put("blocked", blocked);
+        result.put("runnable", runnable);
         return new ResponseAllLoadDTO(
                 result, queue.getQueueSize());
     }
