@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,8 @@ public class ControllerLoad {
     private int URGENT;
     @Autowired
     private QueueService queueService;
+    @Autowired
+    private ServiceDelayTime DT;
 
     @GetMapping("/loadStats")
     public CompletableFuture<Object> getLoadStats() throws Exception {
@@ -34,6 +37,7 @@ public class ControllerLoad {
         return queueService.addRequestToQueue(IMPORTANT, null, "loadStats").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get load state done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -44,6 +48,7 @@ public class ControllerLoad {
         return queueService.addRequestToQueue(IMPORTANT, null, "getAllLoadStats").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get all load status done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -54,6 +59,7 @@ public class ControllerLoad {
         return queueService.addRequestToQueue(IMPORTANT, null, "allFilterLoadStats").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get all filter load status done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 
@@ -64,6 +70,7 @@ public class ControllerLoad {
         return queueService.addRequestToQueue(IMPORTANT, null, "getThreadFilterStats").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("getThreadFilterStats done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
         });
     }
 }
