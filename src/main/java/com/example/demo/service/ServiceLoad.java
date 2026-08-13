@@ -98,27 +98,27 @@ public class ServiceLoad {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
         ThreadInfo[] threads = threadMXBean.dumpAllThreads(false, false);
 
-        int totalChefs = 0;
-        int busyChefs = 0;
-        int idleChefs = 0;
-        int blockedChefs = 0;
+        int totalthread = 0;
+        int busythread = 0;
+        int idlethread = 0;
+        int blockedthread = 0;
 
         for (ThreadInfo t : threads) {
             if (t == null || t.getThreadName() == null)
                 continue;
-            if (t.getThreadName().startsWith("Chef-Thread-")) {
-                totalChefs++;
+            if (t.getThreadName().startsWith("This-is-Thread-")) {
+                totalthread++;
 
                 switch (t.getThreadState()) {
                     case RUNNABLE:
-                        busyChefs++;
+                        busythread++;
                         break;
                     case WAITING:
                     case TIMED_WAITING:
-                        idleChefs++;
+                        idlethread++;
                         break;
                     case BLOCKED:
-                        blockedChefs++;
+                        blockedthread++;
                         break;
                     default:
                         break;
@@ -126,13 +126,13 @@ public class ServiceLoad {
             }
         }
 
-        double utilization = totalChefs > 0 ? ((double) busyChefs / totalChefs) * 100 : 0.0;
+        double utilization = totalthread > 0 ? ((double) busythread / totalthread) * 100 : 0.0;
 
         Map<String, Integer> result = new LinkedHashMap<>();
-        result.put("total_chefs", totalChefs);
-        result.put("busy_chefs", busyChefs);
-        result.put("idle_chefs", idleChefs);
-        result.put("blocked_chefs", blockedChefs);
+        result.put("total_thread", totalthread);
+        result.put("busy_thread", busythread);
+        result.put("idle_thread", idlethread);
+        result.put("blocked_thread", blockedthread);
         result.put("utilization", (int) Math.round(utilization));
 
         return new ResponseAllLoadDTO(result, queue.getQueueSize());
@@ -142,27 +142,27 @@ public class ServiceLoad {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
         ThreadInfo[] threads = threadMXBean.dumpAllThreads(false, false);
 
-        int totalChefs = 0;
-        int busyChefs = 0;
-        int idleChefs = 0;
-        int blockedChefs = 0;
+        int totalthread = 0;
+        int busythread = 0;
+        int idlethread = 0;
+        int blockedthread = 0;
 
         for (ThreadInfo t : threads) {
             if (t == null || t.getThreadName() == null)
                 continue;
-            if (t.getThreadName().startsWith("Chef-Thread-")) {
-                totalChefs++;
+            if (t.getThreadName().startsWith("This-is-Thread-")) {
+                totalthread++;
 
                 switch (t.getThreadState()) {
                     case RUNNABLE:
-                        busyChefs++;
+                        busythread++;
                         break;
                     case WAITING:
                     case TIMED_WAITING:
-                        idleChefs++;
+                        idlethread++;
                         break;
                     case BLOCKED:
-                        blockedChefs++;
+                        blockedthread++;
                         break;
                     default:
                         break;
@@ -170,13 +170,13 @@ public class ServiceLoad {
             }
         }
 
-        double utilization = totalChefs > 0 ? ((double) busyChefs / totalChefs) * 100 : 0.0;
+        double utilization = totalthread > 0 ? ((double) busythread / totalthread) * 100 : 0.0;
 
         Map<String, Integer> result = new LinkedHashMap<>();
-        result.put("total_chefs", totalChefs);
-        result.put("busy_chefs", busyChefs);
-        result.put("idle_chefs", idleChefs);
-        result.put("blocked_chefs", blockedChefs);
+        result.put("total_thread", totalthread);
+        result.put("busy_thread", busythread);
+        result.put("idle_thread", idlethread);
+        result.put("blocked_thread", blockedthread);
         result.put("utilization", (int) Math.round(utilization));
 
         return new ResponseAllFilterLoadDTO(result, queue.getQueueSize(), DT.getLatestProcessTime());

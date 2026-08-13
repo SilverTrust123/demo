@@ -97,11 +97,12 @@ public class TaskProcessor {
         executor = Executors.newFixedThreadPool(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
-            int chefId = i + 1;
+            int threadId = i + 1;
 
             // 啟動一個新線程，不然會把主程式卡死
+
             executor.submit(() -> {
-                Thread.currentThread().setName("Chef-Thread-" + chefId);
+                Thread.currentThread().setName("This-is-Thread-" + threadId);
 
                 while (true) {
                     try {
