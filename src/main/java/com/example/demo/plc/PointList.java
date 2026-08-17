@@ -18,6 +18,7 @@ public class PointList {
     // private final DPoint T0 = new DPoint(0, "等判斷");
     // private final DPoint T30 = new DPoint(30, "龍門等多久開始向下");
     // private final DPoint T3 = new DPoint(3, "龍門確保向下等多久");
+
     // private final DPoint T4 = new DPoint(4, "龍門夾到等多久");
     // private final DPoint T31 = new DPoint(31, "龍門到左邊停多久");
     // private final DPoint T5 = new DPoint(5, "龍們向下停多久");
@@ -45,6 +46,8 @@ public class PointList {
     // 上面是M21 用來測試的 之後正式版刪掉
     private final MPoint test2 = new MPoint(8192, "Reset All Time Relays");
     // 上面是M0 用來測試的 之後正式版刪掉
+    private final MPoint generateWrong = new MPoint(8302, "to simulate generate wrong");
+    // 上面是MX還沒寫
     private final DPoint STATE = new DPoint(200, "Status");
     private final DPoint COUNT_METAL = new DPoint(1000, "Metal Count");
     private final DPoint COUNT_NON_METAL = new DPoint(1001, "Non-metal Count");
@@ -81,6 +84,7 @@ public class PointList {
         MPointMap.put("RESET_ALL_TIMERELAY", RESET_ALL_TIMERELAY);
         MPointMap.put("10", test1);
         MPointMap.put("0", test2);
+        MPointMap.put("generateWrong", generateWrong);
         // 添加D點
         // 這裡的不能寫
         DPointMap.put("STATE", STATE);
