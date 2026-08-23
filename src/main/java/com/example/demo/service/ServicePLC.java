@@ -3,14 +3,11 @@ package com.example.demo.service;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-// import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-// import com.example.demo.plc.DPoint;
-// import com.example.demo.plc.MPoint;
 import com.example.demo.plc.PLCDriver;
 import com.example.demo.DTO.responseDTO.PLCResponseDTO.*;
 
@@ -54,6 +51,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState MpointState(String param) {
+        checkOrReconnectPLC();
         log.info("receieved read m point request {} ", param);
         try {
             if (param == null || param.isEmpty()) {
@@ -81,6 +79,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState DPointData(String param) {
+        checkOrReconnectPLC();
         try {
             log.info("received read d point request {} ", param);
 
@@ -110,6 +109,7 @@ public class ServicePLC {
     }
 
     public ResponseAllDPointStateDTO AllDPointData() throws Exception {
+        checkOrReconnectPLC();
         HashMap<String, Integer> curr = plc.getAllDPoints();
         log.info("received get all DPoint request");
         if (curr.isEmpty()) {
@@ -122,6 +122,7 @@ public class ServicePLC {
     }
 
     public ResponseAllMPointStateDTO AllMPointData() throws Exception {
+        checkOrReconnectPLC();
         HashMap<String, Boolean> curr = plc.getAllMPoints();
         log.info("received get all MPoint request");
         if (curr.isEmpty()) {
@@ -134,6 +135,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState plcState() {
+        checkOrReconnectPLC();
         try {
             log.info("received plc state request");
             return new ResponsePointState(String.valueOf(plc.readD(plc.getDPoint("STATE"))));
@@ -145,6 +147,7 @@ public class ServicePLC {
     }
 
     public ResponseCountMetal getCountMetal() {
+        checkOrReconnectPLC();
         try {
             log.info("received get count metal");
             return new ResponseCountMetal(plc.getCountMetal());
@@ -156,6 +159,7 @@ public class ServicePLC {
     }
 
     public ResponseCountNonMetal getCountNonMetal() {
+        checkOrReconnectPLC();
         try {
             log.info("received get count metal");
             return new ResponseCountNonMetal(plc.getCountNonMetal());
@@ -171,6 +175,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState writeMPoint(String param, Boolean value) {
+        checkOrReconnectPLC();
         try {
             plc.writeM(plc.getMPoint(param), value);
             log.info("Success MPoint {} set to {}", param, value);
@@ -183,6 +188,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState writeDPoint(String param, Integer value) {
+        checkOrReconnectPLC();
         try {
             plc.writeD(plc.getDPoint(param), value);
             log.info("Success DPoint {} set to {}", param, value);
@@ -200,6 +206,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState EStop() {
+        checkOrReconnectPLC();
         try {
             plc.writeM(plc.getMPoint("EStop"), true);
             log.info("production line shot down");
@@ -213,6 +220,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState EndEStop() {
+        checkOrReconnectPLC();
         try {
             plc.writeM(plc.getMPoint("EndEStop"), true);
             log.info("production line ending shot down");
@@ -227,6 +235,7 @@ public class ServicePLC {
     }
 
     public void generate_wrong() {
+        checkOrReconnectPLC();
         try {
             plc.writeM(plc.getMPoint("generateWrong"), true);
             log.info("trigger generate wrong");
@@ -237,47 +246,21 @@ public class ServicePLC {
         }
     }
 
+    private void checkOrReconnectPLC() {
+        if (plcConnected) {
+            return;
+        }
+
+        try {
+            this.plc = new PLCDriver(plcIP, tcpPort);
+            plcConnected = true;
+            log.info("PLC connect secces");
+            System.out.println("PLC重連成功");
+        } catch (Exception e) {
+            log.error("cant connect to plc, error code {}", e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "cant connect to plc, error code" + e.getMessage());
+            System.err.println("重新連線PLC失敗 code: " + e.getMessage());
+        }
+        return;
+    }
 }
-// public Map<String, MPoint> getMPointMap() {
-// return plc.getMPointMap();
-// }
-
-// public Map<String, DPoint> getDPointMap() {
-// return plc.getDPointMap();
-// }
-
-// try {
-
-// log.info("Received payload: {}", payload);
-// Object deviceObj = payload.get("device");
-// if (!(deviceObj instanceof String)) {
-// log.warn("Device parameter is not a string: {}", deviceObj);
-// return "device Error: must be a string";
-// }
-// String param = (String) deviceObj;
-// if (param.isEmpty() || plc.MdeviceIsEmpty(param)) {
-// log.warn("MPoint write: device not found -> {}", param);
-// return "NoDevice";
-// }
-
-// Object valueObj = payload.get("value");
-// boolean value;
-// if (valueObj instanceof Boolean) {
-// value = (Boolean) valueObj;
-// } else if (valueObj instanceof String) {
-// value = Boolean.parseBoolean((String) valueObj);
-// } else if (valueObj instanceof Number) {
-// value = ((Number) valueObj).intValue() != 0;
-// } else {
-// log.warn("Value parameter is not a valid type: {}", valueObj);
-// return "value Error: must be boolean, string, or number";
-// }
-// plc.writeM(plc.getMPoint(param), value);
-// log.info("Success MPoint {} set to {}", param, value);
-// return "Success: " + param + " set to " + value;
-
-// } catch (Exception e) {
-// log.error("Error writing MPoint: {}", e.getMessage());
-// e.printStackTrace();
-// return "Error: " + e.getMessage();
-// }
