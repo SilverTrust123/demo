@@ -65,4 +65,70 @@ public class ControllerCam {
             DT.logInLastestProcessTime((int) (done - curr));
         });
     }
+
+    @GetMapping("/video")
+    public void streamCamera(
+            jakarta.servlet.http.HttpServletResponse response) {
+
+        long curr = System.currentTimeMillis();
+
+        log.info("Received request for camera stream");
+
+        response.setContentType(
+                "multipart/x-mixed-replace; boundary=frame");
+
+        try {
+
+            java.net.URI uri = java.net.URI.create(
+                    "http://localhost:5000/video_feed");
+
+            java.net.HttpURLConnection connection = (java.net.HttpURLConnection) uri.toURL().openConnection();
+
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(3000);
+
+            // 串流需要一直等待資料
+            connection.setReadTimeout(0);
+
+            connection.connect();
+
+            try (
+                    java.io.InputStream input = connection.getInputStream();
+
+                    java.io.OutputStream output = response.getOutputStream()) {
+
+                byte[] buffer = new byte[8192];
+
+                int bytesRead;
+
+                while ((bytesRead = input.read(buffer)) != -1) {
+
+                    output.write(buffer, 0, bytesRead);
+                    output.flush();
+                }
+            }
+
+            connection.disconnect();
+
+        } catch (java.io.IOException e) {
+
+            log.info(
+                    "Camera stream disconnected: {}",
+                    e.getMessage());
+
+        } catch (Exception e) {
+
+            log.error(
+                    "Camera stream error",
+                    e);
+
+        } finally {
+
+            long done = System.currentTimeMillis();
+
+            log.info(
+                    "Camera stream ended after {} ms",
+                    done - curr);
+        }
+    }
 }

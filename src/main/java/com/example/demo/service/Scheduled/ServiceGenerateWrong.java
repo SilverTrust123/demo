@@ -22,7 +22,7 @@ public class ServiceGenerateWrong {
 
     private final Random rand = new Random();
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 46500)
     public void generateWrong() {
         if (generate_wrong) {
             if (rand.nextBoolean()) {
