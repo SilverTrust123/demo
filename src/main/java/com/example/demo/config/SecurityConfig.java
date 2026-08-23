@@ -36,6 +36,12 @@ public class SecurityConfig {
                         .requestMatchers("/plc/writeDPoint").authenticated()
                         .requestMatchers("/plc/writeMPoint").authenticated()
                         .requestMatchers("/fullLog").authenticated()
+                        .requestMatchers("/airParticulatesData/truncateAllAirParticulatesData").authenticated()
+                        .requestMatchers("/airQualityData/truncateAllAirQualityData").authenticated()
+                        .requestMatchers("/camData/video").authenticated()
+                        .requestMatchers("/circuitData/truncateAllCircuitData").authenticated()
+                        .requestMatchers("/temperatureAndHumidityData/truncateAllTemparatureAndHumidityData")
+                        .authenticated()
                         .anyRequest().permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
