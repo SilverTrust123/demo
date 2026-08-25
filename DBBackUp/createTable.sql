@@ -60,9 +60,17 @@ CREATE TABLE `todo` (
     PRIMARY KEY (`message`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- 感測器臨界點
 USE ICMS;
-CREATE TABLE `device_response_log` (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `device_list_data` JSON NOT NULL, 
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE sensor_border (
+    sensor_group VARCHAR(255) NOT NULL,
+    temp_1 INT,
+    humi_1 INT,
+    temp_2 INT,
+    humi_2 INT,
+    dust INT,
+    qua INT,
+    pow INT,
+    timestamp INT,
+    PRIMARY KEY (sensor_group, timestamp)
 );
