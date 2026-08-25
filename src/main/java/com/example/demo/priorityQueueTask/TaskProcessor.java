@@ -70,6 +70,8 @@ public class TaskProcessor {
     private ServiceTodo serviceTodo;
     @Autowired
     private ServiceLoad serviceLoad;
+    @Autowired
+    private ServiceSensorBorder serviceSensorBorder;
 
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
@@ -409,6 +411,13 @@ public class TaskProcessor {
                                 break;
                             case "EndEStop":
                                 result = servicePLC.EndEStop();
+                                break;
+                            case "getCurrentSensorBorder":
+                                result = serviceSensorBorder.getBySensorGroup();
+                                break;
+                            case "saveSensorBorder":
+                                RequestSensorBorderDTO req = (RequestSensorBorderDTO) task.getData();
+                                result = serviceSensorBorder.saveOrUpdate(req);
                                 break;
                             default:
                                 log.warn("Unknown task type: {}", type);

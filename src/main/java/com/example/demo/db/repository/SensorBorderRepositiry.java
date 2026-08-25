@@ -1,21 +1,16 @@
 package com.example.demo.db.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-
 import com.example.demo.db.entity.SensorBorder;
 import com.example.demo.db.entity.SensorBorderId;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SensorBorderRepositiry extends JpaRepository<SensorBorder, SensorBorderId> {
-        List<AirQuality> findByDeviceIdAndTimestampBetweenOrderByTimestampAsc(
-                        String deviceId, int startTime, int endTime);
 
-        List<AirQuality> findByTimestampBetweenOrderByTimestampDesc(
-                        int startTime, int endTime);
+        Optional<SensorBorder> findFirstBySensorGroupOrderByTimestampDesc(String sensorGroup);
 
-        List<AirQuality> findAllByOrderByTimestampDesc();
-
+        List<SensorBorder> findBySensorGroupAndTimestampBetweenOrderByTimestampAsc(
+                        String sensorGroup, int startTime, int endTime);
 }

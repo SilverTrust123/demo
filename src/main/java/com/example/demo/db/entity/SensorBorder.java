@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sensor_border")
+@IdClass(SensorBorderId.class)
 public class SensorBorder {
     @Id
-    private String sensor_group;
+    @Column(name = "sensor_group")
+    private String sensorGroup;
     private int temp_1;
     private int temp_2;
     private int humi_1;
@@ -14,6 +16,7 @@ public class SensorBorder {
     private int dust;
     private int qua;
     private int pow;
+    @Id
     private int timestamp;
 
     public SensorBorder() {
@@ -53,11 +56,11 @@ public class SensorBorder {
     }
 
     public String getSensor_group() {
-        return sensor_group;
+        return sensorGroup;
     }
 
     public void setSensor_group(String sensor_group) {
-        this.sensor_group = sensor_group;
+        this.sensorGroup = sensor_group;
     }
 
     public int getTimestamp() {
