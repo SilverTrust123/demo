@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sensor_border")
-@IdClass(SensorBorderId.class)
 public class SensorBorder {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String sensor_group;
     private int temp_1;
     private int temp_2;
@@ -17,6 +15,10 @@ public class SensorBorder {
     private int qua;
     private int pow;
     private int timestamp;
+
+    public SensorBorder() {
+
+    }
 
     public void setTemp_1(int temp_1) {
         this.temp_1 = temp_1;
