@@ -107,8 +107,15 @@ public class TaskProcessor {
                 Thread.currentThread().setName("This-is-Thread-" + threadId);
 
                 while (true) {
+                    JobTask<?> task = null;
                     try {
-                        JobTask<?> task = queueService.takeTask();
+                        task = queueService.takeTask();
+                        if (task.getAuth() != null) {
+                            org.springframework.security.core.context.SecurityContext context = SecurityContextHolder
+                                    .createEmptyContext();
+                            context.setAuthentication(task.getAuth());
+                            SecurityContextHolder.setContext(context);
+                        }
                         String type = task.getTaskType();
                         Object result = null;
 
@@ -435,6 +442,9 @@ public class TaskProcessor {
                         break;
                     } catch (Exception e) {
                         e.printStackTrace();
+                        if (task != null && task.getFuture() != null) {
+                            task.getFuture().completeExceptionally(e);
+                        }
                     } finally {
                         SecurityContextHolder.clearContext();
                     }

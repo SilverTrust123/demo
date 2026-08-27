@@ -15,6 +15,7 @@ import org.springframework.security.config.Customizer;
 import com.example.demo.Jwt.JwtRequestFilter;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -33,12 +34,13 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                         .requestMatchers("/plc/writeDPoint").authenticated()
                         .requestMatchers("/plc/writeMPoint").authenticated()
                         .requestMatchers("/fullLog").authenticated()
                         .requestMatchers("/airParticulatesData/truncateAllAirParticulatesData").authenticated()
                         .requestMatchers("/airQualityData/truncateAllAirQualityData").authenticated()
-                        // .requestMatchers("/camData/video").authenticated()
+                        .requestMatchers("/camData/video").authenticated()
                         .requestMatchers("/circuitData/truncateAllCircuitData").authenticated()
                         .requestMatchers("/temperatureAndHumidityData/truncateAllTemparatureAndHumidityData")
                         .authenticated()
