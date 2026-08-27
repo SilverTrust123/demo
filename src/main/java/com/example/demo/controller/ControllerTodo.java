@@ -31,7 +31,7 @@ public class ControllerTodo {
     @Autowired
     private ServiceDelayTime DT;
 
-    @PostMapping("/")
+    @PostMapping("/saveMessage")
     public CompletableFuture<Object> leaveMessage(@RequestBody RequestTodoDTO message) {
         long curr = System.currentTimeMillis();
         log.info("Receive and transfer request for leave Message");
