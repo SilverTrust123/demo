@@ -49,7 +49,7 @@ public class ControllerPLC {
     // 數位雙生：讀取 M 點狀態
     // 回傳：NoDevice / Error / 真偽值
     // @RequestParam(required = false) String param
-    @GetMapping("/MPointState")
+    @PostMapping("/MPointState")
     public CompletableFuture<Object> MpointState(@RequestBody RequestMPointStateDTO param) {
         long curr = System.currentTimeMillis();
         log.info("transfer received read m point request {} ", param);
@@ -63,7 +63,7 @@ public class ControllerPLC {
     // -----------
     // 詢問現在參數：讀取 D 點數值
     // 回傳：NoDevice / Error / 實際數值
-    @GetMapping("/DPointData")
+    @PostMapping("/DPointData")
     public CompletableFuture<Object> DPointData(@RequestBody RequestDPointStateDTO param) {
         long curr = System.currentTimeMillis();
         log.info("transfer received read d point request {} ", param);
