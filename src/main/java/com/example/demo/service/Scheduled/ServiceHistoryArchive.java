@@ -11,13 +11,13 @@ import com.example.demo.service.ServiceAirQuality;
 import com.example.demo.service.ServiceCircuit;
 import com.example.demo.service.*;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
+import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 @Service
