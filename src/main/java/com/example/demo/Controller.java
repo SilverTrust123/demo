@@ -6,11 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
-
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+// import java.io.IOException;
+// import java.nio.file.Files;
+// import java.nio.file.Path;
+// import java.nio.file.Paths;
 import java.util.List;
 import com.example.demo.service.ServiceDelayTime;
 import org.springframework.http.MediaType;
@@ -64,8 +69,20 @@ public class Controller {
 
     private byte[] innerGetfullLogs() throws IOException {
         Path path = Paths.get("magicSystem.log");
-        byte[] fileBytes = Files.readAllBytes(path);
-        return fileBytes;
+        long fileSize = Files.size(path);
+        long maxBytes = 1024 * 1024;
+
+        if (fileSize <= maxBytes) {
+            return Files.readAllBytes(path);
+        }
+        try (RandomAccessFile raf = new RandomAccessFile(path.toFile(), "r")) {
+            long startPosition = fileSize - maxBytes;
+            raf.seek(startPosition);
+
+            byte[] buffer = new byte[(int) maxBytes];
+            raf.readFully(buffer);
+            return buffer;
+        }
     }
 
     @GetMapping("/detailLog")
