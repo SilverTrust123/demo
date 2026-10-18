@@ -12,8 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import com.example.demo.priorityQueueTask.QueueService;
 import com.example.demo.service.ServiceDelayTime;
 import org.springframework.http.MediaType;
 
@@ -24,15 +22,11 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class Controller {
     private static final Logger log = LoggerFactory.getLogger(Controller.class);
-    @Autowired
-    private QueueService queueService;
     @Value("${urgent}")
     private int URGENT;
     @Autowired
     private ServiceDelayTime DT;
 
-    // 變動還沒跟動市長說
-    // 後面可以改變成一般的 ("/")因為沒有要把前後端擺一起
     @GetMapping("/check")
     public String checkConnect() {
         log.info("receive frontend check the backend");
