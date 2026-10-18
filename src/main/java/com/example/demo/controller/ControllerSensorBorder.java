@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.example.demo.DTO.requestDTO.*;
 import com.example.demo.priorityQueueTask.QueueService;
+import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.service.ServiceDelayTime;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class ControllerSensorBorder {
     @Autowired
     private ServiceDelayTime DT;
 
-    @GetMapping("/getCurrentSensorBorder")
+    @PostMapping("/getCurrentSensorBorder")
     public CompletableFuture<Object> getCurrentSensorBorder() throws Exception {
         long curr = System.currentTimeMillis();
         log.info("receive and transfer the getCurrentSensorBorder request ");
