@@ -31,7 +31,7 @@ public class ControllerSensorBorder {
     @Autowired
     private ServiceDelayTime DT;
 
-    @PostMapping("/getCurrentSensorBorder")
+    @GetMapping("/getCurrentSensorBorder")
     public CompletableFuture<Object> getCurrentSensorBorder() throws Exception {
         long curr = System.currentTimeMillis();
         log.info("receive and transfer the getCurrentSensorBorder request ");
@@ -42,7 +42,7 @@ public class ControllerSensorBorder {
         });
     }
 
-    @GetMapping("/saveSensorBorder")
+    @PostMapping("/saveSensorBorder")
     public CompletableFuture<Object> saveSensorBorder(RequestSensorBorderDTO req) throws Exception {
         long curr = System.currentTimeMillis();
         log.info("receive and transfer the saveSensorBorder request ");
