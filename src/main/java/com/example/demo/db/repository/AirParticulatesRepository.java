@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
 import com.example.demo.db.entity.*;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface AirParticulatesRepository extends JpaRepository<AirParticulates
         List<AirParticulates> findByTimestampBetweenOrderByTimestampDesc(
                         int startTime, int endTime);
 
-        List<AirParticulates> findAllByOrderByTimestampDesc();
+        List<AirParticulates> findAllByOrderByTimestampDesc(Pageable pageable);
 
         @Transactional
         @Modifying(clearAutomatically = true, flushAutomatically = true)

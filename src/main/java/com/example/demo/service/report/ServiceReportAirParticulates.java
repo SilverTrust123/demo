@@ -4,10 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.apache.poi.ss.usermodel.*;
 
@@ -19,6 +18,7 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
+import io.github.cdimascio.dotenv.Dotenv;
 import com.lowagie.text.pdf.PdfWriter;
 
 @Service
@@ -27,10 +27,14 @@ public class ServiceReportAirParticulates {
     @Autowired
     private AirParticulatesRepository airParticulatesRepository;
 
+    Dotenv dotenv = Dotenv.load();
+    private int DATA_LIMIT_NUMBER = Integer.parseInt(dotenv.get("DATA_LIMIT_NUMBER"));
+
     // pdf
     public byte[] generateAirQualityReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            List<AirParticulates> aps = airParticulatesRepository.findAll();
+            List<AirParticulates> aps = airParticulatesRepository.findAllByOrderByTimestampDesc(
+                    PageRequest.of(0, DATA_LIMIT_NUMBER));
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);
@@ -98,7 +102,8 @@ public class ServiceReportAirParticulates {
         try (Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-            List<AirParticulates> aps = airParticulatesRepository.findAll();
+            List<AirParticulates> aps = airParticulatesRepository.findAllByOrderByTimestampDesc(
+                    PageRequest.of(0, DATA_LIMIT_NUMBER));
             Sheet sheet = workbook.createSheet("AirParticulatesExcelReport");
 
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();

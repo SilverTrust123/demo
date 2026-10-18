@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.db.entity.Log;
@@ -16,15 +17,19 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @Service
 public class ServiceReportLog {
 
     @Autowired
     private LogRepository logRepository;
+    Dotenv dotenv = Dotenv.load();
+    private int DATA_LIMIT_NUMBER = Integer.parseInt(dotenv.get("DATA_LIMIT_NUMBER"));
 
     public byte[] generateLogReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            List<Log> logs = logRepository.findAll();
+            List<Log> logs = logRepository.findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);

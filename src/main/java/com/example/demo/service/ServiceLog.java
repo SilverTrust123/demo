@@ -4,9 +4,13 @@ import com.example.demo.DTO.responseDTO.ResponseAllLogDTO;
 import com.example.demo.DTO.responseDTO.ResponseLogDTO;
 import com.example.demo.db.entity.Log;
 import com.example.demo.db.repository.LogRepository;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +20,8 @@ import java.util.stream.Collectors;
 public class ServiceLog {
         @Autowired
         private LogRepository logRepo;
+        Dotenv dotenv = Dotenv.load();
+        private int DATA_LIMIT_NUMBER = Integer.parseInt(dotenv.get("DATA_LIMIT_NUMBER"));
 
         private static final Logger log = LoggerFactory.getLogger(ServiceLog.class);
 
@@ -31,7 +37,7 @@ public class ServiceLog {
         }
 
         public List<ResponseLogDTO> getAllLogs() {
-                return logRepo.findAllByOrderByTimestampDesc()
+                return logRepo.findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER))
                                 .stream()
                                 .map(entity -> new ResponseLogDTO(
                                                 entity.getId(),

@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.db.entity.TemperatureAndHumidity;
@@ -15,6 +16,9 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
@@ -24,13 +28,16 @@ public class ServiceReportTemparatureAndHumidity {
 
     @Autowired
     private TemperatureAndHumidityRepository temperatureAndHumidityRepository;
+    Dotenv dotenv = Dotenv.load();
+    private int DATA_LIMIT_NUMBER = Integer.parseInt(dotenv.get("DATA_LIMIT_NUMBER"));
 
     // excel
     public byte[] generateTemperatureAndHumidityExcelReport() {
         try (Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository.findAll();
+            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository
+                    .findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
             Sheet sheet = workbook.createSheet("TempAndHumidityReport");
 
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
@@ -112,7 +119,8 @@ public class ServiceReportTemparatureAndHumidity {
     // pdf
     public byte[] generateTemparatureAndHumidityReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository.findAll();
+            List<TemperatureAndHumidity> temps = temperatureAndHumidityRepository
+                    .findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);

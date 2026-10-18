@@ -4,11 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.db.entity.AirQuality;
@@ -21,16 +20,21 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @Service
 public class ServiceReportAirQuality {
 
     @Autowired
     private AirQualityRepository airQualityRepository;
+    Dotenv dotenv = Dotenv.load();
+    private int DATA_LIMIT_NUMBER = Integer.parseInt(dotenv.get("DATA_LIMIT_NUMBER"));
 
     // pdf
     public byte[] generateAirQualityReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            List<AirQuality> aqs = airQualityRepository.findAll();
+            List<AirQuality> aqs = airQualityRepository
+                    .findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);
@@ -99,7 +103,8 @@ public class ServiceReportAirQuality {
         try (Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-            List<AirQuality> aqs = airQualityRepository.findAll();
+            List<AirQuality> aqs = airQualityRepository
+                    .findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
             Sheet sheet = workbook.createSheet("AirQualityExcelReport");
 
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();

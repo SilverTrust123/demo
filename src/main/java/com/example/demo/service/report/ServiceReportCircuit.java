@@ -3,12 +3,11 @@ package com.example.demo.service.report;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.db.entity.Circuit;
@@ -21,6 +20,8 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 // import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 
@@ -28,13 +29,15 @@ import java.io.IOException;
 public class ServiceReportCircuit {
     @Autowired
     private CircuitRepository circuitRepository;
+    Dotenv dotenv = Dotenv.load();
+    private int DATA_LIMIT_NUMBER = Integer.parseInt(dotenv.get("DATA_LIMIT_NUMBER"));
 
     // excel
     public byte[] generateCircuitExcelReport() {
         try (Workbook workbook = new XSSFWorkbook();
                 ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 
-            List<Circuit> cirs = circuitRepository.findAll();
+            List<Circuit> cirs = circuitRepository.findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
             Sheet sheet = workbook.createSheet("CircuitExcelReport");
 
             org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
@@ -121,7 +124,7 @@ public class ServiceReportCircuit {
     // pdf
     public byte[] generateTemparatureAndHumidityReport() {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            List<Circuit> cirs = circuitRepository.findAll();
+            List<Circuit> cirs = circuitRepository.findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
 
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, out);
