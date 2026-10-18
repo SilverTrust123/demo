@@ -1,13 +1,21 @@
 package com.example.demo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import com.example.demo.priorityQueueTask.QueueService;
+import com.example.demo.service.ServiceDelayTime;
+import org.springframework.http.MediaType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +24,12 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class Controller {
     private static final Logger log = LoggerFactory.getLogger(Controller.class);
+    @Autowired
+    private QueueService queueService;
+    @Value("${urgent}")
+    private int URGENT;
+    @Autowired
+    private ServiceDelayTime DT;
 
     // 變動還沒跟動市長說
     // 後面可以改變成一般的 ("/")因為沒有要把前後端擺一起
@@ -52,6 +66,30 @@ public class Controller {
         String content = Files.readString(path);
 
         return ResponseEntity.ok(content);
+    }
+
+    private byte[] innerGetfullLogs() throws IOException {
+        Path path = Paths.get("magicSystem.log");
+        byte[] fileBytes = Files.readAllBytes(path);
+        return fileBytes;
+    }
+
+    @GetMapping("/pdf/log")
+    public ResponseEntity<byte[]> getDetailLogReport() throws Exception {
+        long start = System.currentTimeMillis();
+        log.info("Received and transfer request for logs report");
+
+        byte[] pdfContent = innerGetfullLogs();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "DetailLogReport.pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        long done = System.currentTimeMillis();
+        long duration = done - start;
+        log.info("get log report done in " + duration + " ms");
+        DT.logInLastestProcessTime((int) duration);
+        return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
     }
 
 }
