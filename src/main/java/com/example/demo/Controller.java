@@ -74,15 +74,15 @@ public class Controller {
         return fileBytes;
     }
 
-    @GetMapping("/pdf/log")
+    @GetMapping("/detailLog")
     public ResponseEntity<byte[]> getDetailLogReport() throws Exception {
         long start = System.currentTimeMillis();
         log.info("Received and transfer request for logs report");
 
         byte[] pdfContent = innerGetfullLogs();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "DetailLogReport.pdf");
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.setContentDispositionFormData("attachment", "DetailLogReport.log");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
         long done = System.currentTimeMillis();
