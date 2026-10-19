@@ -5,10 +5,15 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpHeaders;
+// import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import com.example.demo.DTO.requestDTO.RequestLogDTO;
 import com.example.demo.priorityQueueTask.QueueService;
@@ -43,14 +48,26 @@ public class ControllerLog {
     }
 
     @GetMapping("/generateAllReport")
-    public CompletableFuture<Object> generateAllReport() throws Exception {
+    public CompletableFuture<ResponseEntity<byte[]>> generateAllReport() throws Exception {
         long curr = System.currentTimeMillis();
         log.info("Received and transfer request for generate All logs report");
-        return queueService.addRequestToQueue(URGENT, null, "generateAllReport").whenComplete((res, exp) -> {
-            long done = System.currentTimeMillis();
-            log.info("generate all logs report done in " + (done - curr));
-            DT.logInLastestProcessTime((int) (done - curr));
-        });
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateAllReport")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "WarnAndErrorLogReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                }).whenComplete((res, exp) -> {
+                    long done = System.currentTimeMillis();
+                    log.info("get aLL log report done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
+                });
     }
 
     @GetMapping("/error")
@@ -65,14 +82,26 @@ public class ControllerLog {
     }
 
     @GetMapping("/generateErrorReport")
-    public CompletableFuture<Object> generateErrorReport() throws Exception {
+    public CompletableFuture<ResponseEntity<byte[]>> generateErrorReport() throws Exception {
         long curr = System.currentTimeMillis();
         log.info("Received and transfer request for generateErrorReport ");
-        return queueService.addRequestToQueue(URGENT, null, "generateErrorReport").whenComplete((res, exp) -> {
-            long done = System.currentTimeMillis();
-            log.info("generateErrorReport done in " + (done - curr));
-            DT.logInLastestProcessTime((int) (done - curr));
-        });
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateErrorReport")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "ErrorLogReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                }).whenComplete((res, exp) -> {
+                    long done = System.currentTimeMillis();
+                    log.info("get error log report done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
+                });
     }
 
     @GetMapping("/warn")
@@ -87,14 +116,26 @@ public class ControllerLog {
     }
 
     @GetMapping("/generateWarnReport")
-    public CompletableFuture<Object> generateWarnReport() throws Exception {
+    public CompletableFuture<ResponseEntity<byte[]>> generateWarnReport() throws Exception {
         long curr = System.currentTimeMillis();
         log.info("Received and transfer request for generateWarnReport ");
-        return queueService.addRequestToQueue(URGENT, null, "generateWarnReport").whenComplete((res, exp) -> {
-            long done = System.currentTimeMillis();
-            log.info("generateWarnReport done in " + (done - curr));
-            DT.logInLastestProcessTime((int) (done - curr));
-        });
+        return queueService
+                .addRequestToQueue(URGENT, null, "generateWarnReport")
+                .thenApply(pdfContent -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    headers.setContentDispositionFormData("attachment", "WarnLogReport.pdf");
+                    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+                    return new ResponseEntity<>(
+                            (byte[]) pdfContent,
+                            headers,
+                            HttpStatus.OK);
+                }).whenComplete((res, exp) -> {
+                    long done = System.currentTimeMillis();
+                    log.info("get warn log report done in " + (done - curr));
+                    DT.logInLastestProcessTime((int) (done - curr));
+                });
     }
 
     @GetMapping("/byTime")
