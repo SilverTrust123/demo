@@ -307,11 +307,20 @@ public class TaskProcessor {
                             case "getAllLogs":
                                 result = serviceLog.getAllLogs();
                                 break;
+                            case "generateAllReport":
+                                result = serviceLog.generateAllReport();
+                                break;
                             case "getErrorLogs":
                                 result = serviceLog.getErrorLogs();
                                 break;
+                            case "generateErrorReport":
+                                result = serviceLog.generateErrorReport();
+                                break;
                             case "getWarnLogs":
                                 result = serviceLog.getWarnLogs();
+                                break;
+                            case "generateWarnReport":
+                                result = serviceLog.generateWarnReport();
                                 break;
                             case "getLogByTime":
                                 RequestLogDTO data_Log = (RequestLogDTO) task.getData();

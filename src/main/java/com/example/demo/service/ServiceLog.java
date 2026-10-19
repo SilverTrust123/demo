@@ -1,9 +1,17 @@
 package com.example.demo.service;
 
+import java.io.ByteArrayOutputStream;
 import com.example.demo.DTO.responseDTO.ResponseAllLogDTO;
 import com.example.demo.DTO.responseDTO.ResponseLogDTO;
 import com.example.demo.db.entity.Log;
 import com.example.demo.db.repository.LogRepository;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.Font;
+import com.lowagie.text.Document;
+import com.lowagie.text.pdf.PdfWriter;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -36,6 +44,40 @@ public class ServiceLog {
                 logRepo.save(log);
         }
 
+        public byte[] generateAllReport() {
+                try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                        List<Log> errors = logRepo.findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER));
+
+                        Document document = new Document(PageSize.A4);
+                        PdfWriter.getInstance(document, out);
+                        document.open();
+
+                        Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+                        document.add(new Paragraph("All Error And Warn Data Report", fontTitle));
+                        document.add(new Paragraph(" "));
+                        PdfPTable table = new PdfPTable(4);
+                        table.setWidthPercentage(100);
+                        table.addCell("loglevel");
+                        table.addCell("source");
+                        table.addCell("message");
+                        table.addCell("timestamp");
+
+                        for (Log err : errors) {
+                                table.addCell(String.valueOf(err.getLogLevel()));
+                                table.addCell(String.valueOf(err.getSource()));
+                                table.addCell(String.valueOf(err.getMessage()));
+                                table.addCell(String.valueOf(err.getTimestamp()));
+                        }
+
+                        document.add(table);
+                        document.close();
+
+                        return out.toByteArray();
+                } catch (Exception e) {
+                        throw new RuntimeException("PDF general fail: " + e.getMessage());
+                }
+        }
+
         public List<ResponseLogDTO> getAllLogs() {
                 return logRepo.findAllByOrderByTimestampDesc(PageRequest.of(0, DATA_LIMIT_NUMBER))
                                 .stream()
@@ -48,6 +90,40 @@ public class ServiceLog {
                                 .collect(Collectors.toList());
         }
 
+        public byte[] generateErrorReport() {
+                try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                        List<Log> errors = logRepo.findByLogLevelOrderByTimestampDesc("ERROR");
+
+                        Document document = new Document(PageSize.A4);
+                        PdfWriter.getInstance(document, out);
+                        document.open();
+
+                        Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+                        document.add(new Paragraph("All Error Data Report", fontTitle));
+                        document.add(new Paragraph(" "));
+                        PdfPTable table = new PdfPTable(4);
+                        table.setWidthPercentage(100);
+                        table.addCell("loglevel");
+                        table.addCell("source");
+                        table.addCell("message");
+                        table.addCell("timestamp");
+
+                        for (Log err : errors) {
+                                table.addCell(String.valueOf(err.getLogLevel()));
+                                table.addCell(String.valueOf(err.getSource()));
+                                table.addCell(String.valueOf(err.getMessage()));
+                                table.addCell(String.valueOf(err.getTimestamp()));
+                        }
+
+                        document.add(table);
+                        document.close();
+
+                        return out.toByteArray();
+                } catch (Exception e) {
+                        throw new RuntimeException("PDF general fail: " + e.getMessage());
+                }
+        }
+
         public ResponseAllLogDTO getErrorLogs() {
                 return new ResponseAllLogDTO(logRepo.findByLogLevelOrderByTimestampDesc("ERROR").stream()
                                 .map(entity -> new ResponseLogDTO(entity.getId(),
@@ -56,6 +132,40 @@ public class ServiceLog {
                                                 entity.getMessage(),
                                                 entity.getTimestamp()))
                                 .collect(Collectors.toList()));
+        }
+
+        public byte[] generateWarnReport() {
+                try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                        List<Log> errors = logRepo.findByLogLevelOrderByTimestampDesc("WARN");
+
+                        Document document = new Document(PageSize.A4);
+                        PdfWriter.getInstance(document, out);
+                        document.open();
+
+                        Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+                        document.add(new Paragraph("All Warn Data Report", fontTitle));
+                        document.add(new Paragraph(" "));
+                        PdfPTable table = new PdfPTable(4);
+                        table.setWidthPercentage(100);
+                        table.addCell("loglevel");
+                        table.addCell("source");
+                        table.addCell("message");
+                        table.addCell("timestamp");
+
+                        for (Log err : errors) {
+                                table.addCell(String.valueOf(err.getLogLevel()));
+                                table.addCell(String.valueOf(err.getSource()));
+                                table.addCell(String.valueOf(err.getMessage()));
+                                table.addCell(String.valueOf(err.getTimestamp()));
+                        }
+
+                        document.add(table);
+                        document.close();
+
+                        return out.toByteArray();
+                } catch (Exception e) {
+                        throw new RuntimeException("PDF general fail: " + e.getMessage());
+                }
         }
 
         public ResponseAllLogDTO getWarnLogs() {

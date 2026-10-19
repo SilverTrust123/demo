@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/fullLog").authenticated()
                         .requestMatchers("/airParticulatesData/truncateAllAirParticulatesData").authenticated()
                         .requestMatchers("/airQualityData/truncateAllAirQualityData").authenticated()
+                        .requestMatchers("/detailLog").authenticated()
                         .requestMatchers("/camData/video").authenticated()
                         .requestMatchers("/circuitData/truncateAllCircuitData").authenticated()
                         .requestMatchers("/sensorBorder/saveSensorBorder").authenticated()

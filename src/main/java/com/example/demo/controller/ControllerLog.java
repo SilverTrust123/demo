@@ -42,6 +42,17 @@ public class ControllerLog {
         });
     }
 
+    @GetMapping("/generateAllReport")
+    public CompletableFuture<Object> generateAllReport() throws Exception {
+        long curr = System.currentTimeMillis();
+        log.info("Received and transfer request for generate All logs report");
+        return queueService.addRequestToQueue(URGENT, null, "generateAllReport").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("generate all logs report done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
+        });
+    }
+
     @GetMapping("/error")
     public CompletableFuture<Object> getErrorLogs() throws Exception {
         long curr = System.currentTimeMillis();
@@ -53,6 +64,17 @@ public class ControllerLog {
         });
     }
 
+    @GetMapping("/generateErrorReport")
+    public CompletableFuture<Object> generateErrorReport() throws Exception {
+        long curr = System.currentTimeMillis();
+        log.info("Received and transfer request for generateErrorReport ");
+        return queueService.addRequestToQueue(URGENT, null, "generateErrorReport").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("generateErrorReport done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
+        });
+    }
+
     @GetMapping("/warn")
     public CompletableFuture<Object> getWarnLogs() throws Exception {
         long curr = System.currentTimeMillis();
@@ -60,6 +82,17 @@ public class ControllerLog {
         return queueService.addRequestToQueue(URGENT, null, "getWarnLogs").whenComplete((res, exp) -> {
             long done = System.currentTimeMillis();
             log.info("get warn logs done in " + (done - curr));
+            DT.logInLastestProcessTime((int) (done - curr));
+        });
+    }
+
+    @GetMapping("/generateWarnReport")
+    public CompletableFuture<Object> generateWarnReport() throws Exception {
+        long curr = System.currentTimeMillis();
+        log.info("Received and transfer request for generateWarnReport ");
+        return queueService.addRequestToQueue(URGENT, null, "generateWarnReport").whenComplete((res, exp) -> {
+            long done = System.currentTimeMillis();
+            log.info("generateWarnReport done in " + (done - curr));
             DT.logInLastestProcessTime((int) (done - curr));
         });
     }
