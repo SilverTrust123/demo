@@ -53,6 +53,9 @@ public class ServicePLC {
     public ResponsePointState MpointState(String param) {
         checkOrReconnectPLC();
         log.info("receieved read m point request {} ", param);
+        if (!isPlcConnected()) {
+            return new ResponsePointState("PLC is disconnected");
+        }
         try {
             if (param == null || param.isEmpty()) {
                 log.warn("MPointState: param is null or empty");
@@ -80,6 +83,9 @@ public class ServicePLC {
 
     public ResponsePointState DPointData(String param) {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponsePointState("PLC is disconnected");
+        }
         try {
             log.info("received read d point request {} ", param);
 
@@ -110,6 +116,9 @@ public class ServicePLC {
 
     public ResponseAllDPointStateDTO AllDPointData() throws Exception {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponseAllDPointStateDTO(new HashMap<>());
+        }
         HashMap<String, Integer> curr = plc.getAllDPoints();
         log.info("received get all DPoint request");
         if (curr.isEmpty()) {
@@ -123,6 +132,9 @@ public class ServicePLC {
 
     public ResponseAllMPointStateDTO AllMPointData() throws Exception {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponseAllMPointStateDTO(new HashMap<>());
+        }
         HashMap<String, Boolean> curr = plc.getAllMPoints();
         log.info("received get all MPoint request");
         if (curr.isEmpty()) {
@@ -136,6 +148,9 @@ public class ServicePLC {
 
     public ResponsePointState plcState() {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponsePointState("PLC is disconnected");
+        }
         try {
             log.info("received plc state request");
             return new ResponsePointState(String.valueOf(plc.readD(plc.getDPoint("STATE"))));
@@ -148,6 +163,9 @@ public class ServicePLC {
 
     public ResponseCountMetal getCountMetal() {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponseCountMetal(-1);
+        }
         try {
             log.info("received get count metal");
             return new ResponseCountMetal(plc.getCountMetal());
@@ -160,6 +178,9 @@ public class ServicePLC {
 
     public ResponseCountNonMetal getCountNonMetal() {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponseCountNonMetal(-1);
+        }
         try {
             log.info("received get count metal");
             return new ResponseCountNonMetal(plc.getCountNonMetal());
@@ -176,6 +197,9 @@ public class ServicePLC {
 
     public ResponsePointState writeMPoint(String param, Boolean value) {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponsePointState("PLC is disconnected");
+        }
         try {
             plc.writeM(plc.getMPoint(param), value);
             log.info("Success MPoint {} set to {}", param, value);
@@ -189,6 +213,9 @@ public class ServicePLC {
 
     public ResponsePointState writeDPoint(String param, Integer value) {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponsePointState("PLC is disconnected");
+        }
         try {
             plc.writeD(plc.getDPoint(param), value);
             log.info("Success DPoint {} set to {}", param, value);
@@ -207,6 +234,9 @@ public class ServicePLC {
 
     public ResponsePointState EStop() {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponsePointState("PLC is disconnected");
+        }
         try {
             plc.writeM(plc.getMPoint("EStop"), true);
             log.info("production line shot down");
@@ -221,6 +251,9 @@ public class ServicePLC {
 
     public ResponsePointState EndEStop() {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return new ResponsePointState("PLC is disconnected");
+        }
         try {
             plc.writeM(plc.getMPoint("EndEStop"), true);
             log.info("production line ending shot down");
@@ -236,6 +269,9 @@ public class ServicePLC {
 
     public void generate_wrong() {
         checkOrReconnectPLC();
+        if (!isPlcConnected()) {
+            return;
+        }
         try {
             plc.writeM(plc.getMPoint("generateWrong"), true);
             log.info("trigger generate wrong");
