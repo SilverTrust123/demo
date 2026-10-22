@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.DTO.responseDTO.*;
+import com.example.demo.DTO.responseDTO.PLCResponseDTO.*;
+
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 
@@ -29,10 +32,24 @@ public class ServiceData {
     private static final Logger log = LoggerFactory.getLogger(ServiceData.class);
 
     public ResponseAllDataDTO AllData() throws Exception {
-        ResponseAllDataDTO ans = new ResponseAllDataDTO(
-                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
-                serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
-                serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData());
+        ResponseAllDataDTO ans;
+        if (!servicePLC.isPlcConnected()) {
+
+            ans = new ResponseAllDataDTO(
+                    serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(),
+                    serviceCircuit.getAllCircuitData(),
+                    serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                    serviceCam.getAllCamData(), new ResponseAllDPointStateDTO(new HashMap<String, Integer>()),
+                    new ResponseAllMPointStateDTO(new HashMap<>()));
+        } else {
+
+            ans = new ResponseAllDataDTO(
+                    serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(),
+                    serviceCircuit.getAllCircuitData(),
+                    serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                    serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData());
+        }
+
         log.info("received all data request return {}", ans);
         return ans;
     }
@@ -47,12 +64,26 @@ public class ServiceData {
     }
 
     public ResponseAllDataAndDeviceStateDTO AllDataAndDeviceState() throws Exception {
-        ResponseAllDataAndDeviceStateDTO ans = new ResponseAllDataAndDeviceStateDTO(
-                serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(), serviceCircuit.getAllCircuitData(),
-                serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
-                serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData(),
-                serviceDeviceState.getAllDeviceStatuses());
-        log.info("received all data and device state request return {}", ans);
+        ResponseAllDataAndDeviceStateDTO ans;
+        if (!servicePLC.isPlcConnected()) {
+
+            ans = new ResponseAllDataAndDeviceStateDTO(
+                    serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(),
+                    serviceCircuit.getAllCircuitData(),
+                    serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                    serviceCam.getAllCamData(), new ResponseAllDPointStateDTO(new HashMap<>()),
+                    new ResponseAllMPointStateDTO(new HashMap<>()),
+                    serviceDeviceState.getAllDeviceStatuses());
+        } else {
+
+            ans = new ResponseAllDataAndDeviceStateDTO(
+                    serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData(),
+                    serviceCircuit.getAllCircuitData(),
+                    serviceAirQuality.getAllAirQualityData(), serviceAirParticulates.getAllAirParticalData(),
+                    serviceCam.getAllCamData(), servicePLC.AllDPointData(), servicePLC.AllMPointData(),
+                    serviceDeviceState.getAllDeviceStatuses());
+            log.info("received all data and device state request return {}", ans);
+        }
         return ans;
     }
 
@@ -66,13 +97,3 @@ public class ServiceData {
         return ans;
     }
 }
-
-// magicData.put("temperatureAndHumidityDataMap",
-// serviceTemparatureAndHumidity.getAllTemparatureAndHumidityData());
-// magicData.put("circuitDataMap", serviceCircuit.getAllCircuitData());
-// magicData.put("airQualityDataMap", serviceAirQuality.getAllAirQualityData());
-// magicData.put("airParticulatesDataMap",
-// serviceAirParticulates.getAllAirParticalData());
-// magicData.put("camDataMap", serviceCam.getAllCamData());
-// magicData.put("DPoint", servicePLC.AllDPointData());
-// magicData.put("MPoint", servicePLC.AllMPointData());

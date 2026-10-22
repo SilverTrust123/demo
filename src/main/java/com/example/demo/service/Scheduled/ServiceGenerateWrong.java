@@ -24,7 +24,7 @@ public class ServiceGenerateWrong {
 
     @Scheduled(fixedRate = 46500)
     public void generateWrong() {
-        if (generate_wrong) {
+        if (generate_wrong && plc.isPlcConnected()) {
             if (rand.nextBoolean()) {
                 plc.generate_wrong();
                 log.info("success trigger generate wrong");
