@@ -99,16 +99,16 @@ Industrial Control & Monitoring System (ICMS) is an industrial-grade backend pla
 -----------------------------------------------
 
 ### 如果上面地址失靈請點這裡的URL -> 
-https://github.com/SilverTrust123/demo/releases/tag/V5.0.3  
-https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md      
-https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html
+[tag版本](https://github.com/SilverTrust123/demo/releases/tag/V5.0.3)  
+[URL](https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md)      
+[swagger-ui](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 
 -----------------------------------------------
 
 ### anything went woring plz try the fellowing URL instead ->
-https://github.com/SilverTrust123/demo/releases/tag/V5.0.3
-https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md     
-https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html  
+[tag-version](https://github.com/SilverTrust123/demo/releases/tag/V5.0.3)  
+[URL](https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md)      
+[swagger-ui](https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html)
 
 --------------------------------------------------
 ## 串聯說明:
