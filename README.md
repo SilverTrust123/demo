@@ -110,6 +110,16 @@ https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html  
 
 --------------------------------------------------
+
+## 串聯說明:
+### 前端可以訪問  
+確保後端端口是192.168.3.85:9090 ，以及PLC是在3網段。
+[前端介面預覽請點這裡](https://silvertrust123.github.io/demoFrontDis/html/)  
+[前端介面程式部分請點這裡](https://github.com/SilverTrust123/demoFrontDis)
+### 串聯WebCam
+
+
+
 ## 圖例說明:
 
 ### 循環圖

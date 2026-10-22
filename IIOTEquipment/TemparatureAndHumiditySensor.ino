@@ -4,8 +4,8 @@
 
 #define DHTPIN D4
 DHT11 dht11(DHTPIN);
-const char* ssid = "hitchcook";
-const char* password = "imsohandsome";
+const char* ssid = ;
+const char* password = ;
 const char* serverUrl = "http://192.168.3.110:9090/temperatureAndHumidityData/";
 
 void setup() {

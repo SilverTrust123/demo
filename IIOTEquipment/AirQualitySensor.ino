@@ -5,8 +5,8 @@
 #include <math.h>
 
 // --- WiFi & Server 設定 ---
-const char* ssid = "yang";
-const char* password = "20050116";
+const char* ssid = ;
+const char* password = ;
 const char* serverUrl = "http://192.168.3.253/AirQualityData";
 
 // --- MQ-135 設定 ---

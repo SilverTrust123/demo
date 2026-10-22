@@ -4,8 +4,8 @@
 
 #define DHTPIN D4
 DHT11 dht11(DHTPIN);
-const char* ssid = "Xa10yah28";
-const char* password = "yaya123123";
+const char* ssid = ;
+const char* password = ;
 const char* serverUrl = "http://10.246.169.167:9090/circultData";
 
 void setup() {
