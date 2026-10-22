@@ -35,7 +35,6 @@ public class TaskProcessor {
 
     @Autowired
     private QueueService queueService;
-
     @Autowired
     private ServiceTemparatureAndHumidity serviceTemparatureAndHumidity;
     @Autowired
@@ -72,7 +71,6 @@ public class TaskProcessor {
     private ServiceLoad serviceLoad;
     @Autowired
     private ServiceSensorBorder serviceSensorBorder;
-
     @Autowired
     private ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity;
     @Autowired
@@ -83,15 +81,6 @@ public class TaskProcessor {
     private ServiceHistoryAirParticulates serviceHistoryAirParticulates;
 
     private ExecutorService executor;
-
-    TaskProcessor(ServiceHistoryTemparatureAndHumidity serviceHistoryTemparatureAndHumidity,
-            ServiceReportAirQuality serviceReportAirQuality,
-            ServiceReportAirParticulates serviceReportAirParticulates, ServiceReportCoilMap serviceReportCoilMap) {
-        this.serviceHistoryTemparatureAndHumidity = serviceHistoryTemparatureAndHumidity;
-        this.serviceReportAirQuality = serviceReportAirQuality;
-        this.serviceReportAirParticulates = serviceReportAirParticulates;
-        this.serviceReportCoilMap = serviceReportCoilMap;
-    }
 
     @PostConstruct
     public void startWorking() {
