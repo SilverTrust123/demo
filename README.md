@@ -93,7 +93,8 @@ Industrial Control & Monitoring System (ICMS) is an industrial-grade backend pla
 
 ### 白話文
 
-我試著用描述的說了一下做了甚麼[請點這裡](https://github.com/SilverTrust123/demo/blob/main/doc/talk/0.md)
+我試著用描述的說了一下做了甚麼  
+[請點這裡](https://github.com/SilverTrust123/demo/blob/main/doc/talk/0.md)
 
 -----------------------------------------------
 
