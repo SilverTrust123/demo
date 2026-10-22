@@ -110,13 +110,40 @@ https://github.com/SilverTrust123/demo/blob/main/doc/url_explain.md
 https://htmlpreview.github.io/?https://github.com/SilverTrust123/demoOnly/blob/main/Swagger%20UI.html  
 
 --------------------------------------------------
-
 ## 串聯說明:
-### 前端可以訪問  
-確保後端端口是192.168.3.85:9090 ，以及PLC是在3網段。
+### 串聯前端  
+前端本身是:3000 port，  
+但須確保後端端口是192.168.3.85:9090 ，以及PLC是在3網段。  
 [前端介面預覽請點這裡](https://silvertrust123.github.io/demoFrontDis/html/)  
-[前端介面程式部分請點這裡](https://github.com/SilverTrust123/demoFrontDis)
+[前端介面程式部分請點這裡](https://github.com/SilverTrust123/demoFrontDis)  
 ### 串聯WebCam
+WebCam本身是:5000 port，  
+但須確保後端端口是192.168.3.85:9090 ，以及PLC是在3網段。  
+[WebCam程式部分請點這裡](https://github.com/SilverTrust123/demo/blob/main/camTest/stream_test.py)  
+### 串聯PLC  
+PLC本身是 .3.250但是可以在ENV調整， 
+但須確保後端端口是192.168.3.85:9090 ，以及PLC是在3網段。  
+PLC程式請自訂義，  
+[僅供參考](https://github.com/SilverTrust123/demo/blob/main/src/main/java/com/example/demo/plc/PointList.java)  
+### 串聯感測器  
+各感測器本身並沒有預設端口以及IP請自訂義，  
+但須確保後端端口是192.168.3.85:9090 ，以及PLC是在3網段。   
+[僅供參考](https://github.com/SilverTrust123/demo/blob/main/IIOTEquipment/AirQualitySensor.ino)   
+
+--------------------------------------------------
+## 環境變數設計格式  
+### 僅供參考  
+- DB_HOST=  
+- DB_PORT=  
+- DB_USER=  
+- DB_PASSWORD=  
+- PLC_IP=  
+- TCP_PORT=  
+- WINDOW_SIZE =  
+- generate_wrong =  
+- generate_wrong_interval =  
+- DATA_LIMIT_NUMBER =  
+--------------------------------------------------
 
 
 
