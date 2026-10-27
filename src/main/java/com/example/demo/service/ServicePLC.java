@@ -51,7 +51,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState MpointState(String param) {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         log.info("receieved read m point request {} ", param);
         if (!isPlcConnected()) {
             return new ResponsePointState("PLC is disconnected");
@@ -82,7 +82,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState DPointData(String param) {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponsePointState("PLC is disconnected");
         }
@@ -115,7 +115,7 @@ public class ServicePLC {
     }
 
     public ResponseAllDPointStateDTO AllDPointData() throws Exception {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponseAllDPointStateDTO(new HashMap<>());
         }
@@ -131,7 +131,7 @@ public class ServicePLC {
     }
 
     public ResponseAllMPointStateDTO AllMPointData() throws Exception {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponseAllMPointStateDTO(new HashMap<>());
         }
@@ -147,7 +147,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState plcState() {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponsePointState("PLC is disconnected");
         }
@@ -162,7 +162,7 @@ public class ServicePLC {
     }
 
     public ResponseCountMetal getCountMetal() {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponseCountMetal(-1);
         }
@@ -177,7 +177,7 @@ public class ServicePLC {
     }
 
     public ResponseCountNonMetal getCountNonMetal() {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponseCountNonMetal(-1);
         }
@@ -196,7 +196,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState writeMPoint(String param, Boolean value) {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponsePointState("PLC is disconnected");
         }
@@ -212,7 +212,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState writeDPoint(String param, Integer value) {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponsePointState("PLC is disconnected");
         }
@@ -233,7 +233,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState EStop() {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponsePointState("PLC is disconnected");
         }
@@ -250,7 +250,7 @@ public class ServicePLC {
     }
 
     public ResponsePointState EndEStop() {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponsePointState("PLC is disconnected");
         }
@@ -268,7 +268,7 @@ public class ServicePLC {
     }
 
     public void generate_wrong() {
-        checkOrReconnectPLC();
+        // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return;
         }
@@ -282,10 +282,7 @@ public class ServicePLC {
         }
     }
 
-    private void checkOrReconnectPLC() {
-        if (plcConnected) {
-            return;
-        }
+    public boolean reconnectPLC() {
 
         try {
             this.plc = new PLCDriver(plcIP, tcpPort);
@@ -294,9 +291,10 @@ public class ServicePLC {
             System.out.println("PLC重連成功");
         } catch (Exception e) {
             log.error("cant connect to plc, error code {}", e.getMessage());
-            serviceLog.record("ERROR", "ServicePLC", "cant connect to plc, error code" + e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "cant connect to plc, error code" +
+                    e.getMessage());
             System.err.println("重新連線PLC失敗 code: " + e.getMessage());
         }
-        return;
+        return false;
     }
 }
