@@ -43,10 +43,10 @@ public class ServiceCheckOrReconnectPLC implements SchedulingConfigurer {
     }
 
     private void checkOrReconnectPLC() {
-        log.warn("trigger reconnect ot plc ");
         if (plc.isPlcConnected()) {
             return;
         } else {
+            log.warn("trigger reconnect ot plc ");
             plc.reconnectPLC();
         }
     }

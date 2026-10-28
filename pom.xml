@@ -15,7 +15,7 @@
 
     <groupId>com.icms</groupId>
     <artifactId>ICMS</artifactId>
-    <version>V5.0.4</version>
+    <version>V5.0.5</version>
 
     <properties>
         <java.version>17</java.version>

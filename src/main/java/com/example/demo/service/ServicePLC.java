@@ -22,7 +22,7 @@ public class ServicePLC {
     private String plcIP = dotenv.get("PLC_IP");
     private int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
     private static final Logger log = LoggerFactory.getLogger(ServicePLC.class);
-    private boolean plcConnected = false;
+    private volatile boolean plcConnected = false;
 
     @Autowired
     private ServiceLog serviceLog;
@@ -75,6 +75,7 @@ public class ServicePLC {
             return new ResponsePointState("MPointState: " + param + " = " + state);
 
         } catch (Exception e) {
+            plcConnected = false;
             log.error("MPointState error param {} with error {}", param, e.getMessage());
             e.printStackTrace();
             return new ResponsePointState("MPointState error, param=" + param);
@@ -106,6 +107,7 @@ public class ServicePLC {
             return new ResponsePointState(String.valueOf(val));
 
         } catch (Exception e) {
+            plcConnected = false;
             log.error("DPointData error param {} with error {}", param, e.getMessage());
             serviceLog.record("ERROR", "ServicePLC",
                     "DPointData error param " + param + " with error " + e.getMessage());
@@ -114,36 +116,54 @@ public class ServicePLC {
         }
     }
 
-    public ResponseAllDPointStateDTO AllDPointData() throws Exception {
-        // checkOrReconnectPLC();
+    public ResponseAllDPointStateDTO AllDPointData() {
         if (!isPlcConnected()) {
             return new ResponseAllDPointStateDTO(new HashMap<>());
         }
-        HashMap<String, Integer> curr = plc.getAllDPoints();
-        log.info("received get all DPoint request");
-        if (curr.isEmpty()) {
-            log.warn("no DPoint data its empty");
-            serviceLog.record("ERROR", "ServicePLC", "no DPoint data its empty");
+
+        try {
+            HashMap<String, Integer> curr = plc.getAllDPoints();
+            log.info("received get all DPoint request");
+
+            if (curr.isEmpty()) {
+                log.warn("no DPoint data its empty");
+                serviceLog.record("WARN", "ServicePLC", "no DPoint data its empty"); // 建議這裡改成 WARN 或保持原樣
+                return new ResponseAllDPointStateDTO(curr);
+            }
+
+            log.info("request accept return {} ", curr);
             return new ResponseAllDPointStateDTO(curr);
+
+        } catch (Exception e) {
+            plcConnected = false;
+            log.error("AllDPointData error with error {}", e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "AllDPointData error: " + e.getMessage());
+            return new ResponseAllDPointStateDTO(new HashMap<>());
         }
-        log.info("request accept return {} ", curr);
-        return new ResponseAllDPointStateDTO(curr);
     }
 
-    public ResponseAllMPointStateDTO AllMPointData() throws Exception {
+    public ResponseAllMPointStateDTO AllMPointData() {
         // checkOrReconnectPLC();
         if (!isPlcConnected()) {
             return new ResponseAllMPointStateDTO(new HashMap<>());
         }
-        HashMap<String, Boolean> curr = plc.getAllMPoints();
-        log.info("received get all MPoint request");
-        if (curr.isEmpty()) {
-            log.warn("no M point data its empty");
-            serviceLog.record("WARN", "ServicePLC", "received get all MPoint request");
+        try {
+
+            HashMap<String, Boolean> curr = plc.getAllMPoints();
+            log.info("received get all MPoint request");
+            if (curr.isEmpty()) {
+                log.warn("no M point data its empty");
+                serviceLog.record("WARN", "ServicePLC", "received get all MPoint request");
+                return new ResponseAllMPointStateDTO(curr);
+            }
+            log.info("request accept return {} ", curr);
             return new ResponseAllMPointStateDTO(curr);
+        } catch (Exception e) {
+            plcConnected = false;
+            log.error("AllDPointData error with error {}", e.getMessage());
+            serviceLog.record("ERROR", "ServicePLC", "AllDPointData error: " + e.getMessage());
+            return new ResponseAllMPointStateDTO(new HashMap<>());
         }
-        log.info("request accept return {} ", curr);
-        return new ResponseAllMPointStateDTO(curr);
     }
 
     public ResponsePointState plcState() {
@@ -155,6 +175,7 @@ public class ServicePLC {
             log.info("received plc state request");
             return new ResponsePointState(String.valueOf(plc.readD(plc.getDPoint("STATE"))));
         } catch (Exception e) {
+            plcConnected = false;
             log.error("Error reading PLC state: {}", e.getMessage());
             serviceLog.record("ERROR", "ServicePLC", "Error reading PLC state: " + e.getMessage());
             return new ResponsePointState("PLC Disconnected: " + e.getMessage());
@@ -170,6 +191,7 @@ public class ServicePLC {
             log.info("received get count metal");
             return new ResponseCountMetal(plc.getCountMetal());
         } catch (Exception e) {
+            plcConnected = false;
             log.error("Error reading get count metal: {}", e.getMessage());
             serviceLog.record("ERROR", "ServicePLC", "Error reading get count metal: " + e.getMessage());
             return new ResponseCountMetal(0);
@@ -185,6 +207,7 @@ public class ServicePLC {
             log.info("received get count metal");
             return new ResponseCountNonMetal(plc.getCountNonMetal());
         } catch (Exception e) {
+            plcConnected = false;
             log.error("Error reading get count non metal: {}", e.getMessage());
             serviceLog.record("ERROR", "ServicePLC", "Error reading get count non metal: " + e.getMessage());
             return new ResponseCountNonMetal(0);
@@ -205,6 +228,7 @@ public class ServicePLC {
             log.info("Success MPoint {} set to {}", param, value);
             return new ResponsePointState("Success: " + param + " set to " + value);
         } catch (Exception e) {
+            plcConnected = false;
             log.error("Error writing MPoint: {}", e.getMessage());
             e.printStackTrace();
             return new ResponsePointState("Error: " + e.getMessage());
@@ -222,6 +246,7 @@ public class ServicePLC {
             return new ResponsePointState("Success: " + param + " set to " + value);
 
         } catch (Exception e) {
+            plcConnected = false;
             log.error("Error writing DPoint: {}", e.getMessage());
             e.printStackTrace();
             return new ResponsePointState("Error: " + e.getMessage());
@@ -243,6 +268,7 @@ public class ServicePLC {
             return new ResponsePointState("process stop");
 
         } catch (Exception e) {
+            plcConnected = false;
             log.error("Shot down Error", e.getMessage());
             e.printStackTrace();
             return new ResponsePointState("Shot down Error: " + e.getMessage());
@@ -260,6 +286,7 @@ public class ServicePLC {
             return new ResponsePointState("process stop end");
 
         } catch (Exception e) {
+            plcConnected = false;
             log.error("ending Shot down Error", e.getMessage());
             e.printStackTrace();
             return new ResponsePointState("ending Shot down Error: " + e.getMessage());
@@ -277,24 +304,37 @@ public class ServicePLC {
             log.info("trigger generate wrong");
 
         } catch (Exception e) {
+            plcConnected = false;
             log.error("trigger generate wrong Error", e.getMessage());
             e.printStackTrace();
         }
     }
 
     public boolean reconnectPLC() {
-
         try {
+            if (this.plc != null) {
+                try {
+                    this.plc.close();
+                } catch (Exception ignored) {
+                }
+            }
             this.plc = new PLCDriver(plcIP, tcpPort);
             plcConnected = true;
-            log.info("PLC connect secces");
+            log.info("PLC connect success");
             System.out.println("PLC重連成功");
+            return true;
         } catch (Exception e) {
-            log.error("cant connect to plc, error code {}", e.getMessage());
-            serviceLog.record("ERROR", "ServicePLC", "cant connect to plc, error code" +
-                    e.getMessage());
-            System.err.println("重新連線PLC失敗 code: " + e.getMessage());
+            plcConnected = false;
+            log.warn("cant connect to plc, error code: {}", e.getMessage());
+            return false;
         }
-        return false;
+    }
+
+    public void setConnectStatus() {
+        plcConnected = true;
+    }
+
+    public void setDisConnectStatus() {
+        plcConnected = false;
     }
 }
