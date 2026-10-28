@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpHeaders;
 // import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -139,7 +138,7 @@ public class ControllerLog {
     }
 
     @GetMapping("/byTime")
-    public CompletableFuture<Object> getLogByTime(@RequestBody RequestLogDTO request) throws Exception {
+    public CompletableFuture<Object> getLogByTime(RequestLogDTO request) throws Exception {
         long curr = System.currentTimeMillis();
         log.info("Received and transfer request for getLogByTime");
         return queueService.addRequestToQueue(URGENT, request, "getLogByTime").whenComplete((res, exp) -> {
